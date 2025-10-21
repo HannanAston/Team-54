@@ -13,6 +13,9 @@ class Math {
 
         int modResult = mathTests.mod(69, 5);
         System.out.println(modResult);
+
+        int subResult = mathTests.sub(10, 5);
+        System.out.println(subResult);
     }
 
     public int max(int a, int b){
@@ -46,5 +49,9 @@ class Math {
     public int mod(int dividend, int divisor) {
         int result = dividend % divisor;
         return result;
+    }
+
+    public sub(int a, int b) {
+        return a - b;
     }
 }
