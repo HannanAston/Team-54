@@ -16,6 +16,9 @@ class Math {
 
         int subResult = mathTests.sub(10, 5);
         System.out.println(subResult);
+
+        int multresult = mathTests.multiply(1, 2);
+        system.out.println(multresult);
     }
 
     public int max(int a, int b){
@@ -54,4 +57,10 @@ class Math {
     public int sub(int a, int b) {
         return a - b;
     }
+
+    public int multiply(int a, int b){
+        int result = a * b;
+        return result;
+    }
+
 }
