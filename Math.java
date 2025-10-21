@@ -51,7 +51,7 @@ class Math {
         return result;
     }
 
-    public sub(int a, int b) {
+    public int sub(int a, int b) {
         return a - b;
     }
 }
