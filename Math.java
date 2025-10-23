@@ -18,7 +18,10 @@ class Math {
         System.out.println(subResult);
 
         int multresult = mathTests.multiply(1, 2);
-        system.out.println(multresult);
+        System.out.println(multresult);
+
+        Double divideResult = mathTests.Divide(10.0, 6.0);
+        System.out.println(divideResult);
     }
 
     public int max(int a, int b){
@@ -60,6 +63,11 @@ class Math {
 
     public int multiply(int a, int b){
         int result = a * b;
+        return result;
+    }
+
+    public Double Divide(Double a, Double b) {
+        Double result = a / b;
         return result;
     }
 
