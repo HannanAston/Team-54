@@ -15,19 +15,22 @@ jobs:
             mysql:
                 image: mysql:8
                 env:
-                    MYSQL_ALLOW_EMPTY_PASSWORD: yes
+                    MYSQL_ROOT_PASSWORD: root
                     MYSQL_DATABASE: laravel_ci
                    
-                ports:
-                    - 3306:3306
                 options: >-
-                    --health-cmd="mysqladmin ping -h 127.0,0.1 -u root -ppassword"
+                    --health-cmd="mysqladmin ping -h 127.0,0.1 -u root -proot"
                     --health-interval=10s
                     --health-timeout=5s
                     --health-retries=10
-                    --tmpfs /var/lib/mysql:rw
                     --memory=1g
-
+        env:
+                DB_CONNECTION: mysql
+                DB_HOST: 127.0.0.1
+                DB_PORT: 3306
+                DB_DATABASE: laravel_ci
+                DB_USERNAME: root
+                DB_PASSWORD: root
         steps:
             - name: Checkout code
               uses : actions/checkout@v4
@@ -36,11 +39,11 @@ jobs:
               uses: shivammathur/setup-php@v2
               with:
                 php-version: '8.2'
-                extensions: mbstring, pdo, mysql, dom
+                extensions: mbstring, pdo_mysql, dom
                 tools: composer
 
             - name: Install Composer dependencies
-              run: composer install --no-interaction --prefer-dist
+              run: composer install --no-progress --no-interaction --prefer-dist
 
             - name: Configure Environment
               run: |
@@ -52,49 +55,50 @@ jobs:
                 sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=password/' .env
                 sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' .env
 
+            - name: Copy .env and generate key
+              run: |
+                cp .env.example .env
+                php artisan key:generate
+
             - name: Wait for MYSQL
               run: |
-                sudo apt-get install -y mysql-client
-                until mysqladmin ping -h 127.0.0.1 -u root -ppassword
-                  echo "Waiting for database connection"
+                for i in {1..30}; do
+                  mysqladmin ping -h 127.0.0.1 -u root -proot && break
+                  echo "Waiting for MYSQL ($i/30)..."
                   sleep 5
                 done
 
             - name: Run database migrations
               run: php artisan migrate:fresh
-              env:
-                DB_CONNECTION: mysql
-                DB_HOST: 127.0.0.1
-                DB_PORT: 3306
-                DB_DATABASE: laravel_ci
-                DB_USERNAME: root
-                DB_PASSWORD: ''
+              
               
             - name: Run Seeder test
               run: php artisan test --filter=DatabaseSeederTest
 
 #Other tests
     feature-tests:            
-      runs-on: ubuntu-latest
-      needs: seeder-verification
-      services:
+        runs-on: ubuntu-latest
+        services:
             mysql:
                 image: mysql:8
                 env:
-                    MYSQL_ALLOW_EMPTY_PASSWORD: yes
+                    MYSQL_ROOT_PASSWORD: root
                     MYSQL_DATABASE: laravel_ci
                    
-                ports:
-                    - 3306:3306
                 options: >-
-                    --health-cmd="mysqladmin ping -h 127.0,0.1 -u root -ppassword"
+                    --health-cmd="mysqladmin ping -h 127.0,0.1 -u root -proot"
                     --health-interval=10s
                     --health-timeout=5s
                     --health-retries=10
-                    --tmpfs /var/lib/mysql:rw
                     --memory=1g
-
-      steps:
+        env:
+                DB_CONNECTION: mysql
+                DB_HOST: 127.0.0.1
+                DB_PORT: 3306
+                DB_DATABASE: laravel_ci
+                DB_USERNAME: root
+                DB_PASSWORD: root
+        steps:
             - name: Checkout code
               uses : actions/checkout@v4
 
@@ -102,11 +106,11 @@ jobs:
               uses: shivammathur/setup-php@v2
               with:
                 php-version: '8.2'
-                extensions: mbstring, pdo, mysql, dom
+                extensions: mbstring, pdo_mysql, dom
                 tools: composer
 
             - name: Install Composer dependencies
-              run: composer install --no-interaction --prefer-dist
+              run: composer install --no-progress --no-interaction --prefer-dist
 
             - name: Configure Environment
               run: |
@@ -118,29 +122,26 @@ jobs:
                 sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=password/' .env
                 sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' .env
 
+            - name: Copy .env and generate key
+              run: |
+                cp .env.example .env
+                php artisan key:generate
+
             - name: Wait for MYSQL
               run: |
-                sudo apt-get install -y mysql-client
-                until mysqladmin ping -h 127.0.0.1 -u root -ppassword
-                  echo "Waiting for database connection"
+                for i in {1..30}; do
+                  mysqladmin ping -h 127.0.0.1 -u root -proot && break
+                  echo "Waiting for MYSQL ($i/30)..."
                   sleep 5
                 done
 
-            - name: Run database migrations and seeders
+            - name: Run database migrations and seeding
               run: php artisan migrate:fresh --seed
-              env:
-                DB_CONNECTION: mysql
-                DB_HOST: 127.0.0.1
-                DB_PORT: 3306
-                DB_DATABASE: laravel_ci
-                DB_USERNAME: root
-                DB_PASSWORD: ''
+
+            
+            - name: Run other tests
+              run: php artisan test 
               
-            - name: Run Laravel Feature and Unit tests 
-              run: php artisan test
-
-          
-                  
-                  
-
-
+              
+            - name: Run Seeder test
+              run: php artisan test --filter=DatabaseSeederTest
