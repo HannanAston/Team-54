@@ -15,15 +15,18 @@ jobs:
             mysql:
                 image: mysql:8
                 env:
-                    MYSQL_ROOT_PASSWORD: password
+                    MYSQL_ROOT_PASSWORD: root
                     MYSQL_DATABASE: laravel_ci
+                    MYSQL_USER: laravel
+                    MYSQL_PASSWORD: laravel
                 ports:
                     - 3306:3306
                 options: >-
                     --health-cmd="mysqladmin ping -h 127.0,0.1 -u root -ppassword"
                     --health-interval=10s
                     --health-timeout=5s
-                    --health-retries=3
+                    --health-retries=10
+                    --memory=512m
 
         steps:
             - name: Checkout code
@@ -71,7 +74,7 @@ jobs:
             mysql:
                 image: mysql:8
                 env:
-                    MYSQL_ROOT_PASSWORD: password
+                    MYSQL_ROOT_PASSWORD: root
                     MYSQL_DATABASE: laravel_ci
                 ports:
                     - 3306:3306
