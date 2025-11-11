@@ -45,7 +45,7 @@ jobs:
                 cat > .env <<'EOF'
                 APP_ENV=testing
                 APP_DEBUG=true
-                APP KEY=
+                APP_KEY=
                 DB_CONNECTION=mysql
                 DB_HOST=127.0.0.1
                 DB_PORT=3306
