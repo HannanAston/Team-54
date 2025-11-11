@@ -11,6 +11,9 @@ jobs:
     # testing
       tests:
         runs-on: ubuntu-latest
+
+        env:
+        APP_DIR: OurDatabase
         
         steps:
             - name: Checkout code
