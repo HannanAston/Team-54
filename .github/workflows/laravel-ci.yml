@@ -69,6 +69,5 @@ jobs:
               
               
             - name: Run Seeder test
-              run: php artisan test
               run: php artisan test --filter=DatabaseSeederTest
 
