@@ -1,0 +1,147 @@
+name: Laravel CI
+
+on:
+    push:
+        branches: [ "main" ]
+    pull_request:
+        branches: [ "main" ]
+
+jobs:
+
+    #Seeder testing
+    seeder-verification:
+        runs-on: ubuntu-latest
+        services:
+            mysql:
+                image: mysql:8
+                env:
+                    MYSQL_ROOT_PASSWORD: root
+                    MYSQL_DATABASE: laravel_ci
+                   
+                options: >-
+                    --health-cmd="mysqladmin ping -h 127.0,0.1 -u root -proot"
+                    --health-interval=10s
+                    --health-timeout=5s
+                    --health-retries=10
+                    --memory=1g
+        env:
+                DB_CONNECTION: mysql
+                DB_HOST: 127.0.0.1
+                DB_PORT: 3306
+                DB_DATABASE: laravel_ci
+                DB_USERNAME: root
+                DB_PASSWORD: root
+        steps:
+            - name: Checkout code
+              uses : actions/checkout@v4
+
+            - name: set up PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                php-version: '8.2'
+                extensions: mbstring, pdo_mysql, dom
+                tools: composer
+
+            - name: Install Composer dependencies
+              run: composer install --no-progress --no-interaction --prefer-dist
+
+            - name: Configure Environment
+              run: |
+                cp .env.example .env
+                php artisan key:generate
+                sed -i 's/DB_CONNECTION=.*/DB_CONNECTION=mysql/' .env
+                sed -i 's/DB_DATABASE=.*/DB_DATABASE=laravel_ci/' .env
+                sed -i 's/DB_USERNAME=.*/DB_USERNAME=root/' .env
+                sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=root/' .env
+                sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' .env
+
+            - name: Copy .env and generate key
+              run: |
+                cp .env.example .env
+                php artisan key:generate
+
+            - name: Wait for MYSQL
+              run: |
+                for i in {1..30}; do
+                  mysqladmin ping -h 127.0.0.1 -u root -proot && break
+                  echo "Waiting for MYSQL ($i/30)..."
+                  sleep 5
+                done
+
+            - name: Run database migrations
+              run: php artisan migrate:fresh
+              
+              
+            - name: Run Seeder test
+              run: php artisan test --filter=DatabaseSeederTest
+
+#Other tests
+    feature-tests:            
+        runs-on: ubuntu-latest
+        services:
+            mysql:
+                image: mysql:8
+                env:
+                    MYSQL_ROOT_PASSWORD: root
+                    MYSQL_DATABASE: laravel_ci
+                   
+                options: >-
+                    --health-cmd="mysqladmin ping -h 127.0,0.1 -u root -proot"
+                    --health-interval=10s
+                    --health-timeout=5s
+                    --health-retries=10
+                    --memory=1g
+        env:
+                DB_CONNECTION: mysql
+                DB_HOST: 127.0.0.1
+                DB_PORT: 3306
+                DB_DATABASE: laravel_ci
+                DB_USERNAME: root
+                DB_PASSWORD: root
+        steps:
+            - name: Checkout code
+              uses : actions/checkout@v4
+
+            - name: set up PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                php-version: '8.2'
+                extensions: mbstring, pdo_mysql, dom
+                tools: composer
+
+            - name: Install Composer dependencies
+              run: composer install --no-progress --no-interaction --prefer-dist
+
+            - name: Configure Environment
+              run: |
+                cp .env.example .env
+                php artisan key:generate
+                sed -i 's/DB_CONNECTION=.*/DB_CONNECTION=mysql/' .env
+                sed -i 's/DB_DATABASE=.*/DB_DATABASE=laravel_ci/' .env
+                sed -i 's/DB_USERNAME=.*/DB_USERNAME=root/' .env
+                sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=root/' .env
+                sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' .env
+
+            - name: Copy .env and generate key
+              run: |
+                cp .env.example .env
+                php artisan key:generate
+
+            - name: Wait for MYSQL
+              run: |
+                for i in {1..30}; do
+                  mysqladmin ping -h 127.0.0.1 -u root -proot && break
+                  echo "Waiting for MYSQL ($i/30)..."
+                  sleep 5
+                done
+
+            - name: Run database migrations and seeding
+              run: php artisan migrate:fresh --seed
+
+            
+            - name: Run other tests
+              run: php artisan test 
+              
+              
+            - name: Run Seeder test
+              run: php artisan test --filter=DatabaseSeederTest
