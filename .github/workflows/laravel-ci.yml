@@ -1,0 +1,126 @@
+name: Laravel CI
+
+on:
+    push:
+        branches: [ "main" ]
+    pull_request:
+        branches: [ "main" ]
+
+jobs:
+
+    #Seeder testing
+    seeder-verification:
+        runs-on: ubuntu-latest
+        services:
+            mysql:
+                image: mysql:8
+                env:
+                    MYSQL_ROOT_PASSWORD: password
+                    MYSQL_DATABASE: laravel_ci
+                ports:
+                    - 3306:3306
+                options: >-
+                    --health-cmd="mysqladmin ping -h 127.0,0.1 -u root -ppassword"
+                    --health-interval=10s
+                    --health-timeout=5s
+                    --health-retries=3
+
+        steps:
+            - name: Checkout code
+              uses : actions/checkout@v4
+
+            - name: set up PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                php-version: '8.2'
+                extensions: mbstring, pdo, mysql, dom
+                tools: composer
+
+            - name: Install Composer dependencies
+              run: composer install --no-interaction --prefer-dist
+
+            - name: Configure Environment
+              run: |
+                cp .env.example .env
+                php artisan key:generate
+                sed -i 's/DB_CONNECTION=.*/DB_CONNECTION=mysql/' .env
+                sed -i 's/DB_DATABASE=.*/DB_DATABASE=laravel_ci/' .env
+                sed -i 's/DB_USERNAME=.*/DB_USERNAME=root/' .env
+                sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=password/' .env
+                sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' .env
+
+            - name: Wait for MYSQL
+              run: |
+                sudo apt-get install -y mysql-client
+                until mysqladmin ping -h 127.0.0.1 -u root -ppassword
+                  echo "Waiting for database connection"
+                  sleep 5
+                done
+
+            - name: Run database migrations
+              run: php artisan migrate:fresh
+              
+            - name: Run Seeder test
+              run: php artisan test --filter=DatabaseSeederTest
+
+#Other tests
+    feature-tests:            
+      runs-on: ubuntu-latest
+      needs: seeder-verification
+      services:
+            mysql:
+                image: mysql:8
+                env:
+                    MYSQL_ROOT_PASSWORD: password
+                    MYSQL_DATABASE: laravel_ci
+                ports:
+                    - 3306:3306
+                options: >-
+                    --health-cmd="mysqladmin ping -h 127.0,0.1 -u root -ppassword"
+                    --health-interval=10s
+                    --health-timeout=5s
+                    --health-retries=3
+
+      steps:
+            - name: Checkout code
+              uses : actions/checkout@v4
+
+            - name: set up PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                php-version: '8.2'
+                extensions: mbstring, pdo, mysql, dom
+                tools: composer
+
+            - name: Install Composer dependencies
+              run: composer install --no-interaction --prefer-dist
+
+            - name: Configure Environment
+              run: |
+                cp .env.example .env
+                php artisan key:generate
+                sed -i 's/DB_CONNECTION=.*/DB_CONNECTION=mysql/' .env
+                sed -i 's/DB_DATABASE=.*/DB_DATABASE=laravel_ci/' .env
+                sed -i 's/DB_USERNAME=.*/DB_USERNAME=root/' .env
+                sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=password/' .env
+                sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' .env
+
+            - name: Wait for MYSQL
+              run: |
+                sudo apt-get install -y mysql-client
+                until mysqladmin ping -h 127.0.0.1 -u root -ppassword
+                  echo "Waiting for database connection"
+                  sleep 5
+                done
+
+            - name: Run database migrations and seeders
+              run: php artisan migrate:fresh --seed
+              
+            - name: Run Laravel Feature and Unit tests 
+              run: php artisan test
+
+          
+                  
+                  
+
+
