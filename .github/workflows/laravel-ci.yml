@@ -13,7 +13,7 @@ jobs:
         runs-on: ubuntu-latest
 
         env:
-        APP_DIR: OurDatabase
+          APP_DIR: OurDatabase
         
         steps:
             - name: Checkout code
