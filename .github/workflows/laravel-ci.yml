@@ -15,10 +15,9 @@ jobs:
             mysql:
                 image: mysql:8
                 env:
-                    MYSQL_ROOT_PASSWORD: root
+                    MYSQL_ALLOW_EMPTY_PASSWORD: yes
                     MYSQL_DATABASE: laravel_ci
-                    MYSQL_USER: laravel
-                    MYSQL_PASSWORD: laravel
+                   
                 ports:
                     - 3306:3306
                 options: >-
@@ -26,7 +25,8 @@ jobs:
                     --health-interval=10s
                     --health-timeout=5s
                     --health-retries=10
-                    --memory=512m
+                    --tmpfs /var/lib/mysql:rw
+                    --memory=1g
 
         steps:
             - name: Checkout code
@@ -62,6 +62,13 @@ jobs:
 
             - name: Run database migrations
               run: php artisan migrate:fresh
+              env:
+                DB_CONNECTION: mysql
+                DB_HOST: 127.0.0.1
+                DB_PORT: 3306
+                DB_DATABASE: laravel_ci
+                DB_USERNAME: root
+                DB_PASSWORD: ''
               
             - name: Run Seeder test
               run: php artisan test --filter=DatabaseSeederTest
@@ -74,15 +81,18 @@ jobs:
             mysql:
                 image: mysql:8
                 env:
-                    MYSQL_ROOT_PASSWORD: root
+                    MYSQL_ALLOW_EMPTY_PASSWORD: yes
                     MYSQL_DATABASE: laravel_ci
+                   
                 ports:
                     - 3306:3306
                 options: >-
                     --health-cmd="mysqladmin ping -h 127.0,0.1 -u root -ppassword"
                     --health-interval=10s
                     --health-timeout=5s
-                    --health-retries=3
+                    --health-retries=10
+                    --tmpfs /var/lib/mysql:rw
+                    --memory=1g
 
       steps:
             - name: Checkout code
@@ -118,6 +128,13 @@ jobs:
 
             - name: Run database migrations and seeders
               run: php artisan migrate:fresh --seed
+              env:
+                DB_CONNECTION: mysql
+                DB_HOST: 127.0.0.1
+                DB_PORT: 3306
+                DB_DATABASE: laravel_ci
+                DB_USERNAME: root
+                DB_PASSWORD: ''
               
             - name: Run Laravel Feature and Unit tests 
               run: php artisan test
