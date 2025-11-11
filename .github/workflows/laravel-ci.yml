@@ -23,7 +23,7 @@ jobs:
               uses: mirromutth/mysql-action@v1.1
               with: 
                 mysql version: '8.0'
-                mysql database: laravel_ci
+                mysql database: cs2tp_db
                 mysql root password: 'root'
 
             - name: set up PHP
@@ -45,7 +45,7 @@ jobs:
                 DB_CONNECTION=mysql
                 DB_HOST=127.0.0.1
                 DB_PORT=3306
-                DB_DATABASE=laravel_ci
+                DB_DATABASE=cs2tp_db
                 DB_USERNAME=root
                 DB_PASSWORD=root
                 CACHE_DRIVER=file
