@@ -15,10 +15,13 @@ Goal: everyone builds and tests code locally, opens a Pull request from their ow
 </p> 
 
 ***[Help Requests and responses]***
+
 Add any help requests <mark>(e.g. if you fail 5 times)</mark> and responses here
 
 ***[Tests added]***
+
 Any new tests you make that you think should be merged with the main and added to the CI pipeline, mention here.
 
 ***[Important updates/info]***
+
 Anything you deem important and want others to know.
