@@ -4,7 +4,7 @@
 
 ***<mark>IMPORTANT! PLEASE READ THIS FILE EVERY TIME YOU LOGIN TO CHECK FOR UPDATES!</mark>*** 
 
-Do not merge onto the main unless your pull request passes the CI pipeline. You can confirm by pressing Actions and then looking for your request (should be at the top) and seeing if there is a green tick.
+Do not merge onto the main unless your pull request passes the CI pipeline and someone else has reviewed your work/pull request. You can confirm by pressing Actions and then looking for your request (should be at the top) and seeing if there is a green tick.
 
 ***[How to GitHub!]***
 
