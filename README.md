@@ -2,7 +2,7 @@
 
 # Team-54
 IMPORTANT! PLEASE READ THIS FILE EVERY TIME YOU LOGIN TO CHECK FOR UPDATES! 
-Do not merge onto the main unless your pull request passes the .yml test. You can confirm by pressing Actions and then looking for your request (should be at the top) and seeing if there is a green tick.
+Do not merge onto the main unless your pull request passes the CI pipeline. You can confirm by pressing Actions and then looking for your request (should be at the top) and seeing if there is a green tick.
 
 ***[How to GitHub!]***
 
