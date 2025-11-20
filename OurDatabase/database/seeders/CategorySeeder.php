@@ -14,7 +14,6 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        Category::factory(10)->create(); // 10 random using fakr
 
         DB::table('categories')->insert([
             ['category_name' => 'Hoodies', 'created_at' => now(), 'updated_at' => now()],
