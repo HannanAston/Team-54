@@ -6,6 +6,31 @@
 
 Do not merge onto the main unless your pull request passes the CI pipeline and someone else has reviewed your work/pull request. You can confirm by pressing Actions and then looking for your request (should be at the top) and seeing if there is a green tick.
 
+Do NOT edit past migration tables if you want to change how tables in the database are structured. Make a new migration with your change and link it to the existing table. If this does not make sense, message Angad or leave a help request in this file.
+
+DO NOT modify existing factories or seeders unless you notify the backend team lead (Angad). New seeders are new files, don't edit old ones.
+
+NEVER run php artisan migrate:fresh unless:
+
+- You are on your own branch, AND
+- You are using the **test environment**, AND
+- You understand this wipes *ALL EXISTING DATA* from your local database
+
+**This command must NEVER be run on main or production.**
+
+NEVER push directly to main.
+
+EVERY Pull request MUST contain tests. If you make any new stuff, like middleware, models or controllers etc. there needs to be the accompanying test. You must also pass the CI.
+
+DO NOT modify someone elses branch. Only work on YOURS.
+
+If you add or change .env variables you MUST notify the team and update .env.example. Keep a spare local copy of the old version too (not in the repo, local or otherwise) just in case.
+
+If local database breaks run: php artisan migrate fresh --seed
+BUT only if you are on your **branch** and using **test data**
+Otherwise ask for a backend developer, if that fails leave a request, if that fails ask for Angad.
+
+
 ***[How to GitHub!]***
 
 Goal: everyone builds and tests code locally, opens a Pull request from their own branch after they push their code to it, CI runs (in GitHub actions), <mark>we only merge to main when CI is green.</mark>
