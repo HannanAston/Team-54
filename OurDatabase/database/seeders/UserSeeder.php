@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use App\Models\User;
 
 class UserSeeder extends Seeder
@@ -13,11 +15,25 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->create();
+        // my admin account
+        User::create([
+            'name' => 'Angad Admin',
+            'email' => 'angad.admin@revivalthreads.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('AdminPass123!'),
+            'remember_token' => Str::random(10),
+            'is_admin' => true
+        ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        //Guest admin for demos
+
+         User::create([
+            'name' => 'Guest Admin',
+            'email' => 'guest.admin@revivalthreads.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('GuestAdminPass123!'),
+            'remember_token' => Str::random(10),
+            'is_admin' => true
         ]);
     }
 }
