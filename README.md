@@ -1,8 +1,10 @@
 [![Laravel CI](https://github.com/HannanAston/Team-54/actions/workflows/laravel-ci.yml/badge.svg?branch=main)](https://github.com/HannanAston/Team-54/actions/workflows/laravel-ci.yml)
 
-# Team-54
+# Team-54 v1.0.0
 
 ***<mark>IMPORTANT! PLEASE READ THIS FILE EVERY TIME YOU LOGIN TO CHECK FOR UPDATES!</mark>*** 
+
+Update version everytime you merge to main. Last digit for bug fixes and minor changes, second digit for feature additions and branch merges, first digit for new deployment versions.
 
 Do not merge onto the main unless your pull request passes the CI pipeline and someone else has reviewed your work/pull request. You can confirm by pressing Actions and then looking for your request (should be at the top) and seeing if there is a green tick.
 
