@@ -27,18 +27,9 @@ Route::middleware(['auth', 'admin'])->group(function() {
 });
 require __DIR__.'/auth.php';
 
-Route::get('/cart', function () {
-    #$Cart = Cart::where('user_id', auth()->id())->first();
-    #$CartItems = CartItem::where('cart_id', $Cart->id)->get();
-    #$productIds = $CartItems->pluck('product_id');
-    #$products = Product::whereIn("id", $productIds)->get();
-    $cart = Cart::where('user_id', auth()->id())->first();
-    $cartItems = CartItem::where('cart_id', $cart->id)->get();
-    foreach ($cartItems as $item) {
-        $item->product = Product::find($item->product_id);
-    }
-    return view('cart', ['items' => $cartItems]);
-})->name('cart');
+Route::get('/cart', [CartController::class, 'show'])->name('cart');
 
-Route::delete('/delete-cartItem/{cartItem}', [CartController::class, 'DeleteCartItem']);
-Route::put('/update-cartItem/{cartItem}', [CartController::class, 'UpdateCartItem']);
+Route::middleware('auth')->group(function () {
+    Route::delete('/delete-cartItem/{cartItem}', [CartController::class, 'DeleteCartItem'])->name('cart.update');
+    Route::put('/update-cartItem/{cartItem}', [CartController::class, 'UpdateCartItem'])->name('cart.delete');
+});

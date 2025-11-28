@@ -7,6 +7,8 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Category;
+use App\Models\CartItem;
+use App\Models\Product;
 
 class DatabaseSeederTest extends TestCase
 
@@ -24,16 +26,22 @@ class DatabaseSeederTest extends TestCase
        // Count records
    $userCount = User::count();
    $categoryCount = Category::count();
+   $cartitemsCount = CartItem::count();
+   $productCount = Product::count();
 
        //output log
       fwrite (STDOUT, "\n--- SEEDING SUMMARY ---\n");
       fwrite (STDOUT, "Users Seeded: {$userCount}\n");
       fwrite (STDOUT, "Categories seeded: {$categoryCount}\n");
+      fwrite (STDOUT, "Cart Items seeded: {$cartitemsCount}\n");
+      fwrite (STDOUT, "Products seeded: {$productCount}\n");
       fwrite (STDOUT, "--------------------\n");
 
 
-       $this->assertTrue(User::count() > 0, 'No Users created.'); //assert user made
-       $this->assertTrue(Category::count() > 0, 'No Categories seeded.'); //assert category made
+      $this->assertTrue(User::count() > 0, 'No Users created.'); //assert user made
+      $this->assertTrue(Category::count() > 0, 'No Categories seeded.');
+      $this->assertTrue(CartItem::count() > 0, 'No Cart Items seeded.');
+      $this->assertTrue(Product::count() > 0, 'No Products seeded.'); 
    }
 
     /** @test */
