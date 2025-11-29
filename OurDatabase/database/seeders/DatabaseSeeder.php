@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
             $this->call([
             TestCategorySeeder::class,
             TestUserSeeder::class,
+            TestProductSeeder::class,
+            TestCartSeeder::class,
             ]);
         
         }else {
