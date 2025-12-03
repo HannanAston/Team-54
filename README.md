@@ -1,6 +1,6 @@
 [![Laravel CI](https://github.com/HannanAston/Team-54/actions/workflows/laravel-ci.yml/badge.svg?branch=main)](https://github.com/HannanAston/Team-54/actions/workflows/laravel-ci.yml)
 
-# Team-54 v1.1.0
+# Team-54 v1.4.1
 
 ***<mark>IMPORTANT! PLEASE READ THIS FILE EVERY TIME YOU LOGIN TO CHECK FOR UPDATES!</mark>*** 
 
