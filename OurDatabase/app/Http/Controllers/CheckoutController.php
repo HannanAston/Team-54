@@ -78,10 +78,17 @@ class CheckoutController extends Controller
             // Send email receipt
             Mail::to($user->email)->send(new OrderReceipt($order));
             
-            return response()->json([
-                'message' => 'Order placed successfully',
+            #return response()->json([
+                #'message' => 'Order placed successfully',
+                #'order' => $order->load('orderItems.product'),
+            #], 201);
+            
+            return view('checkout.success', [
                 'order' => $order->load('orderItems.product'),
-            ], 201);
+                'subtotal' => $subtotal,
+                'discount' => $discount,
+                'total' => $total
+            ]);
             
         } catch (\Exception $e) {
             DB::rollBack();
