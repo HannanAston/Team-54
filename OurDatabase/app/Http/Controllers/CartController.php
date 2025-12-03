@@ -30,14 +30,15 @@ class CartController extends Controller
 
 
     public function deleteCartItem(CartItem $cartItem) {
-        if($cartItem->Cartproduct && $cartItem->Cartproduct->user_id === auth()->id()) {
+        if($cartItem->cart && $cartItem->cart->user_id === auth()->id()) {
             $cartItem->delete();
             return redirect("/cart");
         }
+        abort(403);
     }
 
         public function updateCartItem(CartItem $cartItem, Request $request) {
-        if($cartItem->Cartproduct && $cartItem->Cartproduct->user_id === auth()->id()) {
+        if($cartItem->cart && $cartItem->cart->user_id === auth()->id()) {
             $incomingFields = $request->validate([
                 "quantity" => 'required',
             ]);
