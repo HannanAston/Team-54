@@ -26,7 +26,7 @@ class CartController extends Controller
 
             return view('cart', ['items' => $cartItems, 'total' => $total]);
         }
-        return view ('cart', ['items' => [], 'total' => 0]);
+        return view ('cart', ['items' => collect([]), 'total' => 0]);
     }
 
 
