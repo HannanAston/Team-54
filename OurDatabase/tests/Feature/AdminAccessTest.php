@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
+use PHPUnit\Framework\Attributes\Test;
 
 class AdminAccessTest extends TestCase
 {
@@ -15,7 +16,7 @@ class AdminAccessTest extends TestCase
      * 1. Middleware Tests
      */
 
-    /** @test */
+    #[Test]
     public function guest_is_redirected_to_login_when_accessing_admin_page()
     {
         $response = $this->get('/admin/users');
@@ -23,7 +24,7 @@ class AdminAccessTest extends TestCase
         $response->assertRedirect('/login');
     }
 
-    /** @test */
+    #[Test]
     public function non_admin_user_gets_403_error_on_admin_page()
     {
         $user = User::factory()->create(['is_admin' => false]);
@@ -33,7 +34,7 @@ class AdminAccessTest extends TestCase
         $response->assertStatus(403);
     }
 
-    /** @test */
+    #[Test]
     public function admin_user_can_access_admin_page()
     {
         $admin = User::factory()->create(['is_admin' => true]);
@@ -45,7 +46,7 @@ class AdminAccessTest extends TestCase
 
     // 2. Route and Controller tests
 
-    /** @test */
+    #[Test]
     public function admin_page_loads_correct_view()
     {
         $admin = User::factory()->create(['is_admin' => true]);
@@ -55,7 +56,7 @@ class AdminAccessTest extends TestCase
         $response->assertViewIs('users.index');
     }
 
-    /** @test */
+    #[Test]
     public function admin_page_receives_users_list()
     {
         $admin = User::factory()->create(['is_admin' => true]);
@@ -72,7 +73,7 @@ class AdminAccessTest extends TestCase
     // 3. Dashboard button tests
 
     
-    /** @test */
+    #[Test]
     public function dashboard_shows_manage_users_button_for_admin()
     {
         $admin = User::factory()->create(['is_admin' => true]);
@@ -83,7 +84,7 @@ class AdminAccessTest extends TestCase
         $response->assertSee('/admin/users');
     }
 
-     /** @test */
+    #[Test]
     public function dashboard_hides_manage_users_button_for_non_admin()
     {
         $user = User::factory()->create(['is_admin' => false]);
