@@ -3,10 +3,12 @@
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,6 +28,11 @@ Route::middleware(['auth', 'admin'])->group(function() {
     Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index');
 });
 require __DIR__.'/auth.php';
+
+Route::middleware('auth')->group(function () {
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+});
 
 Route::get('/cart', [CartController::class, 'show'])->name('cart');
 
