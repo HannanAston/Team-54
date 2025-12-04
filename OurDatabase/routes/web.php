@@ -4,12 +4,12 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,7 +32,11 @@ Route::middleware(['auth', 'admin'])->group(function() {
 });
 require __DIR__.'/auth.php';
 
-// user cart and checkout
+Route::middleware('auth')->group(function () {
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+});
+
 Route::get('/cart', [CartController::class, 'show'])->name('cart');
 
 Route::middleware('auth')->group(function () {

@@ -16,11 +16,17 @@ class OrderItem extends Model
         'price',
     ];
 
+    /**
+     * Each order item belongs to an order.
+     */
     public function order()
     {
         return $this->belongsTo(Order::class);
     }
 
+    /**
+     * Each order item is for one product.
+     */
     public function product()
     {
         return $this->belongsTo(Product::class);
