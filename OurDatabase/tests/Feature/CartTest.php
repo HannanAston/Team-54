@@ -39,4 +39,40 @@ class CartTest extends TestCase
             'quantity' =>1,
         ]);
     }
+
+    /** @test */
+    public function test_user_can_delete_cart_item() {
+        $user = User::factory()->create();
+        $cart = Cart::factory()->for($user)->create();
+        
+        $cartItem = CartItem::factory()->for($cart)->create(['quantity' => 1]);
+
+        $response = $this->actingAs($user)->delete("/delete-cartItem/{$cartItem->id}");
+
+        $response->assertStatus(302);
+
+        $this->assertDatabaseMissing('cart_items', [
+            'id' => $cartItem->id
+        ]);
+    }
+
+    /** @test */
+    public function test_user_can_update_cart_item() {
+    
+        $user = User::factory()->create();
+        $cart = Cart::factory()->for($user)->create();
+        
+        $cartItem = CartItem::factory()->for($cart)->create(['quantity' => 1]);
+
+        $response = $this->actingAs($user)->put("/update-cartItem/{$cartItem->id}", [
+            'quantity' => 3
+        ]);
+
+        $response->assertStatus(302);
+
+        $this->assertDatabaseHas('cart_items', [
+            'id' => $cartItem->id, 'quantity' => 3
+        ]);
+
+    }
 }
