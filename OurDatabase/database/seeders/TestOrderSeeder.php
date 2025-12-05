@@ -7,7 +7,7 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Database\Seeder;
 
-class OrderSeeder extends Seeder
+class TestOrderSeeder extends Seeder
 {
     public function run(): void
     {
@@ -24,6 +24,7 @@ class OrderSeeder extends Seeder
              
                 $items = Product::inRandomOrder()->limit(rand(1, 3))->get();
 
+                $subtotal = 0;
                 $total = 0;
 
                 foreach ($items as $product) {
@@ -37,7 +38,8 @@ class OrderSeeder extends Seeder
                         'price'      => $price,
                     ]);
 
-                    $total += $qty * $price;
+                    $subtotal += $qty * $price;
+                    $total += $subtotal - 0; // No discount for test orders
                 }
 
                 $order->update([

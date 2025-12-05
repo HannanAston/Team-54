@@ -15,13 +15,13 @@ class OrderFactory extends Factory
 
     public function definition(): array
     {
-        $total = $this->faker->randomFloat(2, 10, 200);
-        $discount = $this->faker->randomFloat(2, 0, $total * 0.3);
-        $final = $total - $discount;
+        $subtotal = $this->faker->randomFloat(2, 10, 200);
+        $discount = $this->faker->randomFloat(2, 0, $subtotal * 0.1);
+        $total = $subtotal - $discount;
 
         return [
             'user_id' => User::factory(),
-            'subtotal' => $total,
+            'subtotal' => $subtotal,
             'total' => $total,
             'discount' => $discount,
             'status' => 'completed',

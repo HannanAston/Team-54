@@ -14,20 +14,13 @@ class Order extends Model
         'subtotal',
         'discount',
         'total',
-        'status',
     ];
 
-    /**
-     * Each order belongs to one user.
-     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Each order has many order items.
-     */
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
