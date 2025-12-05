@@ -103,7 +103,8 @@
         </style>
     </head>
 
-    <h1>All Products</h1>
+
+    <h1>Results for {{ $query ?? 'All' }}</h1>
 
     <div id="search" >
         <form action="/products/search" method="GET">
