@@ -46,19 +46,21 @@
                 <h3 style="margin: 0 0 10px 0;"> Grey Hoodie </h3>
                 <p style="color: #666; margin: 0 0 10px 0;">Grey Hoodie for general wear</p>
                 <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
-                <img src="https://www.shutterstock.com/shutterstock/photos/2524342855/display_1500/stock-photo-light-gray-hoodie-on-bearded-man-isolated-2524342855.jpg" alt="hoodie">
+                <img src="" alt="hoodie">
             </div>
 
             <div style="background: white; padding: 15px; border-radius: 5px;">
                 <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
                 <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
                 <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
+                <img src="" alt="product">
             </div>
 
             <div style="background: white; padding: 15px; border-radius: 5px;">
                 <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
                 <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
                 <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
+                <img src="" alt="product">
             </div>
 
         </div>
