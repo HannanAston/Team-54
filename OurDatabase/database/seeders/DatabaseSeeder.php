@@ -17,14 +17,16 @@ class DatabaseSeeder extends Seeder
     {
         if (app()->environment('local', 'development', 'testing')) {
             
+            //TEST SEEDERS
             $this->call([
             TestCategorySeeder::class,
             TestUserSeeder::class,
             TestProductSeeder::class,
             TestCartSeeder::class,
-            OrderSeeder::class,
+            TestOrderSeeder::class,
             ]);
         
+            //PRODUCTION SEEDERS
         }else {
             $this->call([
                 UserSeeder::class,

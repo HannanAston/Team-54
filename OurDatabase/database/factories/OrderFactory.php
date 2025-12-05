@@ -21,9 +21,9 @@ class OrderFactory extends Factory
 
         return [
             'user_id' => User::factory(),
-            'total_price' => $total,
-            'discount_amount' => $discount,
-            'final_total' => $final,
+            'subtotal' => $total,
+            'total' => $total,
+            'discount' => $discount,
             'status' => 'completed',
         ];
     }

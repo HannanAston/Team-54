@@ -41,9 +41,9 @@ class OrderSeeder extends Seeder
                 }
 
                 $order->update([
-                    'total_price'     => $total,
-                    'discount_amount' => 0,
-                    'final_total'     => $total,
+                    'subtotal'     => $subtotal,
+                    'discount' => 0,
+                    'total'     => $total,
                 ]);
             });
     }

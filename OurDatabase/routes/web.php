@@ -5,6 +5,8 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CheckoutController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Cart;
 use App\Models\CartItem;
@@ -39,6 +41,7 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/cart', [CartController::class, 'show'])->name('cart');
 
+//user cart and checkout
 Route::middleware('auth')->group(function () {
     Route::post('/cart/add/{product}', [CartController::class, 'addToCart'])->name('cart.add');
     Route::delete('/delete-cartItem/{cartItem}', [CartController::class, 'deleteCartItem'])->name('cart.update');
