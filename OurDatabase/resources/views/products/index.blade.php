@@ -3,7 +3,7 @@
         <style>
             #search {
                 display: flex;
-                flex-wrap: wrap; 
+                flex-wrap: wrap;
                 justify-content: center;
                 align-items: center;
                 gap: 10px;
@@ -91,8 +91,8 @@
             .buttonContainer form {
                 padding: 2px;
             }
-            
-            
+
+
             .productImage {
                 width: 250px;
                 height: 250px;
@@ -123,13 +123,16 @@
         @else
             @foreach($products as $product)
 
-            
+
                 <div class="productCard">
                     <a href="/products/{{ $product->id }}">
                         <img class="productImage" src="{{ $product->image_url }}" alt="Item Image">
                     </a>
                     <h1>{{ $product->name }}</h1>
                     <p>£{{ $product->price }}</p>
+
+
+
 
                 </div>
             @endforeach

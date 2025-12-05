@@ -34,6 +34,7 @@
                         {{ __('Contact') }}
                     </x-nav-link>
                 </div>
+
             </div>
 
             <!-- Settings Dropdown -->
@@ -44,7 +45,7 @@
                             @auth
                                 <div>{{ Auth::user()->name }}</div>
                             @endauth
-                            
+
                             @guest
                                 <div>Guest</div>
                             @endguest
@@ -104,9 +105,9 @@
                 <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
                 <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
             @endauth
-                
-            @guest 
-                <div class="font-medium text-base text-gray-800">Guest</div> 
+
+            @guest
+                <div class="font-medium text-base text-gray-800">Guest</div>
             @endguest
             </div>
 
