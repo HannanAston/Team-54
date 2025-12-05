@@ -13,6 +13,8 @@ use App\Models\Product;
 
 Route::get('/', function () {
     return view('welcome');
+    $products = Product::all();
+    return view('welcome', ['products' => $products]);
 });
 
 Route::get('/dashboard', function () {
@@ -40,7 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/delete-cartItem/{cartItem}', [CartController::class, 'deleteCartItem'])->name('cart.update');
     Route::put('/update-cartItem/{cartItem}', [CartController::class, 'updateCartItem'])->name('cart.delete');
     Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
-    
+
 
 });
 //contact form
@@ -51,5 +53,5 @@ Route::post('/contact', [ContactController::class, 'sendEnquiry'])->name('contac
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/search', [ProductController::class, 'search'])->name('products.search');
 Route::get('/products/{product}', [ProductController::class, 'show'])->whereNumber('product')->name('products.show');
-        
-        
+
+
