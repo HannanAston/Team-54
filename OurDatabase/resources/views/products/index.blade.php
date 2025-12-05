@@ -103,7 +103,12 @@
         </style>
     </head>
 
-    <h1>All Products</h1>
+    @if(isset($query))
+    <h1>Search Results For: {{$query}}</h1>
+    @else
+    <h1>Search Results For: All</h1>
+    @endif
+
 
     <div id="search" >
         <form action="/products/search" method="GET">
@@ -121,8 +126,6 @@
             <p>No products found.</p>
         @else
             @foreach($products as $product)
-
-            
                 <div class="productCard">
                     <a href="/products/{{ $product->id }}">
                         <img class="productImage" src="{{ $product->image_url }}" alt="Item Image">

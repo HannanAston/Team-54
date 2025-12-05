@@ -1,17 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>"
-    <title> Search results for "{{ $query }}"</title>
-</head>
 
-@if($results->isEmpty())
-    <p>No products found.</p>
-@else
-    <ul>
-        @foreach($results as $product)
-            <li>{{ $product->name }}</li>
-        @endforeach
-    </ul>
-@endif
+@php
+    if($results->isEmpty()) {
+        $products = $products ?? collect();
+    } else {
+        $products = $results;
+    }
 
-<a href="{{ route('products.index') }}">Back to Products</a>
+@endphp
+
+@include('products.index', ['products' => $products, 'query' => $query])
