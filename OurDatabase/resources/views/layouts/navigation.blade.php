@@ -18,6 +18,12 @@
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.index')">
+                        {{ __('Products') }}
+                    </x-nav-link>
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('cart')" :active="request()->routeIs('cart')">
                         {{ __('Cart') }}
                     </x-nav-link>
@@ -28,6 +34,7 @@
                         {{ __('Contact') }}
                     </x-nav-link>
                 </div>
+
             </div>
 
             <!-- Settings Dropdown -->
@@ -38,7 +45,7 @@
                             @auth
                                 <div>{{ Auth::user()->name }}</div>
                             @endauth
-                            
+
                             @guest
                                 <div>Guest</div>
                             @endguest
@@ -98,9 +105,9 @@
                 <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
                 <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
             @endauth
-                
-            @guest 
-                <div class="font-medium text-base text-gray-800">Guest</div> 
+
+            @guest
+                <div class="font-medium text-base text-gray-800">Guest</div>
             @endguest
             </div>
 
