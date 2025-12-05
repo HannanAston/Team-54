@@ -14,4 +14,4 @@
     </ul>
 @endif
 
-<a href="{{ route('products.index') }}">Back to Products</a>
+<a href="{{ route('products') }}">Back to Products</a>

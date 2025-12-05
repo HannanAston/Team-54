@@ -17,14 +17,16 @@ class CartController extends Controller
             $cart = Cart::firstOrCreate(['user_id' => auth()->id()]);
 
             $cartItems = CartItem::where('cart_id', $cart->id)->get();
-
+            
+            $total = 0;
             foreach ($cartItems as $item) {
                 $item->product = Product::find($item->product_id);
+                $total += $item->product->price * $item->quantity;
             }
 
-            return view('cart', ['items' => $cartItems]);
+            return view('cart', ['items' => $cartItems, 'total' => $total]);
         }
-        return view ('cart', ['items' => []]);
+        return view ('cart', ['items' => collect([]), 'total' => 0]);
     }
 
 

@@ -16,13 +16,13 @@ class ProductController extends Controller {
     public function index(){ 
         
         $products = Product::all();
-        return view('products.index', compact('products'));
+        return view('products', compact('products'));
     }
     
     //show specific product
     public function show(Product $product){ 
     
-        return view('products.show', compact('product'));
+        return view('viewProduct', compact('product'));
     }
 
 //search function
@@ -33,6 +33,8 @@ class ProductController extends Controller {
         $results = Product::where('name', 'like', "%{$query}%")
                             ->orWhere('description', 'like', "%{$query}%")->get();
 
-        return view('products.search', compact('results', 'query'));
+        $products = $results;
+
+        return view('products', compact('products', 'query'));
     }
 }

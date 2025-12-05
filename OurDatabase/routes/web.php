@@ -48,8 +48,8 @@ Route::get('/contact', [ContactController::class, 'show'])->name('contact');
 Route::post('/contact', [ContactController::class, 'sendEnquiry'])->name('contact');
 
 //products
-Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products', [ProductController::class, 'index'])->name('products');
 Route::get('/products/search', [ProductController::class, 'search'])->name('products.search');
-Route::get('/products/{product}', [ProductController::class, 'show'])->whereNumber('product')->name('products.show');
+Route::get('/products/{product}', [ProductController::class, 'show'])->whereNumber('product')->name('viewProduct');
         
         
