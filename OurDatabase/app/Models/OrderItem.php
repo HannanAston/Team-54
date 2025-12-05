@@ -25,7 +25,7 @@ class OrderItem extends Model
     }
 
     /**
-     * Each order item is for one product.
+     * Each order item is for a single product.
      */
     public function product()
     {

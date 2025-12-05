@@ -11,23 +11,16 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
-        'total_price',
-        'discount_amount',
-        'final_total',
-        'status',
+        'subtotal',
+        'discount',
+        'total',
     ];
 
-    /**
-     * Each order belongs to one user.
-     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Each order has many order items.
-     */
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);

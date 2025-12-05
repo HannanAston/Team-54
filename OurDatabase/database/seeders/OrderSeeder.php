@@ -2,49 +2,56 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Seeder;
+use App\Models\User;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
-use Illuminate\Database\Seeder;
 
 class OrderSeeder extends Seeder
 {
     public function run(): void
     {
-      
-        if (Product::count() === 0) {
-            Product::factory()->count(10)->create();
-        }
-
        
-        Order::factory()
-            ->count(5)
-            ->create()
-            ->each(function (Order $order) {
-             
-                $items = Product::inRandomOrder()->limit(rand(1, 3))->get();
+        User::all()->each(function ($user) {
 
-                $total = 0;
+            
+            for ($i = 0; $i < rand(1, 3); $i++) {
+                
+                $order = Order::create([
+                    'user_id'  => $user->id,
+                    'subtotal' => 0,
+                    'discount' => 0,
+                    'total'    => 0,
+                    'status'   => 'completed',
+                ]);
 
-                foreach ($items as $product) {
-                    $qty   = rand(1, 3);
-                    $price = $product->price;
+                $products = Product::inRandomOrder()->take(rand(1, 3))->get();
+                $subtotal = 0;
+
+                foreach ($products as $product) {
+                    $quantity = rand(1, 3);
 
                     OrderItem::create([
                         'order_id'   => $order->id,
                         'product_id' => $product->id,
-                        'quantity'   => $qty,
-                        'price'      => $price,
+                        'quantity'   => $quantity,
+                        'price'      => $product->price,
                     ]);
 
-                    $total += $qty * $price;
+                    $subtotal += $product->price * $quantity;
                 }
 
+                // Randomly apply a 0% or 10% discount
+                $discount = rand(0, 1) ? round($subtotal * 0.10, 2) : 0;
+                $total    = $subtotal - $discount;
+
                 $order->update([
-                    'total_price'     => $total,
-                    'discount_amount' => 0,
-                    'final_total'     => $total,
+                    'subtotal' => $subtotal,
+                    'discount' => $discount,
+                    'total'    => $total,
                 ]);
-            });
+            }
+        });
     }
 }
