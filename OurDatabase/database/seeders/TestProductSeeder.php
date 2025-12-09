@@ -37,7 +37,7 @@ class TestProductSeeder extends Seeder
             'price' => 69.99,
             'stock_qty' => 40,
             'stock_threshold' => 5,
-            'image_url' => 'trouser.jpg',
+            'image_url' => 'https://cdn.media.amplience.net/i/frasersdev/57909103_o_a11?fmt=auto&upscale=true&w=450&h=450&sm=scaleFit&$h-ttl$',
             'category_id' => 12,
 
         ],
