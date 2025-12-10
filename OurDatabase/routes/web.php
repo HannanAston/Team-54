@@ -13,11 +13,11 @@ use App\Models\Product;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 Route::get('/aboutus', function () {
     return view('aboutus');
-});
+})->name('aboutus');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
