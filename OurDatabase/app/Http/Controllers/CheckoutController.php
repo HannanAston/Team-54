@@ -6,11 +6,14 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\OrderReceipt;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\LowStockNotification;
 
 class CheckoutController extends Controller
 {
@@ -31,6 +34,7 @@ class CheckoutController extends Controller
             return response()->json(['message' => 'Cart is empty'], 400);
         }
         
+        DB::beginTransaction();
         try {
             // Calculate subtotal
             $subtotal = 0;
@@ -64,13 +68,20 @@ class CheckoutController extends Controller
                     'price' => $item->product->price,
                 ]);
             }
-
-            DB::beginTransaction();
             
             // Increment user's order count
             $user->increment('order_count');
             foreach ($cartItems as $item) {
-                $item->product->decrement('stock_qty', $item->quantity);
+                $item->product->update([
+                    'stock_qty' => $item->product->stock_qty - $item->quantity
+                ]);
+
+                $item->product->refresh();
+
+                if ($item->product->stock_qty <= $item->product->stock_threshold) {
+                        $admins = User::where('is_admin', 1)->get();
+                        Notification::send($admins, new LowStockNotification($item->product));
+                }
             }
             
             // Clear cart
