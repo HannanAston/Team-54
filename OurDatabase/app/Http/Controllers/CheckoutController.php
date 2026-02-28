@@ -31,7 +31,7 @@ class CheckoutController extends Controller
             return response()->json(['message' => 'Cart is empty'], 400);
         }
         
-        DB::beginTransaction();
+
         
         try {
             // Calculate subtotal
@@ -66,6 +66,8 @@ class CheckoutController extends Controller
                     'price' => $item->product->price,
                 ]);
             }
+
+            DB::beginTransaction();
             
             // Increment user's order count
             $user->increment('order_count');
@@ -78,14 +80,22 @@ class CheckoutController extends Controller
             // Send email receipt
             Mail::to($user->email)->send(new OrderReceipt($order));
             
-            return response()->json([
-                'message' => 'Order placed successfully',
-                'order' => $order->load('orderItems.product'),
-            ], 201);
+
+            
+            $message = 'Order placed successfully';
+            $order = $order->load('orderItems.product');
+            return view("orderConfirmation", compact('message', 'order'));
+
+            #return response()->json([
+                #'message' => 'Order placed successfully',
+                #'order' => $order->load('orderItems.product'),
+            #], 201);
             
         } catch (\Exception $e) {
+            $message = 'Checkout failed';
+            $error =  $e->getMessage();
             DB::rollBack();
-            return response()->json(['message' => 'Checkout failed', 'error' => $e->getMessage()], 500);
+            return view("orderConfirmation", compact('message', 'order', 'error'));
         }
     }
 }
