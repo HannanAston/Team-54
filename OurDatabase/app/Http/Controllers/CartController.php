@@ -42,6 +42,14 @@ class CartController extends Controller
             $incomingFields = $request->validate([
                 "quantity" => 'required',
             ]);
+
+            $product = Product::find($cartItem->product_id);
+            $result = $product->stock_qty - $cartItem->quantity;
+
+            if ($result <= 0) {
+                return redirect()->back()->with('error', 'No more stock!');
+            }
+
             $cartItem->update($incomingFields);
             return redirect("/cart");
         }
@@ -55,6 +63,9 @@ class CartController extends Controller
                 'user_id' => $userId,
             ]);
 
+            if ($product->stock_qty <= 0) {
+                return redirect()->back()->with('error', 'No stock left!');
+            }
             //fetch or create cart item entry
             $cartItem = CartItem::firstOrCreate(
                 [

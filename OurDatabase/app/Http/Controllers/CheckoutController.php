@@ -31,8 +31,6 @@ class CheckoutController extends Controller
             return response()->json(['message' => 'Cart is empty'], 400);
         }
         
-
-        
         try {
             // Calculate subtotal
             $subtotal = 0;
@@ -71,6 +69,9 @@ class CheckoutController extends Controller
             
             // Increment user's order count
             $user->increment('order_count');
+            foreach ($cartItems as $item) {
+                $item->product->decrement('stock_qty', $item->quantity);
+            }
             
             // Clear cart
             CartItem::where('cart_id', $cart->id)->delete();
