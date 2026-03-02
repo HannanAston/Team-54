@@ -13,9 +13,14 @@
                     {{ __("You're logged in!") }}
                     <div class="mt-4">
                         @if(auth()->user()->is_admin)
-                            <a  href="{{ route('admin.users.index') }}"
+                            <a href="{{ route('admin.users.index') }}"
                                 class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                                    Manage users
+                                Manage Users
+                            </a>
+
+                            <a href="{{ route('admin.products.index') }}"
+                                class="inline-block px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 ml-2">
+                                Manage Products
                             </a>
                         @endif
                     </div>
