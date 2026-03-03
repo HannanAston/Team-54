@@ -8,6 +8,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             padding: 20px;
         }
 
@@ -92,15 +93,15 @@
                 <h1 style="font-size: 48px;">{{ $product->name }}</h1>
                 <div id="productInfo">
                     <p style="font-size: 24px">Price: £{{number_format($product->price, 2) }}</p>
-                    <p>Stock: {{$product->stock_qty }}</p> 
+                    <p>Stock: {{$product->stock_qty }}</p>
 
                     <form action="/cart/add/{{$product->id}}" method="POST" >
                         @csrf
                         <button>Add to Cart</button>
-                    </form>  
+                    </form>
                 </div>
 
-            </div>  
+            </div>
         </div>
         <p id="productDesc">{{$product->description }}</p>
     </div>
