@@ -6,11 +6,14 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\OrderReceipt;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\LowStockNotification;
 
 class CheckoutController extends Controller
 {
@@ -32,7 +35,6 @@ class CheckoutController extends Controller
         }
         
         DB::beginTransaction();
-        
         try {
             // Calculate subtotal
             $subtotal = 0;
@@ -69,6 +71,18 @@ class CheckoutController extends Controller
             
             // Increment user's order count
             $user->increment('order_count');
+            foreach ($cartItems as $item) {
+                $item->product->update([
+                    'stock_qty' => $item->product->stock_qty - $item->quantity
+                ]);
+
+                $item->product->refresh();
+
+                if ($item->product->stock_qty <= $item->product->stock_threshold) {
+                        $admins = User::where('is_admin', 1)->get();
+                        Notification::send($admins, new LowStockNotification($item->product));
+                }
+            }
             
             // Clear cart
             CartItem::where('cart_id', $cart->id)->delete();
@@ -78,14 +92,22 @@ class CheckoutController extends Controller
             // Send email receipt
             Mail::to($user->email)->send(new OrderReceipt($order));
             
-            return response()->json([
-                'message' => 'Order placed successfully',
-                'order' => $order->load('orderItems.product'),
-            ], 201);
+
+            
+            $message = 'Order placed successfully';
+            $order = $order->load('orderItems.product');
+            return view("orderConfirmation", compact('message', 'order'));
+
+            #return response()->json([
+                #'message' => 'Order placed successfully',
+                #'order' => $order->load('orderItems.product'),
+            #], 201);
             
         } catch (\Exception $e) {
+            $message = 'Checkout failed';
+            $error =  $e->getMessage();
             DB::rollBack();
-            return response()->json(['message' => 'Checkout failed', 'error' => $e->getMessage()], 500);
+            return view("orderConfirmation", compact('message', 'order', 'error'));
         }
     }
 }

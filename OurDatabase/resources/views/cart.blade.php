@@ -119,10 +119,23 @@
                 width: 100%;
             }
 
+            .alert-bad {
+                justify-self: center;
+                text-align: center;
+                align-self: center;
+                width: 50%;
+                background-color: rgba(255,0,0,0.6);
+                border-radius: 5px;
+            }
+
 
 
         </style>
     </head>
+
+    @if(session('error'))
+        <div class="alert-bad">{{ session('error') }}</div>
+    @endif
     
     <div id="cartContainer">
 

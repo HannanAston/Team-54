@@ -33,10 +33,10 @@ class CheckoutTest extends TestCase
         ]);
         
         // Checkout
-        $response = $this->actingAs($user)->postJson('/checkout');
+        $response = $this->actingAs($user)->post('/checkout');
         
-        $response->assertStatus(201);
-        $response->assertJson(['message' => 'Order placed successfully']);
+        $response->assertStatus(200);
+        $response->assertViewIs("orderConfirmation");
         
         // Assert order created
         $this->assertDatabaseHas('orders', [
@@ -80,7 +80,7 @@ class CheckoutTest extends TestCase
         // Checkout (this is the 5th order)
         $response = $this->actingAs($user)->postJson('/checkout');
         
-        $response->assertStatus(201);
+        $response->assertStatus(200);
         
         // Assert 10% discount applied
         $this->assertDatabaseHas('orders', [
