@@ -149,15 +149,16 @@
                     <div class="productContent">
 
                         <div class="buttonContainer">
-                            <form action="/update-cartItem/{{ $item->id }}" method="POST">
+                            <form action="{{ auth()->check() ? '/update-cartItem/' . $item->id : '/update-cartItem/' . $item->product_id }}" method="POST">
                                 @csrf
                                 @method('PUT')
                                 Quantity: <input onchange="this.form.submit()" name="quantity" type="number" value="{{ $item->quantity }}" min="1" max="99">
                             </form>
-                            <form action="/delete-cartItem/{{ $item->id }}" method="POST">
+
+                            <form action="{{ auth()->check() ? '/delete-cartItem/' . $item->id : '/delete-cartItem/' . $item->product_id }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button class="productButtons">Remove From Cart</button>
+                                <button>Remove</button>
                             </form>
                         </div>
 
