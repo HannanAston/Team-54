@@ -155,15 +155,15 @@ class CheckoutController extends Controller
                     $subtotal += $item->product->price * $item->quantity;
                 }
 
-                // Loyalty discount for guests is always 0
+   
                 $discount = 0;
 
                 // Calculate total
                 $total = $subtotal - $discount;
 
-                // Create order with nullable user_id
+            
                 $order = Order::create([
-                    'user_id' => null, // guest
+                    'user_id' => null, 
                     'subtotal' => $subtotal,
                     'discount' => $discount,
                     'total' => $total,
@@ -184,14 +184,14 @@ class CheckoutController extends Controller
                     ]);
                     $item->product->refresh();
 
-                    // Notify admins if stock is low
+        
                     if ($item->product->stock_qty <= $item->product->stock_threshold) {
                         $admins = User::where('is_admin', 1)->get();
                         Notification::send($admins, new LowStockNotification($item->product));
                     }
                 }
 
-                // Clear guest cart from session
+              
                 session()->forget('Cart');
 
                 DB::commit();

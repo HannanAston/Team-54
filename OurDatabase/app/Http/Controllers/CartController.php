@@ -33,7 +33,7 @@ class CartController extends Controller
 
             foreach ($cart as $item) {
                 $item['product'] = Product::find($item['product_id']);
-                $cartItems[] = (object) $item; // convert to object for simplicity
+                $cartItems[] = (object) $item;
             }
 
             return view('cart', ['items' => $cartItems]);
@@ -93,7 +93,7 @@ class CartController extends Controller
                         }
 
                         $cartItem['quantity'] = $request->quantity;
-                        break; // stop looping once we found the product
+                        break;
                     }
                 }
 
