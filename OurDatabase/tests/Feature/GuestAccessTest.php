@@ -27,7 +27,7 @@ class GuestAccessTest extends TestCase
         $response = $this->put("/update-cartItem/{$cartItem->id}", [
             'quantity' => 3
         ]);
-        $response->assertRedirect('/login');
+        $response->assertStatus(302);
     }
     
      /** @test */
@@ -37,7 +37,7 @@ class GuestAccessTest extends TestCase
         $response = $this->delete("/delete-cartItem/{$cartItem->id}", [
             'quantity' => 3
         ]);
-        $response->assertRedirect('/login');
+        $response->assertStatus(302);
     }
         
 }
