@@ -70,10 +70,10 @@ class CartController extends Controller
                     ]);
 
                     $product = Product::find($cartItem->product_id);
-                    $result = $product->stock_qty - $cartItem->quantity;
+                    $result = $product->stock_qty - $incomingFields['quantity'];
 
-                    if ($result <= 0) {
-                        return redirect()->back()->with('error', 'No more stock!');
+                    if ($result < 0) {
+                        return redirect()->back()->with("error", "No more stock!");
                     }
 
                     $cartItem->update($incomingFields);
@@ -86,9 +86,12 @@ class CartController extends Controller
                 foreach ($cart as &$cartItem) {
                     if ($cartItem['product_id'] == $id) {
                         $product = Product::find($id);
-                        $result = $product->stock_qty - $cartItem['quantity'];
+                        $incomingFields = $request->validate([
+                            "quantity" => 'required',
+                        ]);
+                        $result = $product->stock_qty - $incomingFields['quantity'];
 
-                        if ($result <= 0) {
+                        if ($result < 0) {
                             return redirect()->back()->with('error', 'No more stock!');
                         }
 
