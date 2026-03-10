@@ -83,7 +83,7 @@ class CartController extends Controller
             } else {
                 $cart = session()->get('Cart', []);
 
-                foreach ($cart as &$cartItem) {
+                foreach ($cart as $cartItem) {
                     if ($cartItem['product_id'] == $id) {
                         $product = Product::find($id);
                         $incomingFields = $request->validate([
