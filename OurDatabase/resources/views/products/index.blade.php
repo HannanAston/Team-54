@@ -129,43 +129,95 @@
         </style>
     </head>
 
-    <div id="search" >
-        <form action="/products/search" method="GET">
-            @csrf
-            <input id='searchBar' type="text" placeholder="Search" name="query">
-            <button class="searchButtons"><b>Go</b></button>
-        </form>
-        <form action="/products" method="GET">
-            <button class="searchButtons"><b>Clear Search</b></button>
-        </form>
-    </div>
+    @section('content')
+    <div class="max-w7x1 mx-auto px-6 py-10 bg-[#F0F0F0]">
+        
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-bold tracking-wide text-[#333]">
+                    {{ request('search') ?? 'All Products' }}
+                </h1>
+                <p class="text-[#666] mt-1">
+                    {{ $products->count() }} Products Found
+                </p>
+            </div>
 
-    <div id="ProductContainer">
-        @if($products->isEmpty())
-            <p>No products found.</p>
-        @else
-            @foreach($products as $product)
+            <form method="GET">
+                <select name="sort" class=" border rounded-lg px-4 py-2 text-sm">
+                    <option value="">Sort By</option>
+                    <option value="price_asc">Price: Ascending</option>
+                    <option value="price_desc">Price: Descending</option>
+                    </select>
+                </form>
+            </div>
+        </div>
 
+        <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-10">
+            <div class="hidden md:block">
+                <div class="border rounded-xl p-6 bg-white shadow-sm">
+                    <h3 class="font-semibold mb-4">Filter By</h3>
 
-                <div class="productCard">
-                    <a href="/products/{{ $product->id }}">
-                        <img class="productImage" src="{{ $product->image_path ? asset('storage/' . $product->image_path) : $product->image_url }}" alt="Item Image">
-                    </a>
-                    <h1>{{ $product->name }}</h1>
-                    <p>£{{ $product->price }}</p>
-
-                    <!-- stock status badge -->
-                    <span class="stock-badge {{ $product->getStockStatusClass() }}">
-                        {{ $product->getStockStatus() }}
-                    </span>
-                    <br>
-
-
+                    <div class="space-y-2">
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="rounded">
+                            <span>Men</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="rounded">
+                            <span>Women</span>
+                        </label>
+                    </div>
                 </div>
-            @endforeach
-        @endif
+            </div>
 
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                @foreach($products as $product)
+                <div class="group border rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition duration-300 bg-[#F0F0F0] flex flex-col h-full">
+                    <div class="relative overflow-hidden">
+                        <img src="{{ $product->image_url }}" class="w-full h-64 object-contain p-4 bg-white">
+
+                        @if($product->discount)
+                            <span class="absolute top-3 left-3 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
+                                -{{ $product->discount }}%
+                            </span>
+                        @endif
+                    </div>
+
+                    <div class="p-5">
+                        <h3 class="font-semibold text-lg mb-1 text-[#333]">
+                            {{ $product->name }}
+                        </h3>
+
+                        <p class="text-[#666] text-sm mb-3">
+                            {{ $product->brand ?? 'Revival Threads' }}
+                        </p>
+
+                        <div class="flex items-center space-x-3">
+                            @if($product->discount)
+                                <span class="text-red-600 font-bold text-lg">
+                                    £{{ number_format($product->price - ($product->price * $product->discount/100), 2) }}
+                                </span>
+                                <span class="text-gray-400 line-through">
+                                    £{{ number_format($product->price, 2) }}
+                                </span>
+                            @else
+                                <span class="font-bold text-lg">
+                                    £{{ number_format($product->price, 2) }}
+                                </span>
+                            @endif
+                        </div>
+
+                        <a href="/products/{{ $product->id }}" class="block mt-4 text-center bg-[#C19A6B] text-white py-2 rounded-lg hover:bg-[#333] transition">
+                            View Product
+                        </a>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
+        <div class="mt-10">
+            {{ $products->links() }}
+        </div>
     </div>
-
-
 </x-app-layout>
