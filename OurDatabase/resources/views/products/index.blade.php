@@ -100,6 +100,32 @@
                 object-fit: cover;
             }
 
+            .stock-badge {
+                display: inline-block;
+                padding: 5px 12px;
+                border-radius: 5px;
+                font-size: 12px;
+                font-weight: bold;
+                margin-top: 10px;
+            }
+
+            .in-stock {
+                background-color: #d4edda;
+                color: #155724;
+                border: 1px solid #c3e6cb;
+            }
+
+            .low-stock {
+                background-color: #fff3cd;
+                color: #856404;
+                border: 1px solid #ffeaa7;
+            }
+
+            .out-of-stock {
+                background-color: #f8d7da;
+                color: #721c24;
+                border: 1px solid #f5c6cb;
+            }
         </style>
     </head>
 
@@ -123,12 +149,16 @@
 
                 <div class="productCard">
                     <a href="/products/{{ $product->id }}">
-                        <img class="productImage" src="{{ $product->image_url }}" alt="Item Image">
+                        <img class="productImage" src="{{ $product->image_path ? asset('storage/' . $product->image_path) : $product->image_url }}" alt="Item Image">
                     </a>
                     <h1>{{ $product->name }}</h1>
                     <p>£{{ $product->price }}</p>
 
-
+                    <!-- stock status badge -->
+                    <span class="stock-badge {{ $product->getStockStatusClass() }}">
+                        {{ $product->getStockStatus() }}
+                    </span>
+                    <br>
 
 
                 </div>
