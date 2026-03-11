@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
+use App\Http\Controllers\OrdersController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -39,14 +40,14 @@ require __DIR__.'/auth.php';
 // user cart and checkout
 Route::get('/cart', [CartController::class, 'show'])->name('cart');
 
-Route::middleware('auth')->group(function () {
-    Route::post('/cart/add/{product}', [CartController::class, 'addToCart'])->name('cart.add');
-    Route::delete('/delete-cartItem/{cartItem}', [CartController::class, 'deleteCartItem'])->name('cart.update');
-    Route::put('/update-cartItem/{cartItem}', [CartController::class, 'updateCartItem'])->name('cart.delete');
-    Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+//Route::middleware('auth')->group(function () {
+    //Route::post('/cart/add/{product}', [CartController::class, 'addToCart'])->name('cart.add');
+    //Route::delete('/delete-cartItem/{cartItem}', [CartController::class, 'deleteCartItem'])->name('cart.update');
+    //Route::put('/update-cartItem/{cartItem}', [CartController::class, 'updateCartItem'])->name('cart.delete');
+    //Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+//});
 
 
-});
 //contact form
 Route::get('/contact', [ContactController::class, 'show'])->name('contact');
 Route::post('/contact', [ContactController::class, 'sendEnquiry'])->name('contact');
@@ -57,5 +58,14 @@ Route::get('/products/search', [ProductController::class, 'search'])->name('prod
 Route::get('/products/{product}', [ProductController::class, 'show'])->whereNumber('product')->name('products.show');
 
 
+//cart (Moved them out of middleware to handle guest carts.)
+Route::post('/cart/add/{product}', [CartController::class, 'addToCart'])->name('cart.add');
+Route::delete('/delete-cartItem/{cartItem}', [CartController::class, 'deleteCartItem'])->name('cart.update');
+Route::put('/update-cartItem/{cartItem}', [CartController::class, 'updateCartItem'])->name('cart.delete');
+Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+
+//order page
+Route::get('/orders', [OrdersController::class, 'show'])->name('orders');
+Route::put('/orders/updateStatus', [OrdersController::class, 'updateStatus'])->name('orders.updateStatus');
 
 

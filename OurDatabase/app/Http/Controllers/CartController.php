@@ -11,8 +11,10 @@ use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
+    //Works for both guest and logged in users
     public function show()
     {
+        $cartItems = [];
         if (auth()->check()) {
             $cart = Cart::firstOrCreate(['user_id' => auth()->id()]);
 
@@ -23,65 +25,142 @@ class CartController extends Controller
             }
 
             return view('cart', ['items' => $cartItems]);
-        }
-        return view ('cart', ['items' => []]);
-    }
+        } else {
 
+            $cart = session()->get('Cart', []);
 
+            //$cartItems = CartItem::where('cart_id', $cart->id)->get();
 
-    public function deleteCartItem(CartItem $cartItem) {
-        if($cartItem->cart && $cartItem->cart->user_id === auth()->id()) {
-            $cartItem->delete();
-            return redirect("/cart");
-        }
-        abort(403);
-    }
-
-        public function updateCartItem(CartItem $cartItem, Request $request) {
-        if($cartItem->cart && $cartItem->cart->user_id === auth()->id()) {
-            $incomingFields = $request->validate([
-                "quantity" => 'required',
-            ]);
-
-            $product = Product::find($cartItem->product_id);
-            $result = $product->stock_qty - $cartItem->quantity;
-
-            if ($result <= 0) {
-                return redirect()->back()->with('error', 'No more stock!');
+            foreach ($cart as $item) {
+                $item['product'] = Product::find($item['product_id']);
+                $cartItems[] = (object) $item;
             }
 
-            $cartItem->update($incomingFields);
-            return redirect("/cart");
+            return view('cart', ['items' => $cartItems]);
+
         }
+        //return view ('cart', ['items' => [session()->get('Cart', [''])]]);
     }
 
+
+    //Works for both guest and logged in users
+    public function deleteCartItem($id) {
+        if (auth()->check()) {
+            $cartItem = CartItem::findOrFail($id);
+            if($cartItem->cart && $cartItem->cart->user_id === auth()->id()) {
+                $cartItem->delete();
+                return redirect("/cart");
+            }
+            abort(403);
+        } else {
+            $cart = session()->get('Cart', []);
+            unset($cart[$id]);
+            session()->put('Cart', $cart);
+            return redirect("/cart");
+        }
+
+    }
+
+        public function updateCartItem($id, Request $request) {
+            if (auth()->check()) {
+                $cartItem = CartItem::findOrFail($id);
+                if($cartItem->cart && $cartItem->cart->user_id === auth()->id()) {
+                    $incomingFields = $request->validate([
+                        "quantity" => 'required',
+                    ]);
+
+                    $product = Product::find($cartItem->product_id);
+                    $result = $product->stock_qty - $incomingFields['quantity'];
+
+                    if ($result < 0) {
+                        return redirect()->back()->with("error", "No more stock!");
+                    }
+
+                    $cartItem->update($incomingFields);
+                    return redirect("/cart");
+                }
+
+            } else {
+                $cart = session()->get('Cart', []);
+
+                foreach ($cart as &$cartItem) {
+                    if ($cartItem['product_id'] == $id) {
+                        $product = Product::find($id);
+                        $incomingFields = $request->validate([
+                            "quantity" => 'required',
+                        ]);
+                        $result = $product->stock_qty - $incomingFields['quantity'];
+
+                        if ($result < 0) {
+                            return redirect()->back()->with('error', 'No more stock!');
+                        }
+
+                        $cartItem['quantity'] = $request->quantity;
+                        break;
+                    }
+                }
+
+                session()->put('Cart', $cart);
+
+                return redirect("/cart");
+
+            }
+        }
+
+        //Works for both guest and logged in users
         public function addToCart(Product $product)
         {
-            $userId = auth()->id();
-
-            $cart = Cart::firstOrCreate([
-                'user_id' => $userId,
-            ]);
 
             if ($product->stock_qty <= 0) {
                 return redirect()->back()->with('error', 'No stock left!');
             }
-            //fetch or create cart item entry
-            $cartItem = CartItem::firstOrCreate(
-                [
-                    'cart_id' => $cart->id,
-                    'product_id' => $product->id,
-                ],
-                [
-                    'quantity' => 0,
-                ]
-            );
-            // increment quantity
-            $cartItem->quantity += 1;
-            $cartItem->save();
 
-            return redirect()
-            ->route('cart')
-            ->with('Success', 'Product added to cart.');
+            if (auth()->check()) {
+                $userId = auth()->id();
+
+                $cart = Cart::firstOrCreate([
+                    'user_id' => $userId,
+                ]);
+
+
+                $cartItem = CartItem::firstOrCreate(
+                    [
+                        'cart_id' => $cart->id,
+                        'product_id' => $product->id,
+                    ],
+                    [
+                        'quantity' => 0,
+                    ]
+                );
+
+                $cartItem->quantity += 1;
+                $cartItem->save();
+
+                return redirect()
+                ->route('cart')
+                ->with('Success', 'Product added to cart.');
+            } else {
+
+                $cart = session() -> get('Cart', []);
+
+                if(isset($cart[$product->id])) {
+                    $cart[$product->id]['quantity']++;
+                } else {
+                    $cart[$product->id] = [
+                        'product_id' => $product->id,
+                        'quantity' => 1
+                    ];
+                }
+
+                session()->put('Cart', $cart);
+
+                return redirect()
+                ->route('cart')
+                ->with('Success', 'Product added to cart.');
+
+
+            }
+
+            
         }
 }
