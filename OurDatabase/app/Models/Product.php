@@ -18,10 +18,34 @@ class Product extends Model
         'stock_qty',
         'stock_threshold',
         'image_url',
+        'image_path',
         'category_id',
     ];
 
     public function category() {
         return $this->belongsTo(Category::class, "category_id", "id");
     }
+
+    public function getStockStatus()
+    {
+        if ($this->stock_qty == 0) {
+            return 'Out of Stock';
+        } elseif ($this->stock_qty <= $this->stock_threshold) {
+            return 'Low Stock';
+        } else {
+            return 'In Stock';
+        }
+    }
+
+    public function getStockStatusClass()
+    {
+        if ($this->stock_qty == 0) {
+            return 'out-of-stock';
+        } elseif ($this->stock_qty <= $this->stock_threshold) {
+            return 'low-stock';
+        } else {
+            return 'in-stock';
+        }
+    }
 }
+

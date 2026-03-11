@@ -41,6 +41,7 @@ Route::middleware(['auth', 'admin'])->group(function() {
     Route::get('/admin/products/{product}/edit', [ProductController::class, 'edit'])->name('admin.products.edit');
     Route::put('/admin/products/{product}', [ProductController::class, 'update'])->name('admin.products.update');
     Route::delete('/admin/products/{product}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
+    Route::get('/admin/reports/stock', [ProductController::class, 'stockReport'])->name('admin.reports.stock');
 });
 require __DIR__.'/auth.php';
 

@@ -100,7 +100,7 @@
     <div  id="productContainer">
         <div id="productCard">
             <a id="back" href="{{ route('products.index', ['query' => $query ?? 'All']) }}" >Back</a>
-            <img id='productImage' src="{{ $product->image_url }}" >
+            <img class="productImage" src="{{ $product->image_path ? asset('storage/' . $product->image_path) : $product->image_url }}" alt="Item Image">
             <div id="productContent">
                 <h1 style="font-size: 48px;">{{ $product->name }}</h1>
                 <div id="productInfo">

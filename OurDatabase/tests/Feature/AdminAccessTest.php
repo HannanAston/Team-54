@@ -80,7 +80,7 @@ class AdminAccessTest extends TestCase
 
         $response = $this->actingAs($admin)->get('/dashboard');
 
-        $response->assertSee('Manage users');
+        $response->assertSee('Manage Users');
         $response->assertSee('/admin/users');
     }
 

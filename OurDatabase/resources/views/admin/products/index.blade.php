@@ -240,10 +240,41 @@
             font-size: 18px;
             margin-bottom: 20px;
         }
+
+        .stock-badge {
+                display: inline-block;
+                padding: 5px 12px;
+                border-radius: 5px;
+                font-size: 12px;
+                font-weight: bold;
+                margin-top: 10px;
+            }
+
+            .in-stock {
+                background-color: #d4edda;
+                color: #155724;
+                border: 1px solid #c3e6cb;
+            }
+
+            .low-stock {
+                background-color: #fff3cd;
+                color: #856404;
+                border: 1px solid #ffeaa7;
+            }
+
+            .out-of-stock {
+                background-color: #f8d7da;
+                color: #721c24;
+                border: 1px solid #f5c6cb;
+            }
     </style>
 </head>
 <body>
     <div class="container">
+        <a href="{{ route('dashboard') }}" class="btn btn-secondary" style="position: absolute; top: 30px; right: 30px;">
+            ✕ Close
+        </a>
+        <br>
         <div class="header-section">
             <h1>Product Management</h1>
             <button class="btn btn-primary" onclick="openCreateModal()">+ Add New Product</button>
@@ -274,16 +305,29 @@
                     @foreach($products as $product)
                         <tr>
                             <td>{{ $product->id }}</td>
-                            <td><img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="product-image"></td>
+                            <td> 
+                                @if($product->image_path)
+                                    <img src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->name }}" class="product-image">
+                                @elseif($product->image_url)
+                                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="product-image">
+                                @else
+                                    <img src="https://via.placeholder.com/60" alt="No image" class="product-image">
+                                @endif
+                            </td>
                             <td>{{ $product->name }}</td>
                             <td>{{ Str::limit($product->description, 50) }}</td>
                             <td>${{ number_format($product->price, 2) }}</td>
-                            <td>{{ $product->stock_qty }}</td>
+                            <td>{{ $product->stock_qty }}
+                                <br>
+                                <span class="stock-badge {{ $product->getStockStatusClass() }}" style="margin-top: 5px;">
+                                    {{ $product->getStockStatus() }}
+                                </span>
+                            </td>
                             <td>{{ $product->stock_threshold }}</td>
                             <td>{{ $product->category->name ?? 'N/A' }}</td>
                             <td>
                                 <div class="actions">
-                                    <button class="btn btn-warning" onclick="openEditModal({{ $product->id }}, '{{ $product->name }}', '{{ addslashes($product->description) }}', {{ $product->price }}, {{ $product->stock_qty }}, {{ $product->stock_threshold }}, '{{ $product->image_url }}', {{ $product->category_id }})">Edit</button>
+                                    <button class="btn btn-warning" onclick="openEditModal({{ $product->id }}, '{{ $product->name }}', '{{ addslashes($product->description) }}', {{ $product->price }}, {{ $product->stock_qty }}, {{ $product->stock_threshold }}, {{ $product->category_id }})">Edit</button>
                                     
                                     <form action="{{ route('admin.products.destroy', $product) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this product?');">
                                         @csrf
@@ -309,7 +353,7 @@
         <div class="modal-content">
             <span class="close" onclick="closeCreateModal()">&times;</span>
             <h2>Add New Product</h2>
-            <form action="{{ route('admin.products.store') }}" method="POST">
+            <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                     <label for="name">Product Name *</label>
@@ -337,8 +381,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="image_url">Image URL *</label>
-                    <input type="url" id="image_url" name="image_url" required>
+                    <label for="image">Product Image *</label>
+                    <input type="file" id="image" name="image" accept="image/*" required>
                 </div>
 
                 <div class="form-group">
@@ -364,7 +408,7 @@
         <div class="modal-content">
             <span class="close" onclick="closeEditModal()">&times;</span>
             <h2>Edit Product</h2>
-            <form id="editForm" method="POST">
+            <form id="editForm" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="form-group">
@@ -393,8 +437,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="edit_image_url">Image URL *</label>
-                    <input type="url" id="edit_image_url" name="image_url" required>
+                    <label for="edit_image">Product Image</label>
+                    <input type="file" id="edit_image" name="image" accept="image/*">
+                    <small style="display: block; margin-top: 5px; color: #666;">Leave empty to keep current image</small>
                 </div>
 
                 <div class="form-group">
@@ -426,14 +471,13 @@
         }
 
         // Edit Modal Functions
-        function openEditModal(id, name, description, price, stock_qty, stock_threshold, image_url, category_id) {
+        function openEditModal(id, name, description, price, stock_qty, stock_threshold, category_id) {
             document.getElementById('editForm').action = `/admin/products/${id}`;
             document.getElementById('edit_name').value = name;
             document.getElementById('edit_description').value = description;
             document.getElementById('edit_price').value = price;
             document.getElementById('edit_stock_qty').value = stock_qty;
             document.getElementById('edit_stock_threshold').value = stock_threshold;
-            document.getElementById('edit_image_url').value = image_url;
             document.getElementById('edit_category_id').value = category_id;
             document.getElementById('editModal').style.display = 'block';
         }
