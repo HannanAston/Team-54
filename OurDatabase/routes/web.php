@@ -66,6 +66,6 @@ Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkou
 
 //order page
 Route::get('/orders', [OrdersController::class, 'show'])->name('orders');
-
+Route::put('/orders/updateStatus', [OrdersController::class, 'updateStatus'])->name('orders.updateStatus');
 
 

@@ -14,6 +14,7 @@ return new class extends Migration
             $table->decimal('subtotal', 10, 2);
             $table->decimal('discount', 10, 2)->default(0);
             $table->decimal('total', 10, 2);
+            $table->enum('order_status', ['processing', 'completed', 'cancelled', 'returned', 'return pending'])->default('processing');
             $table->timestamps();
         });
     }
