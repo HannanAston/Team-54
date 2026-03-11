@@ -14,6 +14,7 @@ class Order extends Model
         'subtotal',
         'discount',
         'total',
+        'order_status'
     ];
 
     public function user()

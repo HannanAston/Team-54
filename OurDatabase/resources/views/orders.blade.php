@@ -31,6 +31,28 @@
                 padding: 5px;
             }
 
+            .cancel {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .return {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .CancelButton {
+                background-color: red;
+                padding: 15px;
+            }
+
+            .ReturnButton {
+                background-color: rgba(0, 0, 0, 0.2);
+                padding: 15px;
+            }
+
         </style>
     </head>
 
@@ -44,6 +66,7 @@
         @foreach($orders as $order)
         <div class="Order-Item">
             <p>Order Date: {{ $order->created_at->format('d M Y') }}</p>
+            <p>Order Status: {{ $order->order_status }}</p>
             <div class="orderCard">
                 @foreach($order->orderItems as $orderItem)
                 <div class="OrderItems">
@@ -54,6 +77,27 @@
                 @endforeach
             </div>
             <p>Order Total: {{ $order->total }}</p>
+
+            @if ($order->order_status == "processing")
+                <form class="cancel" action="{{ route('orders.updateStatus') }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" name="order_id" value="{{ $order->id }}">
+                    <input type="hidden" name="newStatus" value="cancelled">
+                    <button class="CancelButton">Cancel Order</button>
+                </form>
+            @elseif ($order->order_status == "return pending")
+                <form class="cancel" action="{{ '/updateStatus' . $order . "cancel return" }}" method="POST">
+                    @csrf
+                    <button class="CancelButton">Cancel Return</button>
+                </form>
+            @elseif ($order->order_status == "completed")
+                <form class="return"  action="{{ '/updateStatus' . $order . "return" }}" method="POST">
+                    @csrf
+                    <button class="ReturnButton">Return</button>
+                </form>
+            @endif
+
         </div>
         @endforeach
     </div>
