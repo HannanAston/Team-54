@@ -275,6 +275,36 @@
             ✕ Close
         </a>
         <br>
+
+        <form action="/admin/products" method="GET">
+
+            <input 
+                type="text"
+                name="query"
+                placeholder="Search products..."
+                value="{{ request('query') }}"
+            >
+
+            <select name="category">
+                <option value="">All Categories</option>
+
+                @foreach($categories as $category)
+                    <option value="{{ $category->id }}"
+                        {{ request('category') == $category->id ? 'selected' : '' }}>
+                        {{ $category->category_name }}
+                    </option>
+                @endforeach
+
+            </select>
+
+            <button type="submit">Search</button>
+
+        </form>
+
+        <form action="/admin/products" method="GET">
+            <button type="submit">Clear search</button>
+        </form>
+
         <div class="header-section">
             <h1>Product Management</h1>
             <button class="btn btn-primary" onclick="openCreateModal()">+ Add New Product</button>
@@ -324,7 +354,7 @@
                                 </span>
                             </td>
                             <td>{{ $product->stock_threshold }}</td>
-                            <td>{{ $product->category->name ?? 'N/A' }}</td>
+                            <td>{{ $product->category->category_name ?? 'N/A' }}</td>
                             <td>
                                 <div class="actions">
                                     <button class="btn btn-warning" onclick="openEditModal({{ $product->id }}, '{{ $product->name }}', '{{ addslashes($product->description) }}', {{ $product->price }}, {{ $product->stock_qty }}, {{ $product->stock_threshold }}, {{ $product->category_id }})">Edit</button>
@@ -390,7 +420,7 @@
                     <select id="category_id" name="category_id" required>
                         <option value="">Select a category</option>
                         @foreach($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            <option value="{{ $category->id }}">{{ $category->category_name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -447,7 +477,7 @@
                     <select id="edit_category_id" name="category_id" required>
                         <option value="">Select a category</option>
                         @foreach($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            <option value="{{ $category->id }}">{{ $category->category_name }}</option>
                         @endforeach
                     </select>
                 </div>

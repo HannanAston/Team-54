@@ -6,6 +6,7 @@
             <h1 class="text-3xl font-bold text-[#33] mb-10 text-center">Contact Us</h1>
 
             <form action="/contact" method="POST" class="bg-white p-10 rounded-xl shadow-md border border-gray-200 space-y-6">
+                @csrf
                 <div>
                     <label class="block text-[#333] font-medium mb-2">Name</label>
                     <input type="text" name="name" placeholder="Enter yout name" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-[#c19a6b]">
