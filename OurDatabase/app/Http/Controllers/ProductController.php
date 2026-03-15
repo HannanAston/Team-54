@@ -31,9 +31,31 @@ class ProductController extends Controller {
     }
 
 
-    // Show all products for admin management
-    public function adminIndex(){
-        $products = Product::with('category')->get();
+    public function adminIndex(Request $request){
+        $query = $request->query('query');
+        $category = $request->query('category');
+
+        $products = Product::with('category')
+            ->when($query, function ($q) use ($query) {
+                $q->where(function ($sub) use ($query) {
+                    $sub->where('name', 'like', "%{$query}%")
+                        ->orWhere('description', 'like', "%{$query}%");
+                });
+            })
+            ->when($category, function ($q) use ($category) {
+                $q->where('category_id', $category);
+            })
+            ->get();
+
+        $categories = Category::all();
+
+        return view('admin.products.index', compact('products', 'categories'));
+    }
+
+    public function adminSearch(Request $request){
+        $query = $request->input('query');
+        $products = Product::where('name', 'like', "%{$query}%")
+                            ->orWhere('description', 'like', "%{$query}%")->get();
         $categories = Category::all();
         return view('admin.products.index', compact('products', 'categories'));
     }
