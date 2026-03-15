@@ -282,7 +282,7 @@
                         @foreach($recentOrders as $order)
                             <tr>
                                 <td><strong>#{{ $order->id }}</strong></td>
-                                <td>{{ $order->user->name }}</td>
+                                <td>{{ $order->user?->name ?? "Guest" }}</td>
                                 <td>{{ $order->created_at->format('M j, Y g:i A') }}</td>
                                 <td>{{ $order->orderItems->sum('quantity') }} items</td>
                                 <td>£{{ number_format($order->subtotal, 2) }}</td>
@@ -296,7 +296,7 @@
                                 <td><strong>£{{ number_format($order->total, 2) }}</strong></td>
                                 <td>
                                     <span class="stock-badge" style="background-color: #d4edda; color: #155724;">
-                                        Completed
+                                        {{$order->order_status}}
                                     </span>
                                 </td>
                             </tr>
