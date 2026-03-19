@@ -74,8 +74,8 @@
             justify-content: center;
             align-items: center;">
 
-        <!-- Left Icons -->
-        <div style="flex: 1; display: flex; align-items: center;">
+                <!-- Left Icons -->
+                <div style="flex: 1; display: flex; align-items: center;">
             <a href="/dashboard"> <img src="user.png" style="color: #c19a6b; padding-right: 20px"> </a>
 
             <div
@@ -86,41 +86,41 @@
                         align-items: center;
                         column-gap: 10px;
                         flex-wrap: wrap;">
-                @auth
+                        @auth
                     <a href="{{ url('/dashboard') }}" class="nav-btn nav-btn-dark">
-                        Dashboard
-                    </a>
+                                Dashboard
+                            </a>
 
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
 
                         <a href="route('logout')" class="nav-btn nav-btn-gold"
                             onclick="event.preventDefault(); this.closest('form').submit();">
                             Log Out
-                        </a>
-                    </form>
-                @else
+                                </a>
+                            </form>
+                        @else
                     <a href="{{ route('login') }}" class="nav-btn nav-btn-dark">
-                        Login
-                    </a>
-                    @if (Route::has('register'))
+                                Login
+                            </a>
+                            @if (Route::has('register'))
                         <a href="{{ route('register') }}" class="nav-btn nav-btn-gold">
-                            Register
-                        </a>
-                    @endif
-                @endauth
+                                    Register
+                                </a>
+                            @endif
+                        @endauth
+                    </div>
+
             </div>
 
-        </div>
-
-        <!-- Center: Logo -->
-        <div style="display: flex; justify-content: center; align-items: center;">
+            <!-- Center: Logo -->
+            <div style="display: flex; justify-content: center; align-items: center;">
             <a href="/"><img src="revival_threads_text_transparent_logo.png" alt=""
                     style="width: 250px; height: auto;">
-            </a>
-        </div>
+                </a>
+            </div>
 
-        <!-- Right Buttons -->
+                <!-- Right Buttons -->
         <div
             style="
                     flex: 1;
@@ -141,10 +141,10 @@
 
 
 
-        </div>
+                </div>
 
-    </div>
-</nav>
+            </div>
+        </nav>
 
 <nav
     style="
@@ -154,7 +154,7 @@
         width: 100%;
         padding: 5px 0;">
 
-    <div class="nav__menu">
+            <div class="nav__menu">
 
         <ul class="nav__list"
             style="
@@ -193,8 +193,8 @@
                     About Us
                 </a>
             </li>
-        </ul>
+                </ul>
 
-    </div>
+            </div>
 
-</nav>
+        </nav>
