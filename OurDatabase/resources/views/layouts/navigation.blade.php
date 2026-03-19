@@ -130,6 +130,9 @@
                     column-gap: 20px;
                     flex-wrap: wrap;
                 ">
+            <div>
+                @include('components.notifications')
+            </div>
 
             <a href="" class="nav-icon">
                 <img src="heart.png" alt="">
@@ -173,6 +176,12 @@
             <li>
                 <a href="products" class="nav-link {{ request()->is('products') ? 'active' : '' }}">
                     Products
+                </a>
+            </li>
+
+            <li>
+                <a href="orders" class="nav-link {{ request()->is('orders') ? 'active' : '' }}">
+                    Orders
                 </a>
             </li>
 

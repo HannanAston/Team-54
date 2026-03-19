@@ -38,8 +38,12 @@ class OrdersController extends Controller
             return back()->with('success', "Order status updated to {can}");
 
         } elseif($incomingFields['newStatus'] == "returned") {
+            $order->update(['order_status' => 'return pending']);
+            return back()->with('success', "Order status updated to {can}");
 
         } elseif($incomingFields['newStatus'] == "cancel return") {
+            $order->update(['order_status' => 'completed']);
+            return back()->with('success', "Order status updated to {can}");
 
         } else {
             return back()->with('success', "Order status updated to {can}");

@@ -130,7 +130,7 @@
     </head>
 
     @section('content')
-    <div class="max-w7x1 mx-auto px-6 py-10 bg-[#F0F0F0]">
+    <div class="max-w7x1 mx-auto px-6 py-10 bg-[#ffffff00]">
         
         <div class="flex justify-between items-center mb-8">
             <div>
@@ -153,7 +153,7 @@
             
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-10">
+        <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] space-x-6 p-6">
             <div class="hidden md:block">
                 <div class="border rounded-xl p-6 bg-white shadow-sm">
                     <h3 class="font-semibold mb-4">Filter By</h3>
