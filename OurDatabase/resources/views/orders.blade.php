@@ -23,6 +23,35 @@
             margin-bottom: 20px;
         }
 
+        .empty-state {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #e6e6e6;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .empty-state p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .shop-button {
+            display: inline-block;
+            background-color: #c19a6b;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .shop-button:hover {
+            background-color: #a67c52;
+        }
+
         .order-container {
             display: flex;
             flex-direction: column;
@@ -58,25 +87,10 @@
             font-weight: bold;
         }
 
-        .status-processing {
-            background-color: #f0f0f0;
-            color: #666;
-        }
-
-        .status-completed {
-            background-color: #c19a6b;
-            color: #ffffff;
-        }
-
-        .status-cancelled {
-            background-color: #333;
-            color: #ffffff;
-        }
-
-        .status-return {
-            background-color: #666;
-            color: #ffffff;
-        }
+        .status-processing { background-color: #f0f0f0; color: #666; }
+        .status-completed { background-color: #c19a6b; color: #ffffff; }
+        .status-cancelled { background-color: #333; color: #ffffff; }
+        .status-return { background-color: #666; color: #ffffff; }
 
         .orderCard {
             display: grid;
@@ -116,20 +130,9 @@
             border-radius: 10px;
         }
 
-        .item-name {
-            font-weight: bold;
-            font-size: 14px;
-            color: #333;
-        }
-
-        .item-price {
-            color: #666;
-        }
-
-        .item-qty {
-            font-size: 12px;
-            color: #666;
-        }
+        .item-name { font-weight: bold; font-size: 14px; color: #333; }
+        .item-price { color: #666; }
+        .item-qty { font-size: 12px; color: #666; }
 
         .order-footer {
             display: flex;
@@ -140,15 +143,9 @@
             padding-top: 10px;
         }
 
-        .order-total {
-            font-weight: bold;
-            color: #333;
-        }
+        .order-total { font-weight: bold; color: #333; }
 
-        .actions {
-            display: flex;
-            gap: 10px;
-        }
+        .actions { display: flex; gap: 10px; }
 
         .CancelButton {
             background-color: #333;
@@ -164,14 +161,8 @@
             border-radius: 8px;
         }
 
-        .CancelButton:hover {
-            background-color: #000;
-        }
-
-        .ReturnButton:hover {
-            background-color: #a67c52;
-        }
-
+        .CancelButton:hover { background-color: #000; }
+        .ReturnButton:hover { background-color: #a67c52; }
     </style>
 </head>
 
@@ -184,7 +175,9 @@
     <div class="title">My Orders</div>
 
     <div class="order-container">
-        @foreach($orders as $order)
+
+        @forelse($orders as $order)
+
         <div class="Order-Item">
 
             <div class="order-header">
@@ -206,7 +199,6 @@
 
             <div class="orderCard">
                 @foreach($order->orderItems as $orderItem)
-
                 <a href="{{ route('products.show', $orderItem->product->id) }}" class="product-link">
                     <div class="OrderItems">
                         <div class="item-image">
@@ -217,7 +209,6 @@
                         <div class="item-qty">Qty: {{ $orderItem->quantity }}</div>
                     </div>
                 </a>
-
                 @endforeach
             </div>
 
@@ -256,7 +247,16 @@
             </div>
 
         </div>
-        @endforeach
+
+        @empty
+            <div class="empty-state">
+                <p>You have no orders yet.</p>
+                <a href="{{ route('products.index') }}" class="shop-button">
+                    Shop Now
+                </a>
+            </div>
+        @endforelse
+
     </div>
 
 </div>

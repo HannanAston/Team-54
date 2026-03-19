@@ -23,7 +23,7 @@ class TestProductSeeder extends Seeder
             'updated_at' => now(),
             'description' => "A grey sports hoodie for men and women.",
             'price' => 39.99,
-            'stock_qty' => 50,
+            'stock_qty' => 5,
             'stock_threshold' => 5,
             'image_url' => 'https://ruandrocka.co.uk/cdn/shop/files/GREYZIPHOODIEBACK.jpg?v=1723725056&width=1946',
             'category_id' => 1,
