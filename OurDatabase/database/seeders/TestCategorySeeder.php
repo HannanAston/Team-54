@@ -14,12 +14,14 @@ class TestCategorySeeder extends Seeder
      */
     public function run(): void
     {
-         Category::factory(10)->create(); // 10 random using fakr
+         //Category::factory(10)->create(); // 10 random using fakr
 
         DB::table('categories')->insert([
-            ['category_name' => 'Hoodies', 'created_at' => now(), 'updated_at' => now()],
-            ['category_name' => 'Trousers', 'created_at' => now(), 'updated_at' => now()],
-            ['category_name' => 'Jackets', 'created_at' => now(), 'updated_at' => now()],
+            ['category_name' => 'Tops', 'created_at' => now(), 'updated_at' => now()],
+            ['category_name' => 'Bottoms', 'created_at' => now(), 'updated_at' => now()],
+            ['category_name' => 'Outerwear', 'created_at' => now(), 'updated_at' => now()],
+            ['category_name' => 'Accessories', 'created_at' => now(), 'updated_at' => now()],
+            ['category_name' => 'Shoes', 'created_at' => now(), 'updated_at' => now()],
             //3 fixed categories:
         ]);
     }
