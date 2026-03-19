@@ -1,81 +1,128 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Revival Threads | Gear Up</title>
-</head>
+<style>
+    .nav-link {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 12px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        color: #555;
+        border-bottom: 2px solid transparent;
+        transition: all 0.2s ease-in-out;
+    }
 
-<body style="font-family: sans-serif; margin: 0; background: #f5f5f5;">
+    .nav-link:hover {
+        color: #333;
+        border-bottom: 2px solid #c19a6b;
+    }
 
-    <header class="header" style="
-        position: sticky;
-        top: 0;
-        z-index: 1000;">
-        <nav style="
+    .nav-link.active {
+        color: #111;
+        border-bottom: 2px solid #c19a6b;
+    }
+
+    /* Buttons (login/register/dashboard/logout) */
+    .nav-btn {
+        padding: 8px 16px;
+        border-radius: 4px;
+        text-decoration: none;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .nav-btn-dark {
+        background: #333;
+        color: #f0f0f0;
+    }
+
+    .nav-btn-dark:hover {
+        background: #555;
+    }
+
+    .nav-btn-gold {
+        background: #c19a6b;
+        color: white;
+    }
+
+    .nav-btn-gold:hover {
+        background: #a67c52;
+    }
+
+    /* Icon hover */
+    .nav-icon img {
+        transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .nav-icon:hover img {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+</style>
+
+<nav
+    style="
         background: white;
         border-bottom: 1px solid #ddd;
         color: white;
         width: 100%;
         padding: 5px 0;">
 
-            <div style="
+    <div
+        style="
             max-width: 95vw;
             margin: 0 auto;
             display: flex;
             justify-content: center;
             align-items: center;">
 
-                <!-- Left Icons -->
-                <div style="flex: 1; display: flex; align-items: center;">
-                <a href="/dashboard">     <img src="user.png" style="color: #c19a6b; padding-right: 20px">       </a>
+        <!-- Left Icons -->
+        <div style="flex: 1; display: flex; align-items: center;">
+            <a href="/dashboard"> <img src="user.png" style="color: #c19a6b; padding-right: 20px"> </a>
 
-                    <div style="
+            <div
+                style="
                         flex: 1;
                         display: flex;
                         justify-content: flex-start;
                         align-items: center;
                         column-gap: 10px;
                         flex-wrap: wrap;">
-                        @auth
-                            <a href="{{ url('/dashboard') }}" style="background: #f0f0f0; color: #333; padding: 8px 16px; text-decoration: none; border-radius: 4px;">
-                                Dashboard
-                            </a>
+                @auth
+                    <a href="{{ url('/dashboard') }}" class="nav-btn nav-btn-dark">
+                        Dashboard
+                    </a>
 
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
 
-                                <a href="route('logout')" style="background: #c19a6b; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px;"
-                                    onclick="event.preventDefault();
-                                                    this.closest('form').submit();">
-                                    {{ __('Log Out') }}
-                                </a>
-                            </form>
-
-                        @else
-                            <a href="{{ route('login') }}" style="background: #333; color: #f0f0f0; padding: 8px 16px; text-decoration: none; border-radius: 4px;">
-                                Login
-                            </a>
-                            @if (Route::has('register'))
-                                <a href="{{ route('register') }}" style="background: #c19a6b; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px;">
-                                    Register
-                                </a>
-                            @endif
-                        @endauth
-                    </div>
-
+                        <a href="route('logout')" class="nav-btn nav-btn-gold"
+                            onclick="event.preventDefault(); this.closest('form').submit();">
+                            Log Out
+                        </a>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}" class="nav-btn nav-btn-dark">
+                        Login
+                    </a>
+                    @if (Route::has('register'))
+                        <a href="{{ route('register') }}" class="nav-btn nav-btn-gold">
+                            Register
+                        </a>
+                    @endif
+                @endauth
             </div>
 
-            <!-- Center: Logo -->
-            <div style="display: flex; justify-content: center; align-items: center;">
-                <a href="/"><img src="revival_threads_text_transparent_logo.png"
-                    alt=""
+        </div>
+
+        <!-- Center: Logo -->
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <a href="/"><img src="revival_threads_text_transparent_logo.png" alt=""
                     style="width: 250px; height: auto;">
-                </a>
-            </div>
+            </a>
+        </div>
 
-                <!-- Right Buttons -->
-                <div style="
+        <!-- Right Buttons -->
+        <div
+            style="
                     flex: 1;
                     display: flex;
                     justify-content: flex-end;
@@ -83,45 +130,71 @@
                     column-gap: 20px;
                     flex-wrap: wrap;
                 ">
-                    @auth
-                        @if (auth()->user()->is_admin)
-                            <div>@include('components.notifications')</div>
-                        @endif
-                    @endauth
 
-                    <a href=""> <img src="heart.png" alt=""> </a>
+            <a href="" class="nav-icon">
+                <img src="heart.png" alt="">
+            </a>
 
-                    <a href="/cart"> <img src="shopping-cart.png" alt=""> </a>
-
+            <a href="/cart" class="nav-icon">
+                <img src="shopping-cart.png" alt="">
+            </a>
 
 
-                </div>
 
-            </div>
-        </nav>
+        </div>
 
-        <nav style="
+    </div>
+</nav>
+
+<nav
+    style="
         background: white;
         border-bottom: 1px solid #ddd;
         color: white;
         width: 100%;
         padding: 5px 0;">
 
-            <div class="nav__menu">
+    <div class="nav__menu">
 
-                <ul class="nav__list" style="
+        <ul class="nav__list"
+            style="
                     display:flex;
                     justify-content: space-evenly;
                     padding: 5px;
                     margin: 0;
                     text-decoration: none;">
-                    <li> <a href="/" class="nav__link" style="padding: 5px; text-decoration: none; color: #333 "> Home </a></li>
-                    <li> <a href="products" class="nav__link" style="padding: 5px; text-decoration: none; color: #333"> Products  </a></li>
-                    <li> <a href="#" class="nav__link" style="padding: 5px; text-decoration: none; color: #333"> NEW  </a></li>
-                    <li> <a href="contact" class="nav__link" style="padding: 5px; text-decoration: none; color: #333"> Contact </a></li>
-                    <li> <a href="aboutus" class="nav__link" style="padding: 5px; text-decoration: none; color: #333"> About Us  </a></li>
-                </ul>
 
-            </div>
+            <li>
+                <a href="#" class="nav-link">
+                    NEW
+                </a>
+            </li>
 
-        </nav>
+            <li>
+                <a href="products" class="nav-link {{ request()->is('products') ? 'active' : '' }}">
+                    Products
+                </a>
+            </li>
+
+            <li>
+                <a href="/" class="nav-link {{ request()->is('/') ? 'active' : '' }}">
+                    Home
+                </a>
+            </li>
+
+            <li>
+                <a href="contact" class="nav-link {{ request()->is('contact') ? 'active' : '' }}">
+                    Contact
+                </a>
+            </li>
+
+            <li>
+                <a href="aboutus" class="nav-link {{ request()->is('aboutus') ? 'active' : '' }}">
+                    About Us
+                </a>
+            </li>
+        </ul>
+
+    </div>
+
+</nav>
