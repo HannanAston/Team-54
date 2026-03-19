@@ -15,7 +15,7 @@ class TestProductSeeder extends Seeder
     public function run(): void
     {
         //
-        Product::factory(3)->create();
+        //Product::factory(3)->create();
 
         DB::table('products')->insert([
         [   'name' => 'Grey sporty hoodie',
@@ -26,7 +26,7 @@ class TestProductSeeder extends Seeder
             'stock_qty' => 50,
             'stock_threshold' => 5,
             'image_url' => 'https://ruandrocka.co.uk/cdn/shop/files/GREYZIPHOODIEBACK.jpg?v=1723725056&width=1946',
-            'category_id' => 11,
+            'category_id' => 1,
         ],
 
 
@@ -38,7 +38,7 @@ class TestProductSeeder extends Seeder
             'stock_qty' => 40,
             'stock_threshold' => 5,
             'image_url' => 'https://cdn.media.amplience.net/i/frasersdev/57909103_o_a11?fmt=auto&upscale=true&w=450&h=450&sm=scaleFit&$h-ttl$',
-            'category_id' => 12,
+            'category_id' => 2,
 
         ],
 
@@ -50,7 +50,7 @@ class TestProductSeeder extends Seeder
             'stock_qty' => 30,
             'stock_threshold' => 5,
             'image_url' => 'trouser.jpg',
-            'category_id' => 12,
+            'category_id' => 3,
 
         ],
 
