@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use App\Models\StockHistory;
 
 
 class ProductController extends Controller {
@@ -117,6 +118,12 @@ class ProductController extends Controller {
             $imagePath = $request->file('image')->store('products', 'public');
             $validated['image_path'] = $imagePath;
         }
+
+        StockHistory::create([
+            'product_id' => $product->id,
+            'old_stock' => $product->getOriginal('stock_qty'),
+            'new_stock' => $validated['stock_qty'],
+        ]);
 
         $product->update($validated);
 

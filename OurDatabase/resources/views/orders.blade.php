@@ -59,6 +59,7 @@
     @if(session('error'))
         <div class="alert-bad">{{ session('error') }}</div>
     @endif
+
     
     <div id="OrdersContainer">
         <p>Orders:</p>
