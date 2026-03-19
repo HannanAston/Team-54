@@ -9,11 +9,11 @@
                 @csrf
                 <div>
                     <label class="block text-[#333] font-medium mb-2">Name</label>
-                    <input type="text" name="name" placeholder="Enter yout name" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-[#c19a6b]">
+                    <input type="text" name="name" placeholder="Enter your name..." class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-[#c19a6b]">
                 </div>
                 <div>
                     <label class="block text-[#333] font-medium mb-2">Email</label>
-                    <input type="email" name="email" placeholder="Enter yout email" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-[#c19a6b]">
+                    <input type="email" name="email" placeholder="Enter your email..." class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-[#c19a6b]">
                 </div>
                 <div>
                     <label class="block text-[#333] font-medium mb-2">Message</label>
