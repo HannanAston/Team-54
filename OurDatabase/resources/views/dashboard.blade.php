@@ -92,11 +92,31 @@
 
 <div class="page">
 
+    @if(auth()->user()->is_admin)
+
     <div class="title">Admin Dashboard</div>
 
     <div class="welcome">
         {{ __("You're logged in as an administrator.") }}
     </div>
+
+    @else
+        <div class="title">Welcome!</div>
+
+        <div class="welcome">
+            {{ __("You're logged in as a customer!") }}
+        </div>
+
+        <div class="card">
+            <div class="card-title">Explore Our Catalogue for New Products!</div>
+            <div class="card-description">
+                Explore products!
+            </div>
+            <a href="{{ route('products.index') }}" class="card-button btn-green">
+                Shop Now!
+            </a>
+        </div>
+    @endif
 
     <div class="dashboard-container">
 
