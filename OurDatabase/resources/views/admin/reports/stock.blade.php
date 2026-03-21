@@ -156,7 +156,7 @@
                         @foreach($recentOrders as $order)
                             <tr class="border-b hover:bg-gray-50">
                                 <td class="py-3 px-2 font-semibold">#{{ $order->id }}</td>
-                                <td class="py-3 px-2">{{ $order->user->name }}</td>
+                                <td class="py-3 px-2">{{ $order->user ? $order->user->name : 'Deleted User' }}</td>
                                 <td class="py-3 px-2 text-sm text-gray-600">{{ $order->created_at->format('M j, g:i A') }}</td>
                                 <td class="py-3 px-2">{{ $order->orderItems->sum('quantity') }}</td>
                                 <td class="py-3 px-2">
