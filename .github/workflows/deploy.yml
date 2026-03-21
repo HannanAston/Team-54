@@ -9,12 +9,20 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup SSH
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | base64 -d > /tmp/ssh_key
+          chmod 600 /tmp/ssh_key
+
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key_path: /tmp/ssh_key
           script: |
             cd ~/public_html
             git fetch origin main
@@ -27,4 +35,4 @@ jobs:
             php artisan optimize:clear
             npm install
             npm run build
-            echo " Deployed!"
+            echo "Deployed!"
