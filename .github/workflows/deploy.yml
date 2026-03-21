@@ -35,4 +35,4 @@ jobs:
             php artisan optimize:clear
             npm install
             npm run build
-            echo "Deployed!"
+            echo " Deployed!"
