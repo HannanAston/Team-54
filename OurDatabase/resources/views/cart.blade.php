@@ -133,66 +133,83 @@
         </style>
     </head>
 
-    @if(session('error'))
-        <div class="alert-bad">{{ session('error') }}</div>
-    @endif
-    
-    <div id="cartContainer">
+    <div class="max-w-7xl mx-auto px-12 py-10">
+        @if(session('error'))
+            <div class="alert-bad">{{ session('error') }}</div>
+        @endif
+        <h1 class="text-3xl font-bold text-[#333] mb-10">Your Cart</h1>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
 
-        <div id="Cart-Items">
-            @foreach($items as $item)
-            <div class="Cart-Item">
-                <div class="productCard">
-                    <img class="productImage" src="{{ $item->product->image_url }}" alt="Item Image">
-                    <h1 class="text">{{ $item->product->name }}</h1>
-                    <p class="text">£{{ $item->product->price }}</p>
-                    <div class="productContent">
+            <div class="lg:col-span-2 space-y-6">
+                @foreach($items as $item)
+                <div class="Cart-Item">
+                    <div class="flex items-center bg-white rounded-xl shadow-sm p-5">
+                        <img class="w-24 h-24 object-contain rounded-lg mr-6" src="{{ $item->product->image_url }}">
 
-                        <div class="buttonContainer">
-                            <form action="{{ auth()->check() ? '/update-cartItem/' . $item->id : '/update-cartItem/' . $item->product_id }}" method="POST">
-                                @csrf
-                                @method('PUT')
-                                Quantity: <input onchange="this.form.submit()" name="quantity" type="number" value="{{ $item->quantity }}" min="1" max="99">
-                            </form>
+                        <div class="flex-1">
+                            <h2 class="font-semibold text-lg text-[#333]">
+                                {{ $item->product->name }}
+                            </h2>
 
-                            <form action="{{ auth()->check() ? '/delete-cartItem/' . $item->id : '/delete-cartItem/' . $item->product_id }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button>Remove</button>
-                            </form>
+                            <p class="text-gray-600">
+                                £{{ $item->product->price }}
+                            </p>
                         </div>
 
+                        <div class="flex flex-col items-end space-y-2">
+                            <form action="{{ auth()->check() ? '/update-cartItem/' . $item->id :'/update-cartItem/' . $item->product_id }}" method="POST">
+                                @csrf
+                                @method('PUT')
+
+                                <input onchange="this.form.submit()" name="quantity" type="number" value="{{ $item->quantity }}" min="1" max="99" class="border rounded px-2 py-1 w-20">
+                            </form>
+
+                            <form action="{{ auth()->check() ? '/delete-cartItem/' . $item->id :'/delete-cartItem/' . $item->product_id }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+
+                                <button class="text-red-500 gover:text-red-700 text-sm">Remove</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
+                @endforeach
             </div>
-            @endforeach
-        </div>
 
-        @php
-            $items = is_array($items) ? collect($items) : $items;
-            $total = 0;
-            foreach($items as $item) {
-                $total += $item->product->price * $item->quantity;
-            }
-        @endphp
+            @php
+                $items = is_array($items) ? collect($items) : $items;
+                $total = 0;
+                foreach($items as $item) {
+                    $total += $item->product->price * $item->quantity;
+                }
+            @endphp
 
-        <div id="menu">
-            <p class="text"><b>Order Summary:</b></p>
-            @foreach($items as $item)
-                <h1 class="text">{{ $item->product->name }} x {{ $item->quantity }}</h1>
-                <p class="text">£{{ $item->product->price }}</p>
-            @endforeach
-            <P class="text">Total: £ {{ $total }}</P>
-            @if (!($items->isEmpty()))
+            <div class="bg-white rounded-xl shadow-sm p-6 h-fit">
+                <h2 class="text-xl font-semibold mb-6">Order Summary:</h2>
+                @foreach($items as $item)
+                    <div class="flex justify-between mb-2 text-gray-700">
+                        <span>{{ $item->product->name }} x {{ $item->quantity }}</span>
+                        <span>£{{ $item->product->price }}</span>
+                    </div>
+                @endforeach
+
+                <hr class="my-4">
+
+                <div class="flex justify-between font-bold text-lg mb-6">
+                    <span>Total</span>
+                    <span>£{{ $total }}</span>
+                </div>
+
+                @if (!($items->isEmpty()))
                 <form action="/checkout" method="POST">
                     @csrf
-                    <button id="purchaseButton">Confirm Purchase</button>
+                    <button class="w-full bg-[#C19A6B] text-white py-3 rounded-lg hover:bg-[#333] transition">Confirm Purchase</button>
                 </form>
-            @endif
+                @endif
+            </div>
+
         </div>
-
     </div>
-
 
 
 </x-app-layout>
