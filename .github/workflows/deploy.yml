@@ -38,4 +38,4 @@ jobs:
             npm install
             npm run build
 
-            echo "Deployed!"
+            echo " Deployed!"
