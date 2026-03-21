@@ -18,11 +18,11 @@ class StockReportsTest extends TestCase
     public function admin_can_view_stock_reports()
     {
         $admin = User::factory()->create(['is_admin' => 1]);
-        
+    
         $response = $this->actingAs($admin)->get('/admin/reports/stock');
-        
+    
         $response->assertStatus(200);
-        $response->assertSee('Stock Reports Dashboard');
+        $response->assertSee('Stock Reports');
     }
 
     /** @test */
@@ -68,7 +68,7 @@ class StockReportsTest extends TestCase
         $response = $this->actingAs($admin)->get('/admin/reports/stock');
         
         $response->assertStatus(200);
-        $response->assertSee('Low Stock Products');
+        $response->assertSee('Low Stock Alerts');
         $response->assertSee('Low Stock Item');
     }
 

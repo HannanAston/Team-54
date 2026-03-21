@@ -3,414 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock Reports</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f5f5;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        h1 {
-            color: #333;
-            font-size: 32px;
-        }
-
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-secondary {
-            background-color: #6c757d;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background-color: #5a6268;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg,  #768efb 0%, #1e1e1e 100%);
-            color: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .stat-card.green {
-            background: linear-gradient(135deg,  #768efb 0%, #1e1e1e 100%);
-        }
-
-        .stat-card.orange {
-            background: linear-gradient(135deg,  #768efb 0%, #1e1e1e 100%);
-        }
-
-        .stat-card.red {
-            background: linear-gradient(135deg,  #768efb 0%, #1e1e1e 100%);
-        }
-
-        .stat-card h3 {
-            font-size: 14px;
-            opacity: 0.9;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .stat-card .number {
-            font-size: 36px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .stat-card .label {
-            font-size: 12px;
-            opacity: 0.8;
-        }
-
-        .section {
-            margin-bottom: 40px;
-        }
-
-        .section h2 {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 24px;
-            border-bottom: 3px solid #4CAF50;
-            padding-bottom: 10px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background: white;
-        }
-
-        th, td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #4CAF50;
-            color: white;
-            font-weight: 600;
-        }
-
-        tr:hover {
-            background-color: #f5f5f5;
-        }
-
-        .product-image {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
-
-        .stock-badge {
-            display: inline-block;
-            padding: 5px 12px;
-            border-radius: 5px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .low-stock {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-
-        .out-of-stock {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: #666;
-            background: #f9f9f9;
-            border-radius: 10px;
-        }
-
-        .alert-warning {
-            background-color: #fff3cd;
-            color: #856404;
-            padding: 15px;
-            border-radius: 5px;
-            border: 1px solid #ffeaa7;
-            margin-bottom: 20px;
-        }
-
-        .alert-danger {
-            background-color: #f8d7da;
-            color: #721c24;
-            padding: 15px;
-            border-radius: 5px;
-            border: 1px solid #f5c6cb;
-            margin-bottom: 20px;
-        }
-    </style>
+    <title>Stock Reports - E-commerce Analytics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>📊 Stock Reports Dashboard</h1>
-            <a href="{{ route('dashboard') }}" class="btn btn-secondary">← Back to Dashboard</a>
+<body class="bg-gray-100 font-sans">
+
+<header class="bg-white shadow p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold">Stock Reports</h1>
+    <div class="flex gap-3">
+        <a href="{{ route('dashboard') }}" class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700">
+            ← Dashboard
+        </a>
+        <button onclick="window.print()" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-900">Export</button>
+    </div>
+</header>
+
+<main class="p-6 space-y-6">
+
+    @if(session('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+            {{ session('success') }}
         </div>
+    @endif
 
-        <!-- Summary Stats -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>Total Products</h3>
-                <div class="number">{{ $totalProducts }}</div>
-                <div class="label">In Inventory</div>
-            </div>
-
-            <div class="stat-card green">
-                <h3>In Stock</h3>
-                <div class="number">{{ $inStock }}</div>
-                <div class="label">Healthy Stock Levels</div>
-            </div>
-
-            <div class="stat-card orange">
-                <h3>Low Stock</h3>
-                <div class="number">{{ $lowStock->count() }}</div>
-                <div class="label">Need Reordering</div>
-            </div>
-
-            <div class="stat-card red">
-                <h3>Out of Stock</h3>
-                <div class="number">{{ $outOfStock->count() }}</div>
-                <div class="label">Urgent Action Required</div>
-            </div>
+    <!-- KPI Overview -->
+    <section class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-white p-4 rounded-2xl shadow">
+            <p class="text-gray-500">Total Inventory Value</p>
+            <h2 class="text-2xl font-bold">£{{ number_format($totalValue, 2) }}</h2>
         </div>
-
-        <!-- Total Inventory Value -->
-        <div class="section">
-            <h2>💰 Total Inventory Value: £{{ number_format($totalValue, 2) }}</h2>
+        <div class="bg-white p-4 rounded-2xl shadow">
+            <p class="text-gray-500">Daily Revenue</p>
+            <h2 class="text-2xl font-bold">£{{ number_format($todayRevenue, 2) }}</h2>
         </div>
+        <div class="bg-white p-4 rounded-2xl shadow">
+            <p class="text-gray-500">Weekly Revenue</p>
+            <h2 class="text-2xl font-bold">£{{ number_format($thisWeekRevenue, 2) }}</h2>
+        </div>
+        <div class="bg-white p-4 rounded-2xl shadow">
+            <p class="text-gray-500">Orders Today</p>
+            <h2 class="text-2xl font-bold">{{ $todayOrders }}</h2>
+        </div>
+    </section>
 
-        <!-- Order Statistics -->
-            <div class="section">
-                <h2>📦 Order Statistics</h2>
-                <div class="stats-grid" style="margin-bottom: 20px;">
-                    <div class="stat-card" style="background: linear-gradient(135deg, #768efb 0%, #1e1e1e 100%);">
-                        <h3>Today's Orders</h3>
-                        <div class="number">{{ $todayOrders }}</div>
-                        <div class="label">Orders Received Today</div>
-                    </div>
-
-                    <div class="stat-card green">
-                        <h3>Today's Revenue</h3>
-                        <div class="number">£{{ number_format($todayRevenue, 2) }}</div>
-                        <div class="label">Total Sales Today</div>
-                    </div>
-
-                    <div class="stat-card orange">
-                        <h3>This Week's Orders</h3>
-                        <div class="number">{{ $thisWeekOrders }}</div>
-                        <div class="label">Orders This Week</div>
-                    </div>
-
-                    <div class="stat-card" style="background: linear-gradient(135deg,  #768efb 0%, #1e1e1e 100%);">
-                        <h3>This Week's Revenue</h3>
-                        <div class="number">£{{ number_format($thisWeekRevenue, 2) }}</div>
-                        <div class="label">Total Sales This Week</div>
-                    </div>
+    <!-- Stock Status + Orders Summary -->
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white p-4 rounded-2xl shadow">
+            <h3 class="font-semibold mb-4">Stock Overview</h3>
+            <div class="space-y-3">
+                <div class="flex justify-between items-center border-b pb-2">
+                    <span class="text-gray-600">Total Products</span>
+                    <span class="text-2xl font-bold">{{ $totalProducts }}</span>
+                </div>
+                <div class="flex justify-between items-center border-b pb-2">
+                    <span class="text-gray-600">In Stock</span>
+                    <span class="text-2xl font-bold text-green-500">{{ $inStock }}</span>
+                </div>
+                <div class="flex justify-between items-center border-b pb-2">
+                    <span class="text-gray-600">Low Stock</span>
+                    <span class="text-2xl font-bold text-yellow-500">{{ $lowStock->count() }}</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-600">Out of Stock</span>
+                    <span class="text-2xl font-bold text-red-500">{{ $outOfStock->count() }}</span>
                 </div>
             </div>
         </div>
 
-        <!-- Recent Orders (Incoming/Outgoing) -->
-        <div class="section">
-            <h2>🚚 Recent Orders (Last 10)</h2>
-            @if($recentOrders->count() > 0)
-                <table>
+        <div class="bg-white p-4 rounded-2xl shadow">
+            <h3 class="font-semibold mb-4">Order Statistics</h3>
+            <div class="space-y-3">
+                <div class="flex justify-between items-center border-b pb-2">
+                    <span class="text-gray-600">Orders This Week</span>
+                    <span class="text-2xl font-bold">{{ $thisWeekOrders }}</span>
+                </div>
+                <div class="flex justify-between items-center border-b pb-2">
+                    <span class="text-gray-600">Weekly Revenue</span>
+                    <span class="text-2xl font-bold text-green-500">£{{ number_format($thisWeekRevenue, 2) }}</span>
+                </div>
+                <div class="flex justify-between items-center border-b pb-2">
+                    <span class="text-gray-600">Average Order Value</span>
+                    <span class="text-2xl font-bold">
+                        £{{ $thisWeekOrders > 0 ? number_format($thisWeekRevenue / $thisWeekOrders, 2) : '0.00' }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Inventory Alerts -->
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white p-4 rounded-2xl shadow">
+            <h3 class="font-semibold mb-4 text-yellow-600">⚠️ Low Stock Alerts</h3>
+            @if($lowStock->count() > 0)
+                <ul class="space-y-3">
+                    @foreach($lowStock->take(5) as $product)
+                        <li class="flex justify-between border-b pb-2">
+                            <span class="font-medium">{{ $product->name }}</span>
+                            <span class="text-yellow-600 font-bold">{{ $product->stock_qty }} left</span>
+                        </li>
+                    @endforeach
+                </ul>
+                @if($lowStock->count() > 5)
+                    <p class="text-sm text-gray-500 mt-3">+ {{ $lowStock->count() - 5 }} more products</p>
+                @endif
+            @else
+                <p class="text-gray-500 text-center py-8">No low stock alerts</p>
+            @endif
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl shadow">
+            <h3 class="font-semibold mb-4 text-red-600">🚨 Out of Stock</h3>
+            @if($outOfStock->count() > 0)
+                <ul class="space-y-3">
+                    @foreach($outOfStock->take(5) as $product)
+                        <li class="flex justify-between border-b pb-2">
+                            <span class="font-medium">{{ $product->name }}</span>
+                            <span class="text-red-500 font-bold">Out of stock</span>
+                        </li>
+                    @endforeach
+                </ul>
+                @if($outOfStock->count() > 5)
+                    <p class="text-sm text-gray-500 mt-3">+ {{ $outOfStock->count() - 5 }} more products</p>
+                @endif
+            @else
+                <p class="text-gray-500 text-center py-8">All products in stock!</p>
+            @endif
+        </div>
+    </section>
+
+    <!-- Recent Orders -->
+    <section class="bg-white p-4 rounded-2xl shadow">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="font-semibold">Last 10 Orders</h3>
+            <span class="text-sm text-gray-500">Recent Activity</span>
+        </div>
+        @if($recentOrders->count() > 0)
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
                     <thead>
-                        <tr>
-                            <th>Order ID</th>
-                            <th>Customer</th>
-                            <th>Date & Time</th>
-                            <th>Items</th>
-                            <th>Subtotal</th>
-                            <th>Discount</th>
-                            <th>Total</th>
-                            <th>Status</th>
+                        <tr class="border-b">
+                            <th class="py-3 px-2">Order ID</th>
+                            <th class="py-3 px-2">Customer</th>
+                            <th class="py-3 px-2">Date</th>
+                            <th class="py-3 px-2">Items</th>
+                            <th class="py-3 px-2">Discount</th>
+                            <th class="py-3 px-2">Total</th>
+                            <th class="py-3 px-2">Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($recentOrders as $order)
-                            <tr>
-                                <td><strong>#{{ $order->id }}</strong></td>
-                                <td>{{ $order->user?->name ?? "Guest" }}</td>
-                                <td>{{ $order->created_at->format('M j, Y g:i A') }}</td>
-                                <td>{{ $order->orderItems->sum('quantity') }} items</td>
-                                <td>£{{ number_format($order->subtotal, 2) }}</td>
-                                <td>
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="py-3 px-2 font-semibold">#{{ $order->id }}</td>
+                                <td class="py-3 px-2">{{ $order->user->name }}</td>
+                                <td class="py-3 px-2 text-sm text-gray-600">{{ $order->created_at->format('M j, g:i A') }}</td>
+                                <td class="py-3 px-2">{{ $order->orderItems->sum('quantity') }}</td>
+                                <td class="py-3 px-2">
                                     @if($order->discount > 0)
-                                        <span style="color: #16a34a; font-weight: bold;">-£{{ number_format($order->discount, 2) }}</span>
+                                        <span class="text-green-600 font-semibold">-£{{ number_format($order->discount, 2) }}</span>
                                     @else
-                                        -
+                                        <span class="text-gray-400">-</span>
                                     @endif
                                 </td>
-                                <td><strong>£{{ number_format($order->total, 2) }}</strong></td>
-                                <td>
-                                    <span class="stock-badge" style="background-color: #d4edda; color: #155724;">
-                                        {{$order->order_status}}
-                                    </span>
-                                </td>
-                            </tr>
-                            <!-- Order Items Details (expandable row) -->
-                            <tr style="background-color: #f9f9f9;">
-                                <td colspan="8" style="padding: 10px 20px;">
-                                    <strong>Products Ordered:</strong>
-                                    <ul style="margin: 5px 0 0 20px; list-style: disc;">
-                                        @foreach($order->orderItems as $item)
-                                            <li>
-                                                {{ $item->product->name }} 
-                                                (Qty: {{ $item->quantity }}) 
-                                                @ £{{ number_format($item->price, 2) }} each
-                                                = <strong>£{{ number_format($item->quantity * $item->price, 2) }}</strong>
-                                            </li>
-                                        @endforeach
-                                    </ul>
+                                <td class="py-3 px-2 font-bold">£{{ number_format($order->total, 2) }}</td>
+                                <td class="py-3 px-2">
+                                    <span class="text-green-500 font-semibold">Completed</span>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
-            @else
-                <div class="empty-state">
-                    <h3>No orders yet</h3>
-                    <p>Orders will appear here once customers make purchases.</p>
-                </div>
-            @endif
-        </div>
+            </div>
+        @else
+            <p class="text-gray-500 text-center py-8">No orders yet</p>
+        @endif
+    </section>
 
-        <!-- Low Stock Alerts -->
-        @if($lowStock->count() > 0)
-            <div class="section">
-                <div class="alert-warning">
-                    ⚠️ Warning: {{ $lowStock->count() }} product(s) are running low on stock!
+    <!-- Top Performing Products -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        @php
+            $topProducts = \App\Models\OrderItem::with('product')
+                ->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])
+                ->select('product_id', \DB::raw('SUM(quantity) as total_sold'))
+                ->groupBy('product_id')
+                ->orderBy('total_sold', 'desc')
+                ->take(3)
+                ->get();
+        @endphp
+
+        @if($topProducts->count() > 0)
+            @foreach($topProducts as $index => $item)
+                <div class="bg-white p-4 rounded-2xl shadow">
+                    <h4 class="font-semibold mb-2">
+                        @if($index == 0)
+                            🏆 Top Selling Item
+                        @elseif($index == 1)
+                            🥈 Second Best
+                        @else
+                            🥉 Third Place
+                        @endif
+                    </h4>
+                    <p class="text-lg font-bold">{{ $item->product->name }}</p>
+                    <p class="text-gray-500">{{ $item->total_sold }} sold this week</p>
+                    <div class="mt-2">
+                        <span class="inline-block px-2 py-1 text-xs rounded
+                            @if($item->product->stock_qty > $item->product->stock_threshold)
+                                bg-green-100 text-green-800
+                            @elseif($item->product->stock_qty > 0)
+                                bg-yellow-100 text-yellow-800
+                            @else
+                                bg-red-100 text-red-800
+                            @endif
+                        ">
+                            {{ $item->product->getStockStatus() }}
+                        </span>
+                    </div>
                 </div>
-                <h2>⚠️ Low Stock Products</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Image</th>
-                            <th>Product Name</th>
-                            <th>Current Stock</th>
-                            <th>Threshold</th>
-                            <th>Price</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($lowStock as $product)
-                            <tr>
-                                <td>
-                                    @if($product->image_path)
-                                        <img src="{{ asset('storage/' . $product->image_path) }}" class="product-image" alt="{{ $product->name }}">
-                                    @elseif($product->image_url)
-                                        <img src="{{ $product->image_url }}" class="product-image" alt="{{ $product->name }}">
-                                    @endif
-                                </td>
-                                <td>{{ $product->name }}</td>
-                                <td>{{ $product->stock_qty }} units</td>
-                                <td>{{ $product->stock_threshold }} units</td>
-                                <td>£{{ number_format($product->price, 2) }}</td>
-                                <td><span class="stock-badge low-stock">Low Stock</span></td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+            @endforeach
+        @else
+            <div class="bg-white p-4 rounded-2xl shadow col-span-3">
+                <p class="text-gray-500 text-center py-8">No sales data for this week yet</p>
             </div>
         @endif
+    </section>
 
-        <!-- Out of Stock Alerts -->
-        @if($outOfStock->count() > 0)
-            <div class="section">
-                <div class="alert-danger">
-                    🚨 Critical: {{ $outOfStock->count() }} product(s) are completely out of stock!
-                </div>
-                <h2>🚨 Out of Stock Products</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Image</th>
-                            <th>Product Name</th>
-                            <th>Price</th>
-                            <th>Category</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($outOfStock as $product)
-                            <tr>
-                                <td>
-                                    @if($product->image_path)
-                                        <img src="{{ asset('storage/' . $product->image_path) }}" class="product-image" alt="{{ $product->name }}">
-                                    @elseif($product->image_url)
-                                        <img src="{{ $product->image_url }}" class="product-image" alt="{{ $product->name }}">
-                                    @endif
-                                </td>
-                                <td>{{ $product->name }}</td>
-                                <td>£{{ number_format($product->price, 2) }}</td>
-                                <td>{{ $product->category->name ?? 'N/A' }}</td>
-                                <td><span class="stock-badge out-of-stock">Out of Stock</span></td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        @endif
+</main>
 
-        @if($lowStock->count() == 0 && $outOfStock->count() == 0)
-            <div class="empty-state">
-                <h2>✅ All products have healthy stock levels!</h2>
-                <p>No action required at this time.</p>
-            </div>
-        @endif
-    </div>
 </body>
 </html>

@@ -49,11 +49,12 @@ class AdminAccessTest extends TestCase
     #[Test]
     public function admin_page_loads_correct_view()
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->create(['is_admin' => 1]);
 
         $response = $this->actingAs($admin)->get('/admin/users');
 
-        $response->assertViewIs('users.index');
+        $response->assertStatus(200);
+        $response->assertViewIs('admin.users.index');
     }
 
     #[Test]
