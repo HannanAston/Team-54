@@ -129,7 +129,7 @@
                                 @endif
                             </td>
                             <td><strong>£{{ number_format($order->total, 2) }}</strong></td>
-                            <td><span class="badge">Completed</span></td>
+                            <td><span class="badge">{{ $order->order_status }}</span></td>
                         </tr>
                         <tr style="background-color: #f9f9f9;">
                             <td colspan="7" style="padding: 10px 20px;">
