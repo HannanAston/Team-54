@@ -128,6 +128,13 @@
                 border-radius: 5px;
             }
 
+            .shop-button {
+                background-color: rgb(193, 154, 107);
+                border-radius: 10px;
+                color: white;
+                padding: 15px;
+            }
+
 
 
         </style>
@@ -141,39 +148,49 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
 
             <div class="lg:col-span-2 space-y-6">
-                @foreach($items as $item)
-                <div class="Cart-Item">
-                    <div class="flex items-center bg-white rounded-xl shadow-sm p-5">
-                        <img class="w-24 h-24 object-contain rounded-lg mr-6" src="{{ $item->product->image_url }}">
+                @if (empty($items))
+                    <p>Your cart is empty</p>
+                    <div class="card">
+                        <a href="{{ route('products.index') }}" class="shop-button">
+                            Shop Now!
+                        </a>
+                    </div>
+                @else
 
-                        <div class="flex-1">
-                            <h2 class="font-semibold text-lg text-[#333]">
-                                {{ $item->product->name }}
-                            </h2>
+                    @foreach($items as $item)
+                    <div class="Cart-Item">
+                        <div class="flex items-center bg-white rounded-xl shadow-sm p-5">
+                            <img class="w-24 h-24 object-contain rounded-lg mr-6" src="{{ $item->product->image_url }}">
 
-                            <p class="text-gray-600">
-                                £{{ $item->product->price }}
-                            </p>
-                        </div>
+                            <div class="flex-1">
+                                <h2 class="font-semibold text-lg text-[#333]">
+                                    {{ $item->product->name }}
+                                </h2>
 
-                        <div class="flex flex-col items-end space-y-2">
-                            <form action="{{ auth()->check() ? '/update-cartItem/' . $item->id :'/update-cartItem/' . $item->product_id }}" method="POST">
-                                @csrf
-                                @method('PUT')
+                                <p class="text-gray-600">
+                                    £{{ $item->product->price }}
+                                </p>
+                            </div>
 
-                                <input onchange="this.form.submit()" name="quantity" type="number" value="{{ $item->quantity }}" min="1" max="99" class="border rounded px-2 py-1 w-20">
-                            </form>
+                            <div class="flex flex-col items-end space-y-2">
+                                <form action="{{ auth()->check() ? '/update-cartItem/' . $item->id :'/update-cartItem/' . $item->product_id }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
 
-                            <form action="{{ auth()->check() ? '/delete-cartItem/' . $item->id :'/delete-cartItem/' . $item->product_id }}" method="POST">
-                                @csrf
-                                @method('DELETE')
+                                    <input onchange="this.form.submit()" name="quantity" type="number" value="{{ $item->quantity }}" min="1" max="99" class="border rounded px-2 py-1 w-20">
+                                </form>
 
-                                <button class="text-red-500 gover:text-red-700 text-sm">Remove</button>
-                            </form>
+                                <form action="{{ auth()->check() ? '/delete-cartItem/' . $item->id :'/delete-cartItem/' . $item->product_id }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button class="text-red-500 gover:text-red-700 text-sm">Remove</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
-                @endforeach
+                    @endforeach
+                @endif
             </div>
 
             @php
