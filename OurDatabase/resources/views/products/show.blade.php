@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $product->name }}</title>
+<x-app-layout>
     <style>
         * {
             margin: 0;
@@ -14,16 +9,18 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f5f5f5;
-            padding: 20px;
+            padding: 0px;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1500px;
             margin: 0 auto;
             background: white;
             padding: 40px;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 50px;
+            margin-bottom: 50px;
         }
 
         .product-detail {
@@ -249,9 +246,20 @@
         .btn-danger:hover {
             background-color: #da190b;
         }
+
+        #add-to-cart {
+            background-color: rgb(193, 154, 107);
+            color: white;
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            max-width: 25%;
+            justify-content: center;
+            text-decoration: none;
+            margin-top: 50px;
+        }
     </style>
-</head>
-<body>
+
     <div class="container">
         <a href="/products" class="btn btn-secondary" style="margin-bottom: 20px;">← Back to Products</a>
 
@@ -266,8 +274,8 @@
         <div class="product-detail">
             <div>
                 <img src="{{ $product->image_path ? asset('storage/' . $product->image_path) : $product->image_url }}" 
-                     alt="{{ $product->name }}" 
-                     class="product-image">
+                    alt="{{ $product->name }}" 
+                    class="product-image">
             </div>
             
             <div class="product-info">
@@ -290,13 +298,18 @@
                 
                 <p class="product-description">{{ $product->description }}</p>
                 
-                <span class="stock-badge {{ $product->getStockStatusClass() }}">
+                <span href="#" class="stock-badge {{ $product->getStockStatusClass() }}">
                     {{ $product->getStockStatus() }}
                 </span>
                 
-                <p style="color: #666; margin-top: 20px;">
+                <p style="color: #666; margin-top: 0px;">
                     <strong>Stock:</strong> {{ $product->stock_qty }} units available
                 </p>
+
+                <form id="add-to-cart" action="{{ route('cart.add', $product) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn-cart">Add to Cart</button>
+                </form>
             </div>
         </div>
 
@@ -394,5 +407,5 @@
             document.getElementById('star' + existingRating).checked = true;
         }
     </script>
-</body>
-</html>
+
+</x-app-layout>
