@@ -189,37 +189,42 @@
                 ->groupBy('product_id')
                 ->orderBy('total_sold', 'desc')
                 ->take(3)
-                ->get();
+                ->get()
+                ->filter(function($item) {
+                return $item->product !== null; // Filter out deleted products
+                });
         @endphp
 
         @if($topProducts->count() > 0)
             @foreach($topProducts as $index => $item)
-                <div class="bg-white p-4 rounded-2xl shadow">
-                    <h4 class="font-semibold mb-2">
-                        @if($index == 0)
-                            🏆 Top Selling Item
-                        @elseif($index == 1)
-                            🥈 Second Best
-                        @else
-                            🥉 Third Place
-                        @endif
-                    </h4>
-                    <p class="text-lg font-bold">{{ $item->product->name }}</p>
-                    <p class="text-gray-500">{{ $item->total_sold }} sold this week</p>
-                    <div class="mt-2">
-                        <span class="inline-block px-2 py-1 text-xs rounded
-                            @if($item->product->stock_qty > $item->product->stock_threshold)
-                                bg-green-100 text-green-800
-                            @elseif($item->product->stock_qty > 0)
-                                bg-yellow-100 text-yellow-800
+                @if($item->product) {{-- Extra safety check --}}
+                    <div class="bg-white p-4 rounded-2xl shadow">
+                        <h4 class="font-semibold mb-2">
+                            @if($index == 0)
+                                🏆 Top Selling Item
+                            @elseif($index == 1)
+                                🥈 Second Best
                             @else
-                                bg-red-100 text-red-800
+                                🥉 Third Place
                             @endif
-                        ">
-                            {{ $item->product->getStockStatus() }}
-                        </span>
+                        </h4>
+                        <p class="text-lg font-bold">{{ $item->product->name }}</p>
+                        <p class="text-gray-500">{{ $item->total_sold }} sold this week</p>
+                        <div class="mt-2">
+                            <span class="inline-block px-2 py-1 text-xs rounded
+                             @if($item->product->stock_qty > $item->product->stock_threshold)
+                                    bg-green-100 text-green-800
+                                @elseif($item->product->stock_qty > 0)
+                                    bg-yellow-100 text-yellow-800
+                                @else
+                                    bg-red-100 text-red-800
+                                @endif
+                            ">
+                                {{ $item->product->getStockStatus() }}
+                            </span>
+                        </div>
                     </div>
-                </div>
+                @endif
             @endforeach
         @else
             <div class="bg-white p-4 rounded-2xl shadow col-span-3">
