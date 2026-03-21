@@ -22,7 +22,7 @@ class StockReportsTest extends TestCase
         $response = $this->actingAs($admin)->get('/admin/reports/stock');
     
         $response->assertStatus(200);
-        $response->assertSee('E-commerce Insights');
+        $response->assertSee('Stock Reports');
     }
 
     /** @test */
@@ -68,7 +68,7 @@ class StockReportsTest extends TestCase
         $response = $this->actingAs($admin)->get('/admin/reports/stock');
         
         $response->assertStatus(200);
-        $response->assertSee('Low Stock Products');
+        $response->assertSee('Low Stock Alerts');
         $response->assertSee('Low Stock Item');
     }
 
