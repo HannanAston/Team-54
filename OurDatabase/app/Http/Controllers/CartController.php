@@ -24,7 +24,10 @@ class CartController extends Controller
                 $item->product = Product::find($item->product_id);
             }
 
-            return view('cart', ['items' => $cartItems]);
+            $orderCount = auth()->check() ? auth()->user()->orders()->count() : 0;
+
+
+            return view('cart', ['items' => $cartItems], ['orderCount' => $orderCount]);
         } else {
 
             $cart = session()->get('Cart', []);

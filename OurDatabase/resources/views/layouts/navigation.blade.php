@@ -171,7 +171,9 @@
 
         {{-- Right: Icons --}}
         <div class="nav-right">
-            @include('components.notifications')
+            @if(auth()->check() && auth()->user()->is_admin)
+                @include('components.notifications')
+            @endif
 
             <a href="#" class="nav-icon">
                 <img src="{{ asset('heart.png') }}" alt="Wishlist">
