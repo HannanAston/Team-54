@@ -162,41 +162,49 @@
 <div id="bellContainer">
     <button id="bellBtn">
         <i class="bi bi-bell"></i>
-        <span>{{ $notifications->count() }}</span>
+        <span>{{ isset($notifications) ? $notifications->count() : 0 }}</span>
     </button>
 
     <ul id="bellDropdown">
         <li id="title">Notifications</li>
 
         <div id="notificationsContainer">
-            @foreach($notifications as $notif)
-                <li class="Notification
-                    @if($notif['type'] === 'low_stock') low-stock
-                    @elseif($notif['type'] === 'restocked' && $notif['stock_change'] > 0) stock-added
-                    @elseif($notif['type'] === 'restocked' && $notif['stock_change'] < 0) stock-decreased
-                    @endif">
-                    
-                    <div class="Notification-content">
-                        <a>
-                            <strong>{{ $notif['product']->name }}</strong><br>
-                            <small class="subText">
-                                @if($notif['type'] === 'low_stock')
-                                    Low stock alert
-                                @elseif($notif['type'] === 'restocked' && $notif['stock_change'] > 0)
-                                    Stock increased by {{ $notif['stock_change'] }}
-                                @elseif($notif['type'] === 'restocked' && $notif['stock_change'] < 0)
-                                    Stock decreased by {{ $notif['stock_change'] }}
-                                @endif
-                            </small><br>
-                            <small class="subText">{{ $notif['product']->updated_at->diffForHumans() }}</small>
-                        </a>
-                    </div>
+            @if(isset($notifications) && $notifications->count() > 0)
+                @foreach($notifications as $notif)
+                    @if(isset($notif['product']) && $notif['product'])
+                        <li class="Notification
+                            @if($notif['type'] === 'low_stock') low-stock
+                            @elseif($notif['type'] === 'restocked' && isset($notif['stock_change']) && $notif['stock_change'] > 0) stock-added
+                            @elseif($notif['type'] === 'restocked' && isset($notif['stock_change']) && $notif['stock_change'] < 0) stock-decreased
+                            @endif">
+                            
+                            <div class="Notification-content">
+                                <a>
+                                    <strong>{{ $notif['product']->name }}</strong><br>
+                                    <small class="subText">
+                                        @if($notif['type'] === 'low_stock')
+                                            Low stock alert
+                                        @elseif($notif['type'] === 'restocked' && isset($notif['stock_change']) && $notif['stock_change'] > 0)
+                                            Stock increased by {{ $notif['stock_change'] }}
+                                        @elseif($notif['type'] === 'restocked' && isset($notif['stock_change']) && $notif['stock_change'] < 0)
+                                            Stock decreased by {{ abs($notif['stock_change']) }}
+                                        @endif
+                                    </small><br>
+                                    <small class="subText">{{ $notif['product']->updated_at->diffForHumans() }}</small>
+                                </a>
+                            </div>
 
-                    @if($notif['type'] === 'low_stock')
-                        <button class="restockBtn" onclick="location.href='/admin/products'">Restock</button>
+                            @if($notif['type'] === 'low_stock')
+                                <button class="restockBtn" onclick="location.href='/admin/products'">Restock</button>
+                            @endif
+                        </li>
                     @endif
+                @endforeach
+            @else
+                <li style="padding: 20px; text-align: center; color: #999;">
+                    No notifications
                 </li>
-            @endforeach
+            @endif
         </div>
 
         <li id="ViewBtn">
@@ -208,7 +216,6 @@
 <script>
 const bellBtn = document.getElementById('bellBtn');
 const bellDropdown = document.getElementById('bellDropdown');
-const RestockBtn = document.getElementsByClassName('restockBtn')
 
 bellBtn.addEventListener('click', (event) => {
     event.stopPropagation();
