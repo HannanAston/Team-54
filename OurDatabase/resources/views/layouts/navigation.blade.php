@@ -21,12 +21,13 @@
         border-bottom: 2px solid #c19a6b;
     }
 
-    /* Buttons (login/register/dashboard/logout) */
     .nav-btn {
         padding: 8px 16px;
         border-radius: 4px;
         text-decoration: none;
         transition: all 0.2s ease-in-out;
+        font-size: 14px;
+        font-weight: 500;
     }
 
     .nav-btn-dark {
@@ -36,6 +37,7 @@
 
     .nav-btn-dark:hover {
         background: #555;
+        color: #f0f0f0;
     }
 
     .nav-btn-gold {
@@ -45,9 +47,9 @@
 
     .nav-btn-gold:hover {
         background: #a67c52;
+        color: white;
     }
 
-    /* Icon hover */
     .nav-icon img {
         transition: transform 0.2s ease, opacity 0.2s ease;
     }
@@ -56,154 +58,155 @@
         transform: scale(1.1);
         opacity: 0.8;
     }
-</style>
 
-<nav
-    style="
+    /* ── Top Nav ── */
+    .nav-top {
         background: white;
         border-bottom: 1px solid #ddd;
-        color: white;
         width: 100%;
-        padding: 5px 0;">
+        padding: 5px 0;
+    }
 
-    <div
-        style="
-            max-width: 95vw;
-            margin: 0 auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;">
+    .nav-top-inner {
+        max-width: 95vw;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-                <!-- Left Icons -->
-                <div style="flex: 1; display: flex; align-items: center;">
-            <a href="/dashboard"> <img src="user.png" style="color: #c19a6b; padding-right: 20px"> </a>
+    .nav-left {
+        flex: 1;
+        display: flex;
+        align-items: center;
+    }
 
-            <div
-                style="
-                        flex: 1;
-                        display: flex;
-                        justify-content: flex-start;
-                        align-items: center;
-                        column-gap: 10px;
-                        flex-wrap: wrap;">
-                        @auth
-                    <a href="{{ url('/dashboard') }}" class="nav-btn nav-btn-dark">
-                                Dashboard
-                            </a>
+    .nav-left-icon {
+        padding-right: 20px;
+    }
 
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
+    .nav-left-actions {
+        flex: 1;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        column-gap: 10px;
+        flex-wrap: wrap;
+    }
 
-                        <a href="route('logout')" class="nav-btn nav-btn-gold"
-                            onclick="event.preventDefault(); this.closest('form').submit();">
+    .nav-center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .nav-logo {
+        width: 250px;
+        height: auto;
+    }
+
+    .nav-right {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        column-gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    /* ── Bottom Nav ── */
+    .nav-bottom {
+        background: white;
+        border-bottom: 1px solid #ddd;
+        width: 100%;
+        padding: 5px 0;
+    }
+
+    .nav-list {
+        display: flex;
+        justify-content: space-evenly;
+        padding: 5px;
+        margin: 0;
+        list-style: none;
+    }
+</style>
+
+{{-- Top Nav: Auth + Logo + Icons --}}
+<nav class="nav-top">
+    <div class="nav-top-inner">
+
+        {{-- Left: Auth Buttons --}}
+        <div class="nav-left">
+            <a href="/dashboard" class="nav-left-icon">
+                <img src="{{ asset('user.png') }}" alt="User">
+            </a>
+
+            <div class="nav-left-actions">
+                @auth
+                    <a href="{{ url('/dashboard') }}" class="nav-btn nav-btn-dark">Dashboard</a>
+
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <a href="{{ route('logout') }}" class="nav-btn nav-btn-gold"
+                           onclick="event.preventDefault(); this.closest('form').submit();">
                             Log Out
-                                </a>
-                            </form>
-                        @else
-                    <a href="{{ route('login') }}" class="nav-btn nav-btn-dark">
-                                Login
-                            </a>
-                            @if (Route::has('register'))
-                        <a href="{{ route('register') }}" class="nav-btn nav-btn-gold">
-                                    Register
-                                </a>
-                            @endif
-                        @endauth
-                    </div>
+                        </a>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}" class="nav-btn nav-btn-dark">Login</a>
 
+                    @if (Route::has('register'))
+                        <a href="{{ route('register') }}" class="nav-btn nav-btn-gold">Register</a>
+                    @endif
+                @endauth
             </div>
+        </div>
 
-            <!-- Center: Logo -->
-            <div style="display: flex; justify-content: center; align-items: center;">
-            <a href="/"><img src="revival_threads_text_transparent_logo.png" alt=""
-                    style="width: 250px; height: auto;">
-                </a>
-            </div>
+        {{-- Center: Logo --}}
+        <div class="nav-center">
+            <a href="/">
+                <img src="{{ asset('revival_threads_text_transparent_logo.png') }}" alt="Revival Threads" class="nav-logo">
+            </a>
+        </div>
 
-                <!-- Right Buttons -->
-        <div
-            style="
-                    flex: 1;
-                    display: flex;
-                    justify-content: flex-end;
-                    align-items: center;
-                    column-gap: 20px;
-                    flex-wrap: wrap;
-                ">
-            <div>
-                @include('components.notifications')
-            </div>
+        {{-- Right: Icons --}}
+        <div class="nav-right">
+            @include('components.notifications')
 
-            <a href="" class="nav-icon">
-                <img src="heart.png" alt="">
+            <a href="#" class="nav-icon">
+                <img src="{{ asset('heart.png') }}" alt="Wishlist">
             </a>
 
             <a href="/cart" class="nav-icon">
-                <img src="shopping-cart.png" alt="">
+                <img src="{{ asset('shopping-cart.png') }}" alt="Cart">
             </a>
+        </div>
 
+    </div>
+</nav>
 
-
-                </div>
-
-            </div>
-        </nav>
-
-<nav
-    style="
-        background: white;
-        border-bottom: 1px solid #ddd;
-        color: white;
-        width: 100%;
-        padding: 5px 0;">
-
-            <div class="nav__menu">
-
-        <ul class="nav__list"
-            style="
-                    display:flex;
-                    justify-content: space-evenly;
-                    padding: 5px;
-                    margin: 0;
-                    text-decoration: none;">
-
+{{-- Bottom Nav: Page Links --}}
+<nav class="nav-bottom">
+    <div class="nav__menu">
+        <ul class="nav-list">
             <li>
-                <a href="#" class="nav-link">
-                    NEW
-                </a>
+                <a href="#" class="nav-link">NEW</a>
             </li>
-
             <li>
-                <a href="products" class="nav-link {{ request()->is('products') ? 'active' : '' }}">
-                    Products
-                </a>
+                <a href="/products" class="nav-link {{ request()->is('products') ? 'active' : '' }}">Products</a>
             </li>
-
             <li>
-                <a href="orders" class="nav-link {{ request()->is('orders') ? 'active' : '' }}">
-                    Orders
-                </a>
+                <a href="/orders" class="nav-link {{ request()->is('orders') ? 'active' : '' }}">Orders</a>
             </li>
-
             <li>
-                <a href="/" class="nav-link {{ request()->is('/') ? 'active' : '' }}">
-                    Home
-                </a>
+                <a href="/" class="nav-link {{ request()->is('/') ? 'active' : '' }}">Home</a>
             </li>
-
             <li>
-                <a href="contact" class="nav-link {{ request()->is('contact') ? 'active' : '' }}">
-                    Contact
-                </a>
+                <a href="/contact" class="nav-link {{ request()->is('contact') ? 'active' : '' }}">Contact</a>
             </li>
-
             <li>
-                <a href="aboutus" class="nav-link {{ request()->is('aboutus') ? 'active' : '' }}">
-                    About Us
-                </a>
+                <a href="/aboutus" class="nav-link {{ request()->is('aboutus') ? 'active' : '' }}">About Us</a>
             </li>
-                </ul>
-
-            </div>
-
-        </nav>
+        </ul>
+    </div>
+</nav>
