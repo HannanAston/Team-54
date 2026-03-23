@@ -64,7 +64,7 @@
         background: white;
         border-bottom: 1px solid #ddd;
         width: 100%;
-        padding: 5px 0;
+        padding: 10px 0;
     }
 
     .nav-top-inner {
@@ -119,7 +119,7 @@
         background: white;
         border-bottom: 1px solid #ddd;
         width: 100%;
-        padding: 5px 0;
+        padding: 3px 0;
     }
 
     .nav-list {
@@ -148,7 +148,7 @@
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <a href="{{ route('logout') }}" class="nav-btn nav-btn-gold"
-                           onclick="event.preventDefault(); this.closest('form').submit();">
+                            onclick="event.preventDefault(); this.closest('form').submit();">
                             Log Out
                         </a>
                     </form>
@@ -165,7 +165,7 @@
         {{-- Center: Logo --}}
         <div class="nav-center">
             <a href="/">
-                <img src="{{ asset('revival_threads_text_transparent_logo.png') }}" alt="Revival Threads" class="nav-logo">
+                <img src="{{ asset('revivalthreadsdarksimple.png') }}" alt="Revival Threads" class="nav-logo">
             </a>
         </div>
 
@@ -174,10 +174,6 @@
             @if(auth()->check() && auth()->user()->is_admin)
                 @include('components.notifications')
             @endif
-
-            <a href="#" class="nav-icon">
-                <img src="{{ asset('heart.png') }}" alt="Wishlist">
-            </a>
 
             <a href="/cart" class="nav-icon">
                 <img src="{{ asset('shopping-cart.png') }}" alt="Cart">
@@ -192,16 +188,13 @@
     <div class="nav__menu">
         <ul class="nav-list">
             <li>
-                <a href="#" class="nav-link">NEW</a>
+                <a href="/" class="nav-link {{ request()->is('/') ? 'active' : '' }}">Home</a>
             </li>
             <li>
                 <a href="/products" class="nav-link {{ request()->is('products') ? 'active' : '' }}">Products</a>
             </li>
             <li>
                 <a href="/orders" class="nav-link {{ request()->is('orders') ? 'active' : '' }}">Orders</a>
-            </li>
-            <li>
-                <a href="/" class="nav-link {{ request()->is('/') ? 'active' : '' }}">Home</a>
             </li>
             <li>
                 <a href="/contact" class="nav-link {{ request()->is('contact') ? 'active' : '' }}">Contact</a>
