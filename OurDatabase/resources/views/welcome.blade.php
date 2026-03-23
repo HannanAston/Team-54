@@ -1,249 +1,366 @@
+@section('title', 'Home')
+
 <x-app-layout>
 
-    <div>
-        <img src="horse-lead-cropped.jpg" alt="" style="width: 100%;justify-content: center;">
-    </div>
+    <!-- ================= HERO bANNER ================= -->
 
-    <section>
+    <section style="position:relative; background:#000; color:white;">
 
+        <img src="far-cowboy.jpg" style="width:100%; height:650px; object-fit:cover; opacity:0.75;" alt="Revival Threads">
 
-        <div class="productStrip"
+        <div
             style="
-                padding:40px;
-                gap:15px;
-                display:flex;
-                justify-content:flex-start;
-                ">
+        position:absolute;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%);
+        text-align:center;
+        max-width:700px;
+    ">
 
-            <div class="sectionHeader"
+            <h1
                 style="
-                width:150px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                ">
+            font-size:64px;
+            letter-spacing:4px;
+            margin-bottom:10px;
+            font-weight:700;
+        ">
+                REVIVAL THREADS
+            </h1>
 
-                <p
+            <p style="
+            font-size:20px;
+            color:#ddd;
+            margin-bottom:30px;
+        ">
+                Resurrected. Restored. Reborn.
+            </p>
+
+            <a href="/products"
+                style="
+            background:#fff;
+            color:#000;
+            padding:14px 36px;
+            text-decoration:none;
+            font-weight:bold;
+            letter-spacing:1px;
+           ">
+                SHOP COLLECTION
+            </a>
+
+        </div>
+    </section>
+
+    <!-- ================= PRODUCT CAROUSEL ================= -->
+
+
+    <section style="background:#f0f0f0; color:#333; padding:70px 0;">
+
+        <div style="max-width:1400px; margin:auto; padding:0 20px;">
+
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+                <h2 style="letter-spacing:3px;">FEATURED PRODUCTS</h2>
+
+                <a href="/products"
                     style="
-                        font-size: 20px;
-                        text-align: center;
-                        text-
-                        ">
-
-                    Men's New </p>
-                <!-- <img src="close-up.jpg" alt="" style="width: 20%; padding: 25px 10px"> -->
+                border:1px solid #c19a6b;
+                padding:8px 18px;
+                text-decoration:none;
+                color:#333;
+                font-size:14px;
+                background:#fff;
+               ">
+                    VIEW ALL
+                </a>
             </div>
 
-            <div class="productGrid" style="display:flex; flex-wrap:wrap; justify-content:flex-start; gap: 15px;">
+            <div style="position:relative;">
 
-                <div
-                    style="height: 200px; width: 150px; display:flex; justify-content: center; align-content:flex-end; flex-wrap: wrap; background: white; padding: 15px; border-radius: 5px;">
-                    <img src="" alt="product" style="">
-                    <h3 style="margin: 5px">PRODUCT X</h3>
-                    <p style="color: #c19a6b; font-weight: bold; margin: 0">X GBP</p>
+                <button onclick="scrollCarousel(-1)"
+                    style="
+                position:absolute;
+                left:-10px;
+                top:40%;
+                z-index:10;
+                background:#333;
+                border:none;
+                color:#f0f0f0;
+                font-size:28px;
+                padding:10px 14px;
+                cursor:pointer;
+            ">‹</button>
+
+                <button onclick="scrollCarousel(1)"
+                    style="
+                position:absolute;
+                right:-10px;
+                top:40%;
+                z-index:10;
+                background:#333;
+                border:none;
+                color:#f0f0f0;
+                font-size:28px;
+                padding:10px 14px;
+                cursor:pointer;
+            ">›</button>
+
+                <div id="productCarousel" class="carousel"
+                    style="
+                            display:flex;
+                            gap:25px;
+                            overflow-x:auto;
+                            scroll-behavior:smooth;
+                            padding-bottom:10px;
+                            ">
+
+                    <div style="min-width:260px; background:#fff; padding:12px;">
+                        <img src="/images/product1.jpg" style="width:100%; height:340px; object-fit:cover;">
+                        <h4 style="margin-top:12px;">Vintage Leather Jacket</h4>
+                        <p style="color:#666;">Refurbished • Excellent</p>
+                        <p style="font-weight:bold; color:#c19a6b;">£85</p>
+                    </div>
+
+                    <div style="min-width:260px; background:#fff; padding:12px;">
+                        <img src="/images/product2.jpg" style="width:100%; height:340px; object-fit:cover;">
+                        <h4>Oversized Graphic Hoodie</h4>
+                        <p style="color:#666;">Refurbished • Good</p>
+                        <p style="font-weight:bold; color:#c19a6b;">£35</p>
+                    </div>
+
+                    <div style="min-width:260px; background:#fff; padding:12px;">
+                        <img src="/images/product3.jpg" style="width:100%; height:340px; object-fit:cover;">
+                        <h4>Retro Denim Jacket</h4>
+                        <p style="color:#666;">Refurbished • Like New</p>
+                        <p style="font-weight:bold; color:#c19a6b;">£45</p>
+                    </div>
+
+                    <div style="min-width:260px; background:#fff; padding:12px;">
+                        <img src="/images/product1.jpg" style="width:100%; height:340px; object-fit:cover;">
+                        <h4 style="margin-top:12px;">Vintage Leather Jacket</h4>
+                        <p style="color:#666;">Refurbished • Excellent</p>
+                        <p style="font-weight:bold; color:#c19a6b;">£85</p>
+                    </div>
+
+                    <div style="min-width:260px; background:#fff; padding:12px;">
+                        <img src="/images/product2.jpg" style="width:100%; height:340px; object-fit:cover;">
+                        <h4>Oversized Graphic Hoodie</h4>
+                        <p style="color:#666;">Refurbished • Good</p>
+                        <p style="font-weight:bold; color:#c19a6b;">£35</p>
+                    </div>
+
+                    <div style="min-width:260px; background:#fff; padding:12px;">
+                        <img src="/images/product3.jpg" style="width:100%; height:340px; object-fit:cover;">
+                        <h4>Retro Denim Jacket</h4>
+                        <p style="color:#666;">Refurbished • Like New</p>
+                        <p style="font-weight:bold; color:#c19a6b;">£45</p>
+                    </div>
+
+                    <div style="min-width:260px; background:#fff; padding:12px;">
+                        <img src="/images/product1.jpg" style="width:100%; height:340px; object-fit:cover;">
+                        <h4 style="margin-top:12px;">Vintage Leather Jacket</h4>
+                        <p style="color:#666;">Refurbished • Excellent</p>
+                        <p style="font-weight:bold; color:#c19a6b;">£85</p>
+                    </div>
+
+                    <div style="min-width:260px; background:#fff; padding:12px;">
+                        <img src="/images/product2.jpg" style="width:100%; height:340px; object-fit:cover;">
+                        <h4>Oversized Graphic Hoodie</h4>
+                        <p style="color:#666;">Refurbished • Good</p>
+                        <p style="font-weight:bold; color:#c19a6b;">£35</p>
+                    </div>
+
+                    <div style="min-width:260px; background:#fff; padding:12px;">
+                        <img src="/images/product3.jpg" style="width:100%; height:340px; object-fit:cover;">
+                        <h4>Retro Denim Jacket</h4>
+                        <p style="color:#666;">Refurbished • Like New</p>
+                        <p style="font-weight:bold; color:#c19a6b;">£45</p>
+                    </div>
                 </div>
-
-                <div style="height: 200px; width: 150px; background: white; padding: 15px; border-radius: 10px;">
-                    <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
-                    <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
-                    <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
-                    <img src="" alt="product">
-                </div>
-
-                <div style="height: 200px; width: 150px; background: white; padding: 15px; border-radius: 10px;">
-                    <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
-                    <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
-                    <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
-                    <img src="" alt="product">
-                </div>
-
-                <div style="height: 200px; width: 150px; background: white; padding: 15px; border-radius: 10px;">
-                    <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
-                    <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
-                    <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
-                    <img src="" alt="product">
-                </div>
-
-                <div style="height: 200px; width: 150px; background: white; padding: 15px; border-radius: 10px;">
-                    <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
-                    <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
-                    <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
-                    <img src="" alt="product">
-                </div>
-
-                <div style="height: 200px; width: 150px; background: white; padding: 15px; border-radius: 10px;">
-                    <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
-                    <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
-                    <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
-                    <img src="" alt="product">
-                </div>
-
             </div>
+        </div>
+    </section>
+
+    <script>
+        function scrollCarousel(direction) {
+            const container = document.getElementById('productCarousel');
+            container.scrollBy({
+                left: direction * 300,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+
+    <!-- ================= CATEGORY RIBBON ================= -->
+
+    <section
+        style="
+    background:#333;
+    padding:40px 20px;
+    display:flex;
+    gap:30px;
+    justify-content:center;
+    flex-wrap:wrap;
+">
+
+        <a href="/products?cat=tops" style="color:#f0f0f0; text-decoration:none; letter-spacing:2px;">TOPS</a>
+        <a href="/products?cat=bottoms" style="color:#f0f0f0; text-decoration:none; letter-spacing:2px;">BOTTOMS</a>
+        <a href="/products?cat=outerwear" style="color:#f0f0f0; text-decoration:none; letter-spacing:2px;">OUTERWEAR</a>
+        <a href="/products?cat=accessories"
+            style="color:#f0f0f0; text-decoration:none; letter-spacing:2px;">ACCESSORIES</a>
+        <a href="/products?cat=shoes" style="color:#f0f0f0; text-decoration:none; letter-spacing:2px;">SHOES</a>
 
     </section>
 
-    <main style="max: width 90%; padding: 20px;">
 
-        <div style="text-align: center; margin-bottom: 40px;">
-            <h2 style="color: #222;">Quality Clothing for Everyday</h2>
-            <p style="color: #555;">Simple, Sturdy, Sustainable</p>
-        </div>
+    <!-- ================= NEW RIBBON ================= -->
 
-        <div class="productGrid" style="display:flex; flex-wrap:wrap; justify-content:flex-start; gap: 15px;">
+    <section style="background:#f0f0f0; color:#333; padding:60px 20px;">
 
-            <div style="height: 300px; width: 200px; background: white; padding: 15px; border-radius: 10px;">
-                <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
-                <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
-                <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
-                <img src="" alt="product">
+        <h2 style="text-align:center; letter-spacing:3px; margin-bottom:40px;">
+            NEW ARRIVALS
+        </h2>
+
+        <div
+            style="
+        display:grid;
+        grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+        gap:30px;
+        max-width:1200px;
+        margin:auto;
+    ">
+
+            <div style="background:#fff; padding:15px;">
+                <img src="/images/product1.jpg" style="width:100%; height:320px; object-fit:cover;">
+                <h3 style="margin-top:15px;">Vintage Leather Jacket</h3>
+                <p style="color:#666;">Refurbished • Excellent</p>
+                <p style="font-weight:bold; color:#c19a6b;">£85</p>
             </div>
 
-            <div style="height: 300px; width: 200px; background: white; padding: 15px; border-radius: 10px;">
-                <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
-                <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
-                <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
-                <img src="" alt="product">
+            <div style="background:#fff; padding:15px;">
+                <img src="/images/product2.jpg" style="width:100%; height:320px; object-fit:cover;">
+                <h3 style="margin-top:15px;">Oversized Graphic Hoodie</h3>
+                <p style="color:#666;">Refurbished • Good</p>
+                <p style="font-weight:bold; color:#c19a6b;">£35</p>
             </div>
 
-            <div style="height: 300px; width: 200px; background: white; padding: 15px; border-radius: 10px;">
-                <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
-                <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
-                <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
-                <img src="" alt="product">
+            <div style="background:#fff; padding:15px;">
+                <img src="/images/product3.jpg" style="width:100%; height:320px; object-fit:cover;">
+                <h3 style="margin-top:15px;">Retro Denim Jacket</h3>
+                <p style="color:#666;">Refurbished • Like New</p>
+                <p style="font-weight:bold; color:#c19a6b;">£45</p>
             </div>
-
-            <div style="height: 300px; width: 200px; background: white; padding: 15px; border-radius: 10px;">
-                <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
-                <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
-                <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
-                <img src="" alt="product">
-            </div>
-
-            <div style="height: 300px; width: 200px; background: white; padding: 15px; border-radius: 10px;">
-                <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
-                <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
-                <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
-                <img src="" alt="product">
-            </div>
-
-            <div style="height: 300px; width: 200px; background: white; padding: 15px; border-radius: 10px;">
-                <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
-                <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
-                <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
-                <img src="" alt="product">
-            </div>
-
-            <div style="height: 300px; width: 200px; background: white; padding: 15px; border-radius: 10px;">
-                <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
-                <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
-                <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
-                <img src="" alt="product">
-            </div>
-
-            <div style="height: 300px; width: 200px; background: white; padding: 15px; border-radius: 10px;">
-                <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
-                <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
-                <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
-                <img src="" alt="product">
-            </div>
-
-            <div style="height: 300px; width: 200px; background: white; padding: 15px; border-radius: 10px;">
-                <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
-                <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
-                <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
-                <img src="" alt="product">
-            </div>
-
-            <div style="height: 300px; width: 200px; background: white; padding: 15px; border-radius: 10px;">
-                <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
-                <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
-                <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
-                <img src="" alt="product">
-            </div>
-
-            <div style="height: 300px; width: 200px; background: white; padding: 15px; border-radius: 10px;">
-                <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
-                <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
-                <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
-                <img src="" alt="product">
-            </div>
-
-            <div style="height: 300px; width: 200px; background: white; padding: 15px; border-radius: 10px;">
-                <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
-                <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
-                <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
-                <img src="" alt="product">
-            </div>
-
-            <div style="height: 300px; width: 200px; background: white; padding: 15px; border-radius: 10px;">
-                <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
-                <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
-                <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
-                <img src="" alt="product">
-            </div>
-
-            <div style="height: 300px; width: 200px; background: white; padding: 15px; border-radius: 10px;">
-                <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
-                <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
-                <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
-                <img src="" alt="product">
-            </div>
-
-            <div style="height: 300px; width: 200px; background: white; padding: 15px; border-radius: 10px;">
-                <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
-                <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
-                <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
-                <img src="" alt="product">
-            </div>
-
-            <div style="height: 300px; width: 200px; background: white; padding: 15px; border-radius: 10px;">
-                <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
-                <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
-                <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
-                <img src="" alt="product">
-            </div>
-
-            <div style="height: 300px; width: 200px; background: white; padding: 15px; border-radius: 10px;">
-                <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
-                <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
-                <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
-                <img src="" alt="product">
-            </div>
-
-            <div style="height: 300px; width: 200px; background: white; padding: 15px; border-radius: 10px;">
-                <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
-                <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
-                <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
-                <img src="" alt="product">
-            </div>
-
-            <div style="height: 300px; width: 200px; background: white; padding: 15px; border-radius: 10px;">
-                <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
-                <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
-                <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
-                <img src="" alt="product">
-            </div>
-
-            <div style="height: 300px; width: 200px; background: white; padding: 15px; border-radius: 10px;">
-                <h3 style="margin: 0 0 10px 0;">PRODUCT X</h3>
-                <p style="color: #666; margin: 0 0 10px 0;">PRODUCT DESCRIPTION</p>
-                <p style="color: #c19a6b; font-weight: bold;">X GBP</p>
-                <img src="" alt="product">
-            </div>
-        </div>
 
         </div>
+    </section>
 
-        <div style="text-align: center; margin-top: 40px;">
-            <a href="/products"
-                style="background: #c19a6b; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;">
-                Shop All Products
+
+    <!-- ================= FEATURE BANNER ================= -->
+
+    <section style="position:relative; background:#333; color:#f0f0f0;">
+
+        <img src="cowboy-landscape.jpg" style="width:100%; height:500px; object-fit:cover; opacity:0.55;">
+
+        <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center;">
+
+            <h2 style="font-size:44px; letter-spacing:2px;">
+                FASHION WITHOUT WASTE
+            </h2>
+
+            <p style="color:#ddd; margin:20px 0;">
+                Clothes that are made for a Lifetime.
+            </p>
+
+            <a href="/aboutus"
+                style="
+            border:1px solid #c19a6b;
+            padding:12px 28px;
+            color:#f0f0f0;
+            text-decoration:none;
+            background:rgba(0,0,0,0.2);
+           ">
+                OUR PROCESS
             </a>
-        </div>
-    </main>
 
-    <footer style="background: #333; color: white; text-align: center; padding: 10px;">
-        <p style="margin: 0;">&copy; {{ date('Y') }} Revival Threads </p>
+        </div>
+    </section>
+
+
+    <!-- ================= TRENDING ================= -->
+
+    <section style="background:#f0f0f0; color:#333; padding:60px 20px;">
+
+        <h2 style="text-align:center; letter-spacing:3px; margin-bottom:40px;">
+            TRENDING NOW
+        </h2>
+
+        <div
+            style="
+        display:grid;
+        grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+        gap:25px;
+        max-width:1200px;
+        margin:auto;
+    ">
+
+            <div style="background:#fff; padding:12px;">
+                <img src="/images/product4.jpg" style="width:100%; height:260px; object-fit:cover;">
+                <h4>Vintage Cargo Pants</h4>
+                <p style="color:#c19a6b;">£40</p>
+            </div>
+
+            <div style="background:#fff; padding:12px;">
+                <img src="/images/product5.jpg" style="width:100%; height:260px; object-fit:cover;">
+                <h4>Retro Windbreaker</h4>
+                <p style="color:#c19a6b;">£50</p>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ================= lAST RIBBON ================= -->
+
+    <section style="
+    background:#333;
+    color:#f0f0f0;
+    text-align:center;
+    padding:60px 20px;
+">
+
+        <h2 style="letter-spacing:2px;">
+            GIVE CLOTHES A SECOND LIFE
+        </h2>
+
+        <p style="color:#ccc; margin:20px 0;">
+            Join the movement toward sustainable streetwear.
+        </p>
+
+        <a href="/products"
+            style="
+        background:#c19a6b;
+        color:#fff;
+        padding:14px 36px;
+        text-decoration:none;
+        font-weight:bold;
+       ">
+            START SHOPPING
+        </a>
+
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer
+        style="
+    background:#333;
+    color:#aaa;
+    text-align:center;
+    padding:30px;
+    border-top:1px solid #555;
+">
+
+        <p>&copy; {{ date('Y') }} Revival Threads</p>
+
     </footer>
 
 </x-app-layout>

@@ -1,3 +1,5 @@
+@section('title', 'Item')
+
 <x-app-layout>
     <style>
         * {
@@ -18,7 +20,7 @@
             background: white;
             padding: 40px;
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             margin-top: 50px;
             margin-bottom: 50px;
         }
@@ -169,8 +171,8 @@
         }
 
         .star-rating label:hover,
-        .star-rating label:hover ~ label,
-        .star-rating input:checked ~ label {
+        .star-rating label:hover~label,
+        .star-rating input:checked~label {
             color: #ffc107;
         }
 
@@ -263,45 +265,45 @@
     <div class="container">
         <a href="/products" class="btn btn-secondary" style="margin-bottom: 20px;">← Back to Products</a>
 
-        @if(session('success'))
+        @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
-        @if(session('error'))
+        @if (session('error'))
             <div class="alert alert-error">{{ session('error') }}</div>
         @endif
 
         <div class="product-detail">
             <div>
-                <img src="{{ $product->image_path ? asset('storage/' . $product->image_path) : $product->image_url }}" 
-                    alt="{{ $product->name }}" 
-                    class="product-image">
+                <img src="{{ $product->image_path ? asset('storage/' . $product->image_path) : $product->image_url }}"
+                    alt="{{ $product->name }}" class="product-image">
             </div>
-            
+
             <div class="product-info">
                 <h1>{{ $product->name }}</h1>
-                
+
                 <div class="rating-display">
                     <span class="stars">
-                        @for($i = 1; $i <= 5; $i++)
-                            @if($i <= round($product->averageRating()))
+                        @for ($i = 1; $i <= 5; $i++)
+                            @if ($i <= round($product->averageRating()))
                                 ★
                             @else
                                 ☆
                             @endif
                         @endfor
                     </span>
-                    <span>({{ number_format($product->averageRating(), 1) }} / 5 - {{ $product->reviews->count() }} reviews)</span>
+                    <span>({{ number_format($product->averageRating(), 1) }} / 5 - {{ $product->reviews->count() }}
+                        reviews)</span>
                 </div>
 
                 <div class="product-price">£{{ number_format($product->price, 2) }}</div>
-                
+
                 <p class="product-description">{{ $product->description }}</p>
-                
+
                 <span href="#" class="stock-badge {{ $product->getStockStatusClass() }}">
                     {{ $product->getStockStatus() }}
                 </span>
-                
+
                 <p style="color: #666; margin-top: 0px;">
                     <strong>Stock:</strong> {{ $product->stock_qty }} units available
                 </p>
@@ -320,13 +322,13 @@
             @auth
                 <div class="review-form">
                     <h3 style="margin-bottom: 15px;">
-                        @if($product->reviews->where('user_id', auth()->id())->first())
+                        @if ($product->reviews->where('user_id', auth()->id())->first())
                             Update Your Review
                         @else
                             Write a Review
                         @endif
                     </h3>
-                    
+
                     <form action="{{ route('reviews.store', $product) }}" method="POST">
                         @csrf
                         <div class="form-group">
@@ -367,8 +369,8 @@
                             <div>
                                 <span class="review-author">{{ $review->user->name }}</span>
                                 <div class="review-stars">
-                                    @for($i = 1; $i <= 5; $i++)
-                                        @if($i <= $review->rating)
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        @if ($i <= $review->rating)
                                             ★
                                         @else
                                             ☆
@@ -379,22 +381,25 @@
                             <div style="text-align: right;">
                                 <span class="review-date">{{ $review->created_at->format('M j, Y') }}</span>
                                 @auth
-                                    @if($review->user_id === auth()->id())
-                                        <form action="{{ route('reviews.destroy', $review) }}" method="POST" style="display: inline; margin-left: 10px;">
+                                    @if ($review->user_id === auth()->id())
+                                        <form action="{{ route('reviews.destroy', $review) }}" method="POST"
+                                            style="display: inline; margin-left: 10px;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Delete this review?')">Delete</button>
+                                            <button type="submit" class="btn btn-danger"
+                                                onclick="return confirm('Delete this review?')">Delete</button>
                                         </form>
                                     @endif
                                 @endauth
                             </div>
                         </div>
-                        @if($review->review)
+                        @if ($review->review)
                             <p class="review-text">{{ $review->review }}</p>
                         @endif
                     </div>
                 @empty
-                    <p style="text-align: center; color: #999; padding: 40px;">No reviews yet. Be the first to review this product!</p>
+                    <p style="text-align: center; color: #999; padding: 40px;">No reviews yet. Be the first to review
+                        this product!</p>
                 @endforelse
             </div>
         </div>
