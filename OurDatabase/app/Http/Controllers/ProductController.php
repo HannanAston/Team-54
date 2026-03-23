@@ -201,4 +201,12 @@ class ProductController extends Controller {
             'recentOrders', 'todayOrders', 'todayRevenue', 'thisWeekOrders', 'thisWeekRevenue'
         ));
     }
+
+    public function productCarousel() {
+        $products = Product::inRandomOrder()->take(10)->get();
+        $trending = Product::orderBy('created_at', 'desc')->take(3)->get();
+        $newArrivals = Product::latest()->take(3)->get();
+
+        return view('welcome', compact('products', 'trending', 'newArrivals'));
+    }
 }
