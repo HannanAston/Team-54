@@ -114,12 +114,12 @@
                             ">
 
                     @foreach ( $products as $product )
-                        <div style="min-width:260px; background:#fff; padding:12px;">
+                        <a href="/products/{{ $product->id }}" style="min-width:260px; background:#fff; padding:12px;">
                             <img src="{{$product->image_url}}" style="width:100%; height:340px; object-fit:cover;">
                             <h4 style="margin-top:12px;">Vintage Leather Jacket</h4>
                             <p style="color:#666;">Refurbished • Excellent</p>
                             <p style="font-weight:bold; color:#c19a6b;">£85</p>
-                        </div>
+                        </a>
                     @endforeach
                 </div>
             </div>
