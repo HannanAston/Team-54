@@ -15,9 +15,45 @@ use App\Models\StockHistory;
 
 class ProductController extends Controller {
 
-    public function index(){ 
-        $products = Product::paginate(9);
-        $categories = Category::All();
+    public function index(Request $request) {
+        $query = Product::query();
+        
+        if($request->search) {
+            $query->where('name', 'like', '%' . $request->search .'%');
+        }
+        
+        if($request->sort) {
+            if($request->sort == 'price_asc') {
+                $query->orderBy('price', 'asc');
+            } elseif($request->sort == 'price_desc') {
+                $query->orderBy('price', 'desc');
+            }
+        }
+
+        if($request->category_id) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        
+        if($request->price) {
+            if($request->price == '0-20') {
+                $query->where('price', '<', 20);
+            } elseif($request->price == '20-50') {
+                $query->whereBetween('price', [20, 50]);
+            } elseif($request->price == '50+') {
+                $query->where('price', '>=', 50);
+            }
+        }
+
+        if($request->sort == 'price_asc') {
+            $query->orderBy('price', 'asc');
+        } elseif($request->sort == 'price_desc') {
+            $query->orderBy('price', 'desc');
+        }
+
+        $products = $query->paginate(9);
+        //$products = $query->paginate(9)->withQueryString();
+        $categories = Category::all();
         return view('products.index', compact('products', 'categories'));
     }
     

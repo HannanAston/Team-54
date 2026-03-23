@@ -131,6 +131,17 @@
 
 
     <div class="max-w7x1 mx-auto px-6 py-10 bg-[#ffffff00]">
+        <div id="search">
+            <form method="GET" action="{{ url('/products') }}">
+                <input type="text" name="search" id="searchBar" placeholder="Search products..." value="{{ request('search') }}">
+
+                <button type="submit" class="searchButtons">Search</button>
+
+                @if(request('search'))
+                    <a href="{{ url('/products') }}" class="searchButtons">Clear</a>
+                @endif
+            </form>
+        </div>
 
         <div class="flex justify-between items-center mb-8">
             <div>
@@ -142,31 +153,74 @@
                 </p>
             </div>
 
-            <form method="GET">
-                <select name="sort" class=" border rounded-lg px-4 py-2 text-sm">
-                    <option value="">Sort By</option>
-                    <option value="price_asc">Price: Ascending</option>
-                    <option value="price_desc">Price: Descending</option>
-                </select>
+            <form method="GET" action="{{ url('/products') }}" class="flex items-center gap-4">
+                
             </form>
         </div>
+            
+        </div>
 
-    </div>
+        <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] space-x-6 p-6">
+            <div class="hidden md:block">
+                <div class="border rounded-xl p-6 bg-white shadow-sm">
+                    <h3 class="font-semibold mb-4">Filter By</h3>
 
-    <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] space-x-6 p-6">
-        <div class="hidden md:block">
-            <div class="border rounded-xl p-6 bg-white shadow-sm">
-                <h3 class="font-semibold mb-4">Filter By</h3>
+                    <form method="GET" action="{{ url('/products') }}" class="space-y-4">
 
-                <div class="space-y-2">
-                    <label class="flex items-center space-x-2">
-                        <input type="checkbox" class="rounded">
-                        <span>Men</span>
-                    </label>
-                    <label class="flex items-center space-x-2">
-                        <input type="checkbox" class="rounded">
-                        <span>Women</span>
-                    </label>
+                        <div>
+                            <h4 class="font-medium mb-2">Category</h4>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="category_id" value="1">
+                                <span>Tops</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="category_id" value="2">
+                                <span>Bottoms</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="category_id" value="3">
+                                <span>Outerwear</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="category_id" value="4">
+                                <span>Accessories</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="category_id" value="5">
+                                <span>Shoes</span>
+                            </label>
+                        </div>
+
+                        <div>
+                            <h4 class="font-medium mb-2">Price</h4>
+                            <label class="flex items-center space-x-2">
+                                <input type="radio" name="price" value="0-20">
+                                <span>Under £20</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="radio" name="price" value="20-50">
+                                <span>£20 - £50</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="radio" name="price" value="50+">
+                                <span>Over £50</span>
+                            </label>
+                        </div>
+
+                        <div>
+                            <input type="hidden" name="search" value="{{ request('search') }}">
+                            <h4 class="font-medium mb-2">Sort By Price</h4>
+                            <label class="flex items-center space-x-2">
+                                <input type="radio" name="sort" value="price_asc">
+                                <span>Ascending</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="radio" name="sort" value="price_desc">
+                                <span>Descending</span>
+                            </label>
+                        </div>
+                        <button type="submit" class="searchButtons w-full py-2 bg-[#C19A6B] text-white">Apply Filters</button>
+                    </form>
                 </div>
             </div>
         </div>
