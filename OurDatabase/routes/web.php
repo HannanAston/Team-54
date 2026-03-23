@@ -59,6 +59,8 @@ require __DIR__.'/auth.php';
 // user cart and checkout
 Route::get('/cart', [CartController::class, 'show'])->name('cart');
 
+Route::get('/', [ProductController::class, 'productCarousel'])->name('welcome');
+
 //Route::middleware('auth')->group(function () {
     //Route::post('/cart/add/{product}', [CartController::class, 'addToCart'])->name('cart.add');
     //Route::delete('/delete-cartItem/{cartItem}', [CartController::class, 'deleteCartItem'])->name('cart.update');

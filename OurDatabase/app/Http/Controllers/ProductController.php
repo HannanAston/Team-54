@@ -165,4 +165,10 @@ class ProductController extends Controller {
             'recentOrders', 'todayOrders', 'todayRevenue', 'thisWeekOrders', 'thisWeekRevenue'
         ));
     }
+
+    public function productCarousel() {
+        $products = Product::take(10)->get();
+
+        return view('welcome', compact('products'));
+    }
 }
