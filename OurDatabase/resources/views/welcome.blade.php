@@ -113,68 +113,14 @@
                             padding-bottom:10px;
                             ">
 
-                    <div style="min-width:260px; background:#fff; padding:12px;">
-                        <img src="/images/product1.jpg" style="width:100%; height:340px; object-fit:cover;">
-                        <h4 style="margin-top:12px;">Vintage Leather Jacket</h4>
-                        <p style="color:#666;">Refurbished • Excellent</p>
-                        <p style="font-weight:bold; color:#c19a6b;">£85</p>
-                    </div>
-
-                    <div style="min-width:260px; background:#fff; padding:12px;">
-                        <img src="/images/product2.jpg" style="width:100%; height:340px; object-fit:cover;">
-                        <h4>Oversized Graphic Hoodie</h4>
-                        <p style="color:#666;">Refurbished • Good</p>
-                        <p style="font-weight:bold; color:#c19a6b;">£35</p>
-                    </div>
-
-                    <div style="min-width:260px; background:#fff; padding:12px;">
-                        <img src="/images/product3.jpg" style="width:100%; height:340px; object-fit:cover;">
-                        <h4>Retro Denim Jacket</h4>
-                        <p style="color:#666;">Refurbished • Like New</p>
-                        <p style="font-weight:bold; color:#c19a6b;">£45</p>
-                    </div>
-
-                    <div style="min-width:260px; background:#fff; padding:12px;">
-                        <img src="/images/product1.jpg" style="width:100%; height:340px; object-fit:cover;">
-                        <h4 style="margin-top:12px;">Vintage Leather Jacket</h4>
-                        <p style="color:#666;">Refurbished • Excellent</p>
-                        <p style="font-weight:bold; color:#c19a6b;">£85</p>
-                    </div>
-
-                    <div style="min-width:260px; background:#fff; padding:12px;">
-                        <img src="/images/product2.jpg" style="width:100%; height:340px; object-fit:cover;">
-                        <h4>Oversized Graphic Hoodie</h4>
-                        <p style="color:#666;">Refurbished • Good</p>
-                        <p style="font-weight:bold; color:#c19a6b;">£35</p>
-                    </div>
-
-                    <div style="min-width:260px; background:#fff; padding:12px;">
-                        <img src="/images/product3.jpg" style="width:100%; height:340px; object-fit:cover;">
-                        <h4>Retro Denim Jacket</h4>
-                        <p style="color:#666;">Refurbished • Like New</p>
-                        <p style="font-weight:bold; color:#c19a6b;">£45</p>
-                    </div>
-
-                    <div style="min-width:260px; background:#fff; padding:12px;">
-                        <img src="/images/product1.jpg" style="width:100%; height:340px; object-fit:cover;">
-                        <h4 style="margin-top:12px;">Vintage Leather Jacket</h4>
-                        <p style="color:#666;">Refurbished • Excellent</p>
-                        <p style="font-weight:bold; color:#c19a6b;">£85</p>
-                    </div>
-
-                    <div style="min-width:260px; background:#fff; padding:12px;">
-                        <img src="/images/product2.jpg" style="width:100%; height:340px; object-fit:cover;">
-                        <h4>Oversized Graphic Hoodie</h4>
-                        <p style="color:#666;">Refurbished • Good</p>
-                        <p style="font-weight:bold; color:#c19a6b;">£35</p>
-                    </div>
-
-                    <div style="min-width:260px; background:#fff; padding:12px;">
-                        <img src="/images/product3.jpg" style="width:100%; height:340px; object-fit:cover;">
-                        <h4>Retro Denim Jacket</h4>
-                        <p style="color:#666;">Refurbished • Like New</p>
-                        <p style="font-weight:bold; color:#c19a6b;">£45</p>
-                    </div>
+                    @foreach ( $products as $product )
+                        <a href="/products/{{ $product->id }}" style="min-width:260px; background:#fff; padding:12px;">
+                            <img src="{{$product->image_url}}" style="width:100%; height:340px; object-fit:cover;">
+                            <h4 style="margin-top:12px;">{{$product->name}}</h4>
+                            <p style="color:#666;">{{$product->description}}</p>
+                            <p style="font-weight:bold; color:#c19a6b;">{{ $product->price }}</p>
+                        </a>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -228,27 +174,14 @@
         max-width:1200px;
         margin:auto;
     ">
-
+            @foreach ($newArrivals as $product)
             <div style="background:#fff; padding:15px;">
-                <img src="/images/product1.jpg" style="width:100%; height:320px; object-fit:cover;">
-                <h3 style="margin-top:15px;">Vintage Leather Jacket</h3>
-                <p style="color:#666;">Refurbished • Excellent</p>
-                <p style="font-weight:bold; color:#c19a6b;">£85</p>
+                <img src="{{$product->image_url}}" style="width:100%; height:320px; object-fit:cover;">
+                <h3 style="margin-top:15px;">{{$product->name}}</h3>
+                <p style="color:#666;">{{$product->description}}</p>
+                <p style="font-weight:bold; color:#c19a6b;">{{$product->price}}</p>
             </div>
-
-            <div style="background:#fff; padding:15px;">
-                <img src="/images/product2.jpg" style="width:100%; height:320px; object-fit:cover;">
-                <h3 style="margin-top:15px;">Oversized Graphic Hoodie</h3>
-                <p style="color:#666;">Refurbished • Good</p>
-                <p style="font-weight:bold; color:#c19a6b;">£35</p>
-            </div>
-
-            <div style="background:#fff; padding:15px;">
-                <img src="/images/product3.jpg" style="width:100%; height:320px; object-fit:cover;">
-                <h3 style="margin-top:15px;">Retro Denim Jacket</h3>
-                <p style="color:#666;">Refurbished • Like New</p>
-                <p style="font-weight:bold; color:#c19a6b;">£45</p>
-            </div>
+            @endforeach
 
         </div>
     </section>
@@ -301,18 +234,13 @@
         max-width:1200px;
         margin:auto;
     ">
-
+            @foreach ( $trending as $product )
             <div style="background:#fff; padding:12px;">
-                <img src="/images/product4.jpg" style="width:100%; height:260px; object-fit:cover;">
-                <h4>Vintage Cargo Pants</h4>
-                <p style="color:#c19a6b;">£40</p>
+                <img src="{{$product->image_url}}" style="width:100%; height:260px; object-fit:cover;">
+                <h4>{{$product->name}}s</h4>
+                <p style="color:#c19a6b;">{{ $product->price }}</p>
             </div>
-
-            <div style="background:#fff; padding:12px;">
-                <img src="/images/product5.jpg" style="width:100%; height:260px; object-fit:cover;">
-                <h4>Retro Windbreaker</h4>
-                <p style="color:#c19a6b;">£50</p>
-            </div>
+            @endforeach
 
         </div>
     </section>
