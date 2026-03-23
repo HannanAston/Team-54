@@ -23,7 +23,8 @@
         }
 
         .searchButtons {
-            background-color: rgba(255, 255, 255, 1);
+            background-color: #c19a6b;
+            color: white;
             border-radius: 8px;
             border-width: 1px;
             border-color: rgba(0, 0, 0, 0.2);
@@ -223,53 +224,51 @@
                     </form>
                 </div>
             </div>
-        </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                @foreach ($products as $product)
+                    <div class="group border rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition duration-300 bg-[#F0F0F0] flex flex-col h-full">
+                        <div class="relative overflow-hidden">
+                            <img src="{{ $product->image_url }}" class="w-full h-64 object-contain p-4 bg-white">
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            @foreach ($products as $product)
-                <div
-                    class="group border rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition duration-300 bg-[#F0F0F0] flex flex-col h-full">
-                    <div class="relative overflow-hidden">
-                        <img src="{{ $product->image_url }}" class="w-full h-64 object-contain p-4 bg-white">
-
-                        @if ($product->discount)
-                            <span class="absolute top-3 left-3 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
-                                -{{ $product->discount }}%
-                            </span>
-                        @endif
-                    </div>
-
-                    <div class="p-5">
-                        <h3 class="font-semibold text-lg mb-1 text-[#333]">
-                            {{ $product->name }}
-                        </h3>
-
-                        <p class="text-[#666] text-sm mb-3">
-                            {{ $product->brand ?? 'Revival Threads' }}
-                        </p>
-
-                        <div class="flex items-center space-x-3">
                             @if ($product->discount)
-                                <span class="text-red-600 font-bold text-lg">
-                                    £{{ number_format($product->price - ($product->price * $product->discount) / 100, 2) }}
-                                </span>
-                                <span class="text-gray-400 line-through">
-                                    £{{ number_format($product->price, 2) }}
-                                </span>
-                            @else
-                                <span class="font-bold text-lg">
-                                    £{{ number_format($product->price, 2) }}
+                                <span class="absolute top-3 left-3 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
+                                    -{{ $product->discount }}%
                                 </span>
                             @endif
                         </div>
 
-                        <a href="/products/{{ $product->id }}"
-                            class="block mt-4 text-center bg-[#C19A6B] text-white py-2 rounded-lg hover:bg-[#333] transition">
-                            View Product
-                        </a>
+                        <div class="p-5">
+                            <h3 class="font-semibold text-lg mb-1 text-[#333]">
+                                {{ $product->name }}
+                            </h3>
+
+                            <p class="text-[#666] text-sm mb-3">
+                                {{ $product->brand ?? 'Revival Threads' }}
+                            </p>
+
+                            <div class="flex items-center space-x-3">
+                                @if ($product->discount)
+                                    <span class="text-red-600 font-bold text-lg">
+                                        £{{ number_format($product->price - ($product->price * $product->discount) / 100, 2) }}
+                                    </span>
+                                    <span class="text-gray-400 line-through">
+                                        £{{ number_format($product->price, 2) }}
+                                    </span>
+                                @else
+                                    <span class="font-bold text-lg">
+                                        £{{ number_format($product->price, 2) }}
+                                    </span>
+                                @endif
+                            </div>
+
+                            <a href="/products/{{ $product->id }}"
+                                class="block mt-4 text-center bg-[#C19A6B] text-white py-2 rounded-lg hover:bg-[#333] transition">
+                                View Product
+                            </a>
+                        </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
         </div>
     </div>
 
