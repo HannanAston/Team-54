@@ -169,7 +169,14 @@ class ProductController extends Controller {
 
     // Delete product
     public function destroy(Product $product){
+        // Delete related records first
+        $product->stockHistories()->delete();
+        $product->orderItems()->delete();
+        $product->reviews()->delete();
+
+        // Now delete the product
         $product->delete();
+
         return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully!');
     }
 
