@@ -135,8 +135,5 @@
 
     </section>
 
-    <footer style="background:#333; color:#aaa; text-align:center; padding:30px;">
-        <p>&copy; {{ date('Y') }} Revival Threads</p>
-    </footer>
 
 </x-app-layout>

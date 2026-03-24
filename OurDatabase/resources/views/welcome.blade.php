@@ -276,19 +276,5 @@
 
     </section>
 
-    <!-- ================= FOOTER ================= -->
-
-    <footer
-        style="
-    background:#333;
-    color:#aaa;
-    text-align:center;
-    padding:30px;
-    border-top:1px solid #555;
-">
-
-        <p>&copy; {{ date('Y') }} Revival Threads</p>
-
-    </footer>
 
 </x-app-layout>

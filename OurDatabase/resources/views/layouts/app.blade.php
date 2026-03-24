@@ -46,4 +46,12 @@
     </div>
 </body>
 
+<footer style="background:#333; color:#aaa; text-align:center; padding:30px;">
+
+        <p>&copy; {{ date('Y') }} Revival Threads</p>
+
+        <p>Email: revivalthreads4@gmail.com</p>
+    </footer>
+
+
 </html>
