@@ -23,7 +23,8 @@
         }
 
         .searchButtons {
-            background-color: rgba(255, 255, 255, 1);
+            background-color: #c19a6b;
+            color: white;
             border-radius: 8px;
             border-width: 1px;
             border-color: rgba(0, 0, 0, 0.2);
@@ -160,7 +161,7 @@
             
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        >
 
             
         <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] space-x-6 p-6">
@@ -173,23 +174,23 @@
                         <div>
                             <h4 class="font-medium mb-2">Category</h4>
                             <label class="flex items-center space-x-2">
-                                <input type="checkbox" name="category_id" value="1">
+                                <input type="checkbox" name="category_id[]" value="1" {{ in_array(1, (array)request('category_id')) ? 'checked' : ''}}>
                                 <span>Tops</span>
                             </label>
                             <label class="flex items-center space-x-2">
-                                <input type="checkbox" name="category_id" value="2">
+                                <input type="checkbox" name="category_id[]" value="2" {{ in_array(2, (array)request('category_id')) ? 'checked' : ''}}>
                                 <span>Bottoms</span>
                             </label>
                             <label class="flex items-center space-x-2">
-                                <input type="checkbox" name="category_id" value="3">
+                                <input type="checkbox" name="category_id[]" value="3" {{ in_array(3, (array)request('category_id')) ? 'checked' : ''}}>
                                 <span>Outerwear</span>
                             </label>
                             <label class="flex items-center space-x-2">
-                                <input type="checkbox" name="category_id" value="4">
+                                <input type="checkbox" name="category_id[]" value="4" {{ in_array(4, (array)request('category_id')) ? 'checked' : ''}}>
                                 <span>Accessories</span>
                             </label>
                             <label class="flex items-center space-x-2">
-                                <input type="checkbox" name="category_id" value="5">
+                                <input type="checkbox" name="category_id[]" value="5" {{ in_array(5, (array)request('category_id')) ? 'checked' : ''}}>
                                 <span>Shoes</span>
                             </label>
                         </div>
@@ -197,15 +198,15 @@
                         <div>
                             <h4 class="font-medium mb-2">Price</h4>
                             <label class="flex items-center space-x-2">
-                                <input type="radio" name="price" value="0-20">
+                                <input type="radio" name="price" value="0-20" {{ request('price') == '0-20' ? 'checked' : ''}}>
                                 <span>Under £20</span>
                             </label>
                             <label class="flex items-center space-x-2">
-                                <input type="radio" name="price" value="20-50">
+                                <input type="radio" name="price" value="20-50" {{ request('price') == '20-50' ? 'checked' : ''}}>
                                 <span>£20 - £50</span>
                             </label>
                             <label class="flex items-center space-x-2">
-                                <input type="radio" name="price" value="50+">
+                                <input type="radio" name="price" value="50+" {{ request('price') == '50+' ? 'checked' : ''}}>
                                 <span>Over £50</span>
                             </label>
                         </div>
@@ -223,54 +224,58 @@
                             </label>
                         </div>
                         <button type="submit" class="searchButtons w-full py-2 bg-[#C19A6B] text-black">Apply Filters</button>
+                        @if(request()->hasAny(['category_id', 'price', 'sort']))
+                            <a href="{{ url('/products') }}" class="block text-center mt-2 py-2 rounded-lg bg-[#C19A6B] text-white hover:bg-[#333] transition">Clear Filters</a>
+                        @endif
                     </form>
                 </div>
             </div>
-        </div>
-            @foreach ($products as $product)
-                <div
-                    class="group border rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition duration-300 bg-[#F0F0F0] flex flex-col h-full">
-                    <div class="relative overflow-hidden">
-                        <img src="{{ $product->image_url }}" class="w-full h-64 object-contain p-4 bg-white">
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                @foreach ($products as $product)
+                    <div class="group border rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition duration-300 bg-[#F0F0F0] flex flex-col h-fullflex-shrink-0">
+                        <div class="relative overflow-hidden">
+                            <img src="{{ $product->image_url }}" class="w-full h-48 object-contain bg-white">
 
-                        @if ($product->discount)
-                            <span class="absolute top-3 left-3 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
-                                -{{ $product->discount }}%
-                            </span>
-                        @endif
-                    </div>
-
-                    <div class="p-5">
-                        <h3 class="font-semibold text-lg mb-1 text-[#333]">
-                            {{ $product->name }}
-                        </h3>
-
-                        <p class="text-[#666] text-sm mb-3">
-                            {{ $product->brand ?? 'Revival Threads' }}
-                        </p>
-
-                        <div class="flex items-center space-x-3">
                             @if ($product->discount)
-                                <span class="text-red-600 font-bold text-lg">
-                                    £{{ number_format($product->price - ($product->price * $product->discount) / 100, 2) }}
-                                </span>
-                                <span class="text-gray-400 line-through">
-                                    £{{ number_format($product->price, 2) }}
-                                </span>
-                            @else
-                                <span class="font-bold text-lg">
-                                    £{{ number_format($product->price, 2) }}
+                                <span class="absolute top-3 left-3 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
+                                    -{{ $product->discount }}%
                                 </span>
                             @endif
                         </div>
 
-                        <a href="/products/{{ $product->id }}"
-                            class="block mt-4 text-center bg-[#C19A6B] text-white py-2 rounded-lg hover:bg-[#333] transition">
-                            View Product
-                        </a>
+                        <div class="p-5">
+                            <h3 class="font-semibold text-lg mb-1 text-[#333]">
+                                {{ $product->name }}
+                            </h3>
+
+                            <p class="text-[#666] text-sm mb-3">
+                                {{ $product->brand ?? 'Revival Threads' }}
+                            </p>
+
+                            <div class="flex items-center space-x-3">
+                                @if ($product->discount)
+                                    <span class="text-red-600 font-bold text-lg">
+                                        £{{ number_format($product->price - ($product->price * $product->discount) / 100, 2) }}
+                                    </span>
+                                    <span class="text-gray-400 line-through">
+                                        £{{ number_format($product->price, 2) }}
+                                    </span>
+                                @else
+                                    <span class="font-bold text-lg">
+                                        £{{ number_format($product->price, 2) }}
+                                    </span>
+                                @endif
+                            </div>
+
+                            <a href="/products/{{ $product->id }}"
+                                class="block mt-4 text-center bg-[#C19A6B] text-white py-2 rounded-lg hover:bg-[#333] transition">
+                                View Product
+                            </a>
+                        </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
         </div>
     </div>
 
