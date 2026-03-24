@@ -305,7 +305,7 @@
                 </span>
 
                 <p style="color: #666; margin-top: 0px;">
-                    <strong>Stock:</strong> {{ $product->stock_qty }} units available
+                    <strong>Stock:</strong> {{ $product->stock_qty }} units available 
                 </p>
 
                 <form id="add-to-cart" action="{{ route('cart.add', $product) }}" method="POST">
