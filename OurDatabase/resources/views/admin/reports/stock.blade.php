@@ -168,7 +168,7 @@
                                 </td>
                                 <td class="py-3 px-2 font-bold">£{{ number_format($order->total, 2) }}</td>
                                 <td class="py-3 px-2">
-                                    <span class="text-green-500 font-semibold">Completed</span>
+                                    <span class="text-green-500 font-semibold">{{ $order->order_status->order_status }}</span>
                                 </td>
                             </tr>
                         @endforeach
