@@ -92,3 +92,8 @@ Route::put('/orders/updateStatus', [OrdersController::class, 'updateStatus'])->n
 Route::get('/notifications', [ProductController::class, 'lowStockNotifications']);
 
 
+//faq page
+Route::get('/faq', function () {
+    return view('faq');
+})->name('faq');
+;
