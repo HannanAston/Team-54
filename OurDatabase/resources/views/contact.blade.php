@@ -1,6 +1,6 @@
 <x-app-layout>
 
-    <div class="bg-[#f0f0f0] min-h-screen p-20">
+    <div class="bg-[#f0f0f0]  p-20">
         <div class="max-w-xl mx-auto px-6">
 
             <h1 class="text-3xl font-bold text-[#33] mb-10 text-center">Contact Us</h1>
@@ -23,5 +23,6 @@
             </form>
         </div>
     </div>
+
 
 </x-app-layout>
