@@ -116,7 +116,7 @@
                     View, edit, and manage all registered users.
                 </div>
                 <a href="{{ route('admin.orders.index') }}" class="card-button btn-blue">
-                    Manage Users
+                    Manage Users 
                 </a>
             </div>
 
