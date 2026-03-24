@@ -161,6 +161,9 @@
             
         </div>
 
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+
+            
         <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] space-x-6 p-6">
             <div class="hidden md:block">
                 <div class="border rounded-xl p-6 bg-white shadow-sm">
@@ -220,7 +223,7 @@
                                 <span>Descending</span>
                             </label>
                         </div>
-                        <button type="submit" class="searchButtons w-full py-2 bg-[#C19A6B] text-white">Apply Filters</button>
+                        <button type="submit" class="searchButtons w-full py-2 bg-[#C19A6B] text-black">Apply Filters</button>
                     </form>
                 </div>
             </div>
