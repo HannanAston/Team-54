@@ -12,6 +12,7 @@ use App\Models\CartItem;
 use App\Models\Product;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\AdminOrderController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -25,7 +26,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-//profiles
+// Profiles
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -36,9 +37,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 });
 
-//admin routes
+// Admin routes
 Route::middleware(['auth', 'admin'])->group(function() {
     Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index');
+
+    // ⚠ Static routes MUST come before wildcard {user} routes
+    Route::get('/admin/users/orderManage', [AdminOrderController::class, 'index'])->name('admin.orders.index');
+    Route::put('/admin/users/orderManage', [AdminOrderController::class, 'updateStatus'])->name('admin.orders.updateStatus');
+
+    // Wildcard {user} routes — must be after static ones above
     Route::get('/admin/users/{user}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
     Route::put('/admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
     Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
@@ -46,7 +53,6 @@ Route::middleware(['auth', 'admin'])->group(function() {
 
     // Product management routes
     Route::get('/admin/products', [ProductController::class, 'adminIndex'])->name('admin.products.index');
-    //Route::get('/admin/products/search', [ProductController::class, 'adminSearch'])->name('admin.products.index');
     Route::get('/admin/products/create', [ProductController::class, 'create'])->name('admin.products.create');
     Route::post('/admin/products', [ProductController::class, 'store'])->name('admin.products.store');
     Route::get('/admin/products/{product}/edit', [ProductController::class, 'edit'])->name('admin.products.edit');
@@ -54,41 +60,31 @@ Route::middleware(['auth', 'admin'])->group(function() {
     Route::delete('/admin/products/{product}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
     Route::get('/admin/reports/stock', [ProductController::class, 'stockReport'])->name('admin.reports.stock');
 });
+
 require __DIR__.'/auth.php';
 
-// user cart and checkout
+// User cart and checkout
 Route::get('/cart', [CartController::class, 'show'])->name('cart');
 
 Route::get('/', [ProductController::class, 'productCarousel'])->name('welcome');
 
-//Route::middleware('auth')->group(function () {
-    //Route::post('/cart/add/{product}', [CartController::class, 'addToCart'])->name('cart.add');
-    //Route::delete('/delete-cartItem/{cartItem}', [CartController::class, 'deleteCartItem'])->name('cart.update');
-    //Route::put('/update-cartItem/{cartItem}', [CartController::class, 'updateCartItem'])->name('cart.delete');
-    //Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
-//});
-
-
-//contact form
+// Contact form
 Route::get('/contact', [ContactController::class, 'show'])->name('contact');
 Route::post('/contact', [ContactController::class, 'sendEnquiry'])->name('contact');
 
-//products
+// Products
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/search', [ProductController::class, 'search'])->name('products.search');
 Route::get('/products/{product}', [ProductController::class, 'show'])->whereNumber('product')->name('products.show');
 
-
-//cart (Moved them out of middleware to handle guest carts.)
+// Cart (outside middleware to handle guest carts)
 Route::post('/cart/add/{product}', [CartController::class, 'addToCart'])->name('cart.add');
 Route::delete('/delete-cartItem/{cartItem}', [CartController::class, 'deleteCartItem'])->name('cart.update');
 Route::put('/update-cartItem/{cartItem}', [CartController::class, 'updateCartItem'])->name('cart.delete');
 Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
 
-//order page
+// Order page
 Route::get('/orders', [OrdersController::class, 'show'])->name('orders');
 Route::put('/orders/updateStatus', [OrdersController::class, 'updateStatus'])->name('orders.updateStatus');
 
 Route::get('/notifications', [ProductController::class, 'lowStockNotifications']);
-
-
