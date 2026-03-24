@@ -111,7 +111,17 @@
             </div>
 
             <div class="card">
-                <div class="card-title">Explore Our Catalogue for New Products!</div>
+                <div class="card-title">Order Management!</div>
+                <div class="card-description">
+                    View, edit, and manage all registered users.
+                </div>
+                <a href="{{ route('admin.orders.index') }}" class="card-button btn-blue">
+                    Manage Users
+                </a>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Product Management</div>
                 <div class="card-description">
                     Explore products!
                 </div>
