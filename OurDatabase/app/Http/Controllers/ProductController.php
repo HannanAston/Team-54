@@ -31,7 +31,7 @@ class ProductController extends Controller {
         }
 
         if($request->category_id) {
-            $query->where('category_id', $request->category_id);
+            $query->whereIn('category_id', $request->category_id);
         }
 
         
@@ -51,8 +51,7 @@ class ProductController extends Controller {
             $query->orderBy('price', 'desc');
         }
 
-        $products = $query->paginate(9);
-        //$products = $query->paginate(9)->withQueryString();
+        $products = $query->paginate(8)->withQueryString();
         $categories = Category::all();
         return view('products.index', compact('products', 'categories'));
     }
