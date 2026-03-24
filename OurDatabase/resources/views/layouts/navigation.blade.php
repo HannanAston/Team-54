@@ -202,6 +202,9 @@
             <li>
                 <a href="/aboutus" class="nav-link {{ request()->is('aboutus') ? 'active' : '' }}">About Us</a>
             </li>
+            <li>
+                <a href="/faq" class="nav-link {{ request()->is('faq') ? 'active' : '' }}">FAQ</a>
+            </li>
         </ul>
     </div>
 </nav>
