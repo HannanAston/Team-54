@@ -88,3 +88,10 @@ Route::get('/orders', [OrdersController::class, 'show'])->name('orders');
 Route::put('/orders/updateStatus', [OrdersController::class, 'updateStatus'])->name('orders.updateStatus');
 
 Route::get('/notifications', [ProductController::class, 'lowStockNotifications']);
+
+
+//faq page
+Route::get('/faq', function () {
+    return view('faq');
+})->name('faq');
+;
